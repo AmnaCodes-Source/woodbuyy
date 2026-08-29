@@ -16,31 +16,298 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/home.css">
 </head>
 <body>
 
-  <main class="section">
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar">
     <div class="container">
-      <div class="empty-state">
-        <div class="empty-state__icon">
-          <i class="ri-sofa-line"></i>
+      <div class="navbar__inner">
+        <button class="navbar__menu-btn navbar__action-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <i class="ri-menu-line"></i>
+        </button>
+        
+        <a href="/" class="navbar__logo">Woodbuyy</a>
+        
+        <nav class="navbar__links">
+          <a href="/" class="navbar__link">Home</a>
+          <a href="/products.html" class="navbar__link">Products</a>
+          <a href="/categories.html" class="navbar__link">Categories</a>
+          <a href="/about.html" class="navbar__link">About</a>
+          <a href="/contact.html" class="navbar__link">Contact</a>
+        </nav>
+        
+        <div class="navbar__actions">
+          <button class="navbar__action-btn" aria-label="Search">
+            <i class="ri-search-line"></i>
+          </button>
+          <button class="navbar__action-btn" aria-label="Wishlist">
+            <i class="ri-heart-line"></i>
+          </button>
+          <button class="navbar__action-btn" aria-label="Cart" id="cartBtn">
+            <i class="ri-shopping-bag-line"></i>
+            <span class="navbar__cart-count" id="cartCount" style="display:none;">0</span>
+          </button>
+          <a href="/login.html" class="navbar__action-btn" aria-label="Account">
+            <i class="ri-user-line"></i>
+          </a>
         </div>
-        <h1 class="heading-1">Woodbuyy</h1>
-        <p class="body-lg">
-          Luxury furniture store — UAE
-        </p>
-        <p class="body-base text-muted">
-          Phase 0 complete. Core pages coming soon.
-        </p>
       </div>
     </div>
+  </header>
+
+  <!-- ========== MOBILE MENU ========== -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__header">
+      <span class="navbar__logo">Woodbuyy</span>
+      <button class="navbar__action-btn" id="mobileMenuClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <nav class="mobile-menu__links">
+      <a href="/" class="mobile-menu__link">Home</a>
+      <a href="/products.html" class="mobile-menu__link">Products</a>
+      <a href="/categories.html" class="mobile-menu__link">Categories</a>
+      <a href="/about.html" class="mobile-menu__link">About</a>
+      <a href="/contact.html" class="mobile-menu__link">Contact</a>
+      <a href="/login.html" class="mobile-menu__link">Login / Register</a>
+    </nav>
+    <div class="mobile-menu__footer">
+      <p class="body-base text-muted">Luxury furniture for UAE homes</p>
+    </div>
+  </div>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__bg"></div>
+      <div class="container">
+        <div class="hero__content">
+          <p class="hero__eyebrow">Luxury Furniture Collection</p>
+          <h1 class="hero__title">Crafted for Elegant Living</h1>
+          <p class="hero__subtitle">
+            Discover premium furniture for every room — sofas, beds, tables, 
+            wardrobes and more. Delivered across UAE with cash on delivery.
+          </p>
+          <div class="hero__actions">
+            <a href="/products.html" class="btn btn--primary btn--lg">
+              Shop Collection
+              <i class="ri-arrow-right-line"></i>
+            </a>
+            <a href="/categories.html" class="btn btn--secondary btn--lg">
+              Browse Categories
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUE PROPOSITIONS -->
+    <section class="section">
+      <div class="container">
+        <div class="values-grid">
+          <div class="value-card">
+            <i class="ri-truck-line value-card__icon"></i>
+            <h3 class="value-card__title">UAE Wide Delivery</h3>
+            <p class="value-card__text">
+              Fast and reliable delivery across all 7 emirates.
+            </p>
+          </div>
+          <div class="value-card">
+            <i class="ri-cash-line value-card__icon"></i>
+            <h3 class="value-card__title">Cash on Delivery</h3>
+            <p class="value-card__text">
+              Pay only when your furniture arrives at your doorstep.
+            </p>
+          </div>
+          <div class="value-card">
+            <i class="ri-shield-check-line value-card__icon"></i>
+            <h3 class="value-card__title">Quality Guaranteed</h3>
+            <p class="value-card__text">
+              Premium materials and craftsmanship in every piece.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-header section-header--center">
+          <p class="section-eyebrow">Shop by Category</p>
+          <h2 class="section-title">Find Your Perfect Piece</h2>
+          <p class="section-subtitle">
+            From living room to bedroom — explore our curated furniture collections.
+          </p>
+        </div>
+        
+        <div class="categories-grid" id="categoriesGrid">
+          <div class="skeleton skeleton-image"></div>
+          <div class="skeleton skeleton-image"></div>
+          <div class="skeleton skeleton-image"></div>
+          <div class="skeleton skeleton-image"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PRODUCTS -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header section-header--center">
+          <p class="section-eyebrow">Featured Collection</p>
+          <h2 class="section-title">Most Loved Pieces</h2>
+          <p class="section-subtitle">
+            Handpicked furniture that our customers adore.
+          </p>
+        </div>
+        
+        <div class="products-grid" id="featuredGrid">
+        </div>
+        
+        <div style="text-align:center; margin-top: var(--space-12);">
+          <a href="/products.html" class="btn btn--secondary">
+            View All Products
+            <i class="ri-arrow-right-line"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-section">
+          <h2 class="cta-section__title">Need Custom Furniture?</h2>
+          <p class="cta-section__text">
+            We craft bespoke furniture tailored to your space and style. 
+            Get in touch for a custom quote.
+          </p>
+          <a href="/contact.html" class="btn btn--primary">
+            Request a Quote
+            <i class="ri-arrow-right-line"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <h3 class="footer__brand-name">Woodbuyy</h3>
+          <p class="footer__brand-desc">
+            Premium furniture for UAE homes. Crafted with care, delivered with trust.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Shop</h4>
+          <div class="footer__links">
+            <a href="/products.html" class="footer__link">All Products</a>
+            <a href="/categories.html" class="footer__link">Categories</a>
+            <a href="/products.html?featured=true" class="footer__link">Featured</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Company</h4>
+          <div class="footer__links">
+            <a href="/about.html" class="footer__link">About Us</a>
+            <a href="/contact.html" class="footer__link">Contact</a>
+            <a href="/faq.html" class="footer__link">FAQ</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Support</h4>
+          <div class="footer__links">
+            <a href="/shipping.html" class="footer__link">Shipping Policy</a>
+            <a href="/terms.html" class="footer__link">Terms & Conditions</a>
+            <a href="/privacy.html" class="footer__link">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">
+          © 2026 Woodbuyy. All rights reserved.
+        </p>
+        <div class="footer__bottom-links">
+          <a href="/terms.html" class="footer__bottom-link">Terms</a>
+          <a href="/privacy.html" class="footer__bottom-link">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <!-- Toast Container -->
   <div id="toast-container"></div>
 
-  <!-- Firebase Config -->
+  <!-- JS -->
   <script type="module" src="/js/firebase-config.js"></script>
+  <script type="module" src="/js/ui.js"></script>
+  <script type="module" src="/js/products.js"></script>
+  
+  <script type="module">
+    import { fetchProducts, fetchCategories, renderProducts } from '/js/products.js';
+    import { renderSkeletons, handleError } from '/js/ui.js';
+
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const menuClose = document.getElementById('mobileMenuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuBtn?.addEventListener('click', () => mobileMenu?.classList.add('is-open'));
+    menuClose?.addEventListener('click', () => mobileMenu?.classList.remove('is-open'));
+
+    async function loadFeatured() {
+      const grid = document.getElementById('featuredGrid');
+      if (!grid) return;
+      
+      renderSkeletons(grid, 4);
+      
+      try {
+        const { products } = await fetchProducts({ featured: true });
+        renderProducts(grid, products.slice(0, 4));
+      } catch (error) {
+        handleError(error, 'Failed to load featured products.');
+        grid.innerHTML = '';
+      }
+    }
+
+    async function loadCategories() {
+      const grid = document.getElementById('categoriesGrid');
+      if (!grid) return;
+      
+      try {
+        const categories = await fetchCategories(1);
+        if (categories.length === 0) {
+          grid.innerHTML = '<p class="body-base text-muted">Categories coming soon.</p>';
+          return;
+        }
+        
+        grid.innerHTML = categories.slice(0, 4).map(cat => `
+          <a href="/category.html?slug=${cat.slug}" class="category-tile">
+            <img class="category-tile__image" src="${cat.image || '/assets/images/placeholder.jpg'}" alt="${cat.name}" loading="lazy">
+            <div class="category-tile__overlay">
+              <div>
+                <h3 class="category-tile__name">${cat.name}</h3>
+              </div>
+            </div>
+          </a>
+        `).join('');
+      } catch (error) {
+        handleError(error, 'Failed to load categories.');
+        grid.innerHTML = '';
+      }
+    }
+
+    loadFeatured();
+    loadCategories();
+  </script>
 
 </body>
 </html>
