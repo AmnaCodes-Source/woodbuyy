@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Woodbuyy</title>
+  <meta name="description" content="Your shopping cart at Woodbuyy. Review items and checkout with cash on delivery.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/cart.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <button class="navbar__menu-btn navbar__action-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <i class="ri-menu-line"></i>
+        </button>
+        
+        <a href="/" class="navbar__logo">Woodbuyy</a>
+        
+        <nav class="navbar__links">
+          <a href="/" class="navbar__link">Home</a>
+          <a href="/products.html" class="navbar__link">Products</a>
+          <a href="/categories.html" class="navbar__link">Categories</a>
+          <a href="/about.html" class="navbar__link">About</a>
+          <a href="/contact.html" class="navbar__link">Contact</a>
+        </nav>
+        
+        <div class="navbar__actions">
+          <button class="navbar__action-btn" aria-label="Cart">
+            <i class="ri-shopping-bag-line"></i>
+            <span class="navbar__cart-count" id="cartCount" style="display:none;">0</span>
+          </button>
+          <a href="/login.html" class="navbar__action-btn" aria-label="Account">
+            <i class="ri-user-line"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MOBILE MENU ========== -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__header">
+      <span class="navbar__logo">Woodbuyy</span>
+      <button class="navbar__action-btn" id="mobileMenuClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <nav class="mobile-menu__links">
+      <a href="/" class="mobile-menu__link">Home</a>
+      <a href="/products.html" class="mobile-menu__link">Products</a>
+      <a href="/categories.html" class="mobile-menu__link">Categories</a>
+      <a href="/about.html" class="mobile-menu__link">About</a>
+      <a href="/contact.html" class="mobile-menu__link">Contact</a>
+    </nav>
+  </div>
+
+  <!-- ========== PAGE HEADER ========== -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-header__title">Shopping Cart</h1>
+      <p class="page-header__subtitle">Review your items before checkout</p>
+    </div>
+  </section>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="section section--sm">
+    <div class="container">
+      
+      <div class="cart-layout" id="cartLayout">
+        <!-- Cart items and summary render here -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <h3 class="footer__brand-name">Woodbuyy</h3>
+          <p class="footer__brand-desc">
+            Premium furniture for UAE homes. Crafted with care, delivered with trust.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Shop</h4>
+          <div class="footer__links">
+            <a href="/products.html" class="footer__link">All Products</a>
+            <a href="/categories.html" class="footer__link">Categories</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Company</h4>
+          <div class="footer__links">
+            <a href="/about.html" class="footer__link">About Us</a>
+            <a href="/contact.html" class="footer__link">Contact</a>
+            <a href="/faq.html" class="footer__link">FAQ</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Support</h4>
+          <div class="footer__links">
+            <a href="/shipping.html" class="footer__link">Shipping Policy</a>
+            <a href="/terms.html" class="footer__link">Terms & Conditions</a>
+            <a href="/privacy.html" class="footer__link">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- JS -->
+  <script type="module" src="/js/firebase-config.js"></script>
+  <script type="module" src="/js/ui.js"></script>
+  <script type="module" src="/js/cart.js"></script>
+
+  <script type="module">
+    import { getCartItems, getCartSubtotal, getCartCount, removeFromCart, updateQuantity } from '/js/cart.js';
+    import { formatAED } from '/js/ui.js';
+
+    const cartLayout = document.getElementById('cartLayout');
+
+    // Mobile menu
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const menuClose = document.getElementById('mobileMenuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => mobileMenu?.classList.add('is-open'));
+    menuClose?.addEventListener('click', () => mobileMenu?.classList.remove('is-open'));
+
+    // Render cart
+    function renderCart() {
+      const items = getCartItems();
+      
+      if (items.length === 0) {
+        cartLayout.innerHTML = `
+          <div class="empty-cart" style="grid-column: 1 / -1;">
+            <i class="ri-shopping-bag-line empty-cart__icon"></i>
+            <h2 class="empty-cart__title">Your cart is empty</h2>
+            <p class="empty-cart__text">Browse our collection and find something you love.</p>
+            <a href="/products.html" class="btn btn--primary">
+              Shop Now
+              <i class="ri-arrow-right-line"></i>
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      const subtotal = getCartSubtotal();
+      const vat = Math.round(subtotal * 0.05);
+      const total = subtotal + vat;
+
+      const itemsHTML = items.map(item => {
+        const price = item.salePrice || item.price;
+        const hasSale = item.salePrice && item.salePrice < item.price;
+        
+        return `
+          <div class="cart-item" data-product-id="${item.productId}">
+            <img class="cart-item__image" src="${item.image}" alt="${item.name}" loading="lazy">
+            <div class="cart-item__info">
+              <h3 class="cart-item__name">${item.name}</h3>
+              <div>
+                <span class="cart-item__price">${formatAED(price * item.quantity)}</span>
+                ${hasSale ? `<span class="cart-item__original-price">${formatAED(item.price * item.quantity)}</span>` : ''}
+              </div>
+              <div class="cart-item__actions">
+                <div class="qty-selector">
+                  <button class="qty-selector__btn" onclick="changeQty('${item.productId}', -1)">
+                    <i class="ri-subtract-line"></i>
+                  </button>
+                  <span class="qty-selector__value">${item.quantity}</span>
+                  <button class="qty-selector__btn" onclick="changeQty('${item.productId}', 1)">
+                    <i class="ri-add-line"></i>
+                  </button>
+                </div>
+                <button class="cart-item__remove" onclick="removeItem('${item.productId}')">
+                  <i class="ri-delete-bin-line"></i>
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      cartLayout.innerHTML = `
+        <div class="cart-items">
+          ${itemsHTML}
+        </div>
+        
+        <div class="summary-card">
+          <h2 class="summary-card__title">Order Summary</h2>
+          <div class="summary-card__row">
+            <span>Subtotal</span>
+            <span>${formatAED(subtotal)}</span>
+          </div>
+          <div class="summary-card__row">
+            <span>VAT (5%)</span>
+            <span>${formatAED(vat)}</span>
+          </div>
+          <div class="summary-card__row">
+            <span>Shipping</span>
+            <span>Calculated at checkout</span>
+          </div>
+          <div class="summary-card__row summary-card__row--total">
+            <span>Total</span>
+            <span class="summary-card__total-value">${formatAED(total)}</span>
+          </div>
+          <p class="summary-card__note">
+            Shipping calculated at checkout. Cash on delivery available.
+          </p>
+          <a href="/checkout.html" class="btn btn--primary btn--full" style="margin-top: var(--space-4);">
+            Proceed to Checkout
+            <i class="ri-arrow-right-line"></i>
+          </a>
+        </div>
+      `;
+    }
+
+    // Global functions for inline onclick
+    window.changeQty = async function(productId, delta) {
+      const item = getCartItems().find(i => i.productId === productId);
+      if (!item) return;
+      await updateQuantity(productId, item.quantity + delta);
+      renderCart();
+    };
+
+    window.removeItem = async function(productId) {
+      await removeFromCart(productId);
+      renderCart();
+    };
+
+    // Initial render
+    renderCart();
+  </script>
+
+</body>
+</html>
