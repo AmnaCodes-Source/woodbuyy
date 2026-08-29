@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — Woodbuyy</title>
+  <meta name="description" content="Premium furniture product at Woodbuyy. UAE delivery, Cash on Delivery.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/product.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <button class="navbar__menu-btn navbar__action-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <i class="ri-menu-line"></i>
+        </button>
+        
+        <a href="/" class="navbar__logo">Woodbuyy</a>
+        
+        <nav class="navbar__links">
+          <a href="/" class="navbar__link">Home</a>
+          <a href="/products.html" class="navbar__link">Products</a>
+          <a href="/categories.html" class="navbar__link">Categories</a>
+          <a href="/about.html" class="navbar__link">About</a>
+          <a href="/contact.html" class="navbar__link">Contact</a>
+        </nav>
+        
+        <div class="navbar__actions">
+          <button class="navbar__action-btn" aria-label="Cart" id="cartBtn">
+            <i class="ri-shopping-bag-line"></i>
+            <span class="navbar__cart-count" id="cartCount" style="display:none;">0</span>
+          </button>
+          <a href="/login.html" class="navbar__action-btn" aria-label="Account">
+            <i class="ri-user-line"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MOBILE MENU ========== -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__header">
+      <span class="navbar__logo">Woodbuyy</span>
+      <button class="navbar__action-btn" id="mobileMenuClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <nav class="mobile-menu__links">
+      <a href="/" class="mobile-menu__link">Home</a>
+      <a href="/products.html" class="mobile-menu__link">Products</a>
+      <a href="/categories.html" class="mobile-menu__link">Categories</a>
+      <a href="/about.html" class="mobile-menu__link">About</a>
+      <a href="/contact.html" class="mobile-menu__link">Contact</a>
+    </nav>
+  </div>
+
+  <!-- ========== PAGE HEADER ========== -->
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__sep">/</span>
+        <a href="/products.html" class="breadcrumb__link">Products</a>
+        <span class="breadcrumb__sep">/</span>
+        <span class="breadcrumb__current" id="breadcrumbProduct">Product</span>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="section section--sm">
+    <div class="container">
+      
+      <div class="product-detail" id="productDetail">
+        <!-- Skeleton -->
+        <div class="product-gallery">
+          <div class="skeleton skeleton-image"></div>
+          <div class="product-gallery__thumbs">
+            <div class="skeleton" style="width:72px;height:72px;border-radius:4px;"></div>
+            <div class="skeleton" style="width:72px;height:72px;border-radius:4px;"></div>
+            <div class="skeleton" style="width:72px;height:72px;border-radius:4px;"></div>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="skeleton skeleton-text skeleton-text--sm" style="width:30%;"></div>
+          <div class="skeleton skeleton-title" style="width:80%;"></div>
+          <div class="skeleton skeleton-text" style="width:20%;"></div>
+          <div class="skeleton skeleton-text" style="width:100%;"></div>
+          <div class="skeleton skeleton-text" style="width:100%;"></div>
+          <div class="skeleton skeleton-text" style="width:60%;"></div>
+        </div>
+      </div>
+
+      <!-- RELATED PRODUCTS -->
+      <section class="related-products">
+        <div class="section-header">
+          <p class="section-eyebrow">You May Also Like</p>
+          <h2 class="section-title">Related Products</h2>
+        </div>
+        <div class="products-grid" id="relatedGrid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <h3 class="footer__brand-name">Woodbuyy</h3>
+          <p class="footer__brand-desc">
+            Premium furniture for UAE homes. Crafted with care, delivered with trust.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Shop</h4>
+          <div class="footer__links">
+            <a href="/products.html" class="footer__link">All Products</a>
+            <a href="/categories.html" class="footer__link">Categories</a>
+            <a href="/products.html?featured=true" class="footer__link">Featured</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Company</h4>
+          <div class="footer__links">
+            <a href="/about.html" class="footer__link">About Us</a>
+            <a href="/contact.html" class="footer__link">Contact</a>
+            <a href="/faq.html" class="footer__link">FAQ</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Support</h4>
+          <div class="footer__links">
+            <a href="/shipping.html" class="footer__link">Shipping Policy</a>
+            <a href="/terms.html" class="footer__link">Terms & Conditions</a>
+            <a href="/privacy.html" class="footer__link">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">
+          © 2026 Woodbuyy. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- JS -->
+  <script type="module" src="/js/firebase-config.js"></script>
+  <script type="module" src="/js/ui.js"></script>
+  <script type="module" src="/js/products.js"></script>
+
+  <script type="module">
+    import { fetchProductById, fetchProducts, productCardHTML } from '/js/products.js';
+    import { formatAED, getQueryParam, handleError, showToast } from '/js/ui.js';
+
+    const productDetail = document.getElementById('productDetail');
+
+    // Mobile menu
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const menuClose = document.getElementById('mobileMenuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => mobileMenu?.classList.add('is-open'));
+    menuClose?.addEventListener('click', () => mobileMenu?.classList.remove('is-open'));
+
+    // Load product
+    async function loadProduct() {
+      const productId = getQueryParam('id');
+      if (!productId) {
+        productDetail.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state__icon"><i class="ri-error-warning-line"></i></div>
+            <h3 class="empty-state__title">Product not found</h3>
+            <p class="empty-state__text">Please go back to products page.</p>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const product = await fetchProductById(productId);
+        if (!product) {
+          productDetail.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+              <div class="empty-state__icon"><i class="ri-error-warning-line"></i></div>
+              <h3 class="empty-state__title">Product not found</h3>
+            </div>
+          `;
+          return;
+        }
+
+        document.title = `${product.name} — Woodbuyy`;
+        document.getElementById('breadcrumbProduct').textContent = product.name;
+
+        const displayPrice = product.salePrice || product.price;
+        const hasSale = product.salePrice && product.salePrice < product.price;
+        const images = product.images && product.images.length > 0 
+          ? product.images 
+          : ['/assets/images/placeholder.jpg'];
+
+        productDetail.innerHTML = `
+          <div class="product-gallery">
+            <div class="product-gallery__main">
+              <img src="${images[0]}" alt="${product.name}" id="mainImage">
+            </div>
+            ${images.length > 1 ? `
+              <div class="product-gallery__thumbs">
+                ${images.map((img, i) => `
+                  <div class="product-gallery__thumb ${i === 0 ? 'is-active' : ''}" data-image="${img}">
+                    <img src="${img}" alt="${product.name} thumbnail ${i + 1}">
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="product-info">
+            <p class="product-info__category">${product.categoryName || 'Furniture'}</p>
+            <h1 class="product-info__name">${product.name}</h1>
+            
+            ${product.rating ? `
+              <div class="product-info__rating">
+                ${'<i class="ri-star-fill"></i>'.repeat(Math.round(product.rating))}
+                <span>${product.rating.toFixed(1)} (${product.reviewCount || 0} reviews)</span>
+              </div>
+            ` : ''}
+
+            <div class="product-info__price">
+              <span class="product-info__price-current">${formatAED(displayPrice)}</span>
+              ${hasSale ? `
+                <span class="product-info__price-original">${formatAED(product.price)}</span>
+                <span class="product-info__badge">
+                  Save ${Math.round((1 - product.salePrice / product.price) * 100)}%
+                </span>
+              ` : ''}
+            </div>
+
+            <p class="product-info__description">${product.description || 'No description available.'}</p>
+
+            <div class="product-actions">
+              <div class="product-actions__row">
+                <div class="qty-selector">
+                  <button class="qty-selector__btn" id="qtyMinus">
+                    <i class="ri-subtract-line"></i>
+                  </button>
+                  <span class="qty-selector__value" id="qtyValue">1</span>
+                  <button class="qty-selector__btn" id="qtyPlus">
+                    <i class="ri-add-line"></i>
+                  </button>
+                </div>
+                <button class="btn btn--primary btn--lg" id="addToCartBtn" style="flex:1;">
+                  <i class="ri-shopping-bag-line"></i>
+                  Add to Cart
+                </button>
+                <button class="btn btn--icon btn--secondary" id="wishlistBtn" aria-label="Add to wishlist">
+                  <i class="ri-heart-line"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="product-meta">
+              <div class="product-meta__item">
+                <i class="ri-truck-line"></i>
+                <span>UAE Wide Delivery Available</span>
+              </div>
+              <div class="product-meta__item">
+                <i class="ri-cash-line"></i>
+                <span>Cash on Delivery</span>
+              </div>
+              <div class="product-meta__item">
+                <i class="ri-shield-check-line"></i>
+                <span>Quality Guaranteed</span>
+              </div>
+            </div>
+
+            ${product.attributes ? `
+              <table class="attributes-table">
+                <tbody>
+                  ${product.attributes.material ? `
+                    <tr><th>Material</th><td>${product.attributes.material}</td></tr>
+                  ` : ''}
+                  ${product.attributes.color ? `
+                    <tr><th>Color</th><td>${Array.isArray(product.attributes.color) ? product.attributes.color.join(', ') : product.attributes.color}</td></tr>
+                  ` : ''}
+                  ${product.attributes.dimensions ? `
+                    <tr><th>Dimensions</th><td>W${product.attributes.dimensions.W} × D${product.attributes.dimensions.D} × H${product.attributes.dimensions.H} cm</td></tr>
+                  ` : ''}
+                  ${product.attributes.weight ? `
+                    <tr><th>Weight</th><td>${product.attributes.weight} kg</td></tr>
+                  ` : ''}
+                </tbody>
+              </table>
+            ` : ''}
+          </div>
+        `;
+
+        // Gallery thumbnails
+        document.querySelectorAll('.product-gallery__thumb').forEach(thumb => {
+          thumb.addEventListener('click', () => {
+            document.getElementById('mainImage').src = thumb.dataset.image;
+            document.querySelectorAll('.product-gallery__thumb').forEach(t => t.classList.remove('is-active'));
+            thumb.classList.add('is-active');
+          });
+        });
+
+        // Quantity selector
+        let qty = 1;
+        const qtyValue = document.getElementById('qtyValue');
+        document.getElementById('qtyMinus')?.addEventListener('click', () => {
+          if (qty > 1) { qty--; qtyValue.textContent = qty; }
+        });
+        document.getElementById('qtyPlus')?.addEventListener('click', () => {
+          qty++; qtyValue.textContent = qty;
+        });
+
+        // Add to cart (will be fully implemented in Phase 3)
+        document.getElementById('addToCartBtn')?.addEventListener('click', () => {
+          showToast('Cart coming in Phase 3', 'info');
+        });
+
+        // Load related products
+        loadRelated(product.categorySlug, product.id);
+
+      } catch (error) {
+        handleError(error, 'Failed to load product.');
+        productDetail.innerHTML = '';
+      }
+    }
+
+    // Load related products
+    async function loadRelated(categorySlug, currentProductId) {
+      const grid = document.getElementById('relatedGrid');
+      if (!grid || !categorySlug) return;
+
+      try {
+        const { products } = await fetchProducts({ categorySlug });
+        const related = products.filter(p => p.id !== currentProductId).slice(0, 4);
+        if (related.length > 0) {
+          grid.innerHTML = related.map(productCardHTML).join('');
+        } else {
+          document.querySelector('.related-products').style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Failed to load related:', error);
+        document.querySelector('.related-products').style.display = 'none';
+      }
+    }
+
+    // Init
+    loadProduct();
+  </script>
+
+</body>
+</html>
