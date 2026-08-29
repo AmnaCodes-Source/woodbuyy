@@ -1,0 +1,196 @@
+/* ============================================================
+   WOODBUYY — CART PAGE CSS
+   ============================================================ */
+
+@import url('../../WOODBUYY_BRAND.css');
+
+/* ============================================================
+   CART LAYOUT
+   ============================================================ */
+
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+@media (min-width: 1024px) {
+  .cart-layout {
+    grid-template-columns: 1fr 360px;
+    align-items: start;
+  }
+}
+
+/* ============================================================
+   CART ITEMS LIST
+   ============================================================ */
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cart-item {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
+}
+
+.cart-item:hover {
+  border-color: #3A3A3A;
+}
+
+.cart-item__image {
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  background-color: var(--color-surface-high);
+}
+
+.cart-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cart-item__name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cart-item__price {
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  font-weight: var(--weight-medium);
+}
+
+.cart-item__original-price {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  margin-left: var(--space-2);
+}
+
+.cart-item__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.cart-item__remove {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.cart-item__remove:hover {
+  color: var(--color-error);
+  background-color: var(--color-error-bg);
+}
+
+/* ============================================================
+   ORDER SUMMARY CARD
+   ============================================================ */
+
+.summary-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--space-4));
+}
+
+.summary-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.summary-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-2) 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-mid);
+}
+
+.summary-card__row--total {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  font-size: var(--text-base);
+}
+
+.summary-card__total-value {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.summary-card__note {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-3);
+  line-height: var(--leading-normal);
+}
+
+/* ============================================================
+   EMPTY CART
+   ============================================================ */
+
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-20) var(--space-8);
+  gap: var(--space-4);
+}
+
+.empty-cart__icon {
+  font-size: 64px;
+  color: var(--color-text-muted);
+  opacity: 0.4;
+}
+
+.empty-cart__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-mid);
+}
+
+.empty-cart__text {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  max-width: 360px;
+}
