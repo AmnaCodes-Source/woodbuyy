@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed — Woodbuyy</title>
+  <meta name="description" content="Your order has been placed successfully at Woodbuyy.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="/" class="navbar__logo">Woodbuyy</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="section" style="padding-top: calc(var(--navbar-height) + var(--space-12));">
+    <div class="container">
+      
+      <div class="empty-state" style="text-align:center;">
+        <i class="ri-check-double-line empty-state__icon" style="color: var(--color-success); font-size: 64px;"></i>
+        <h1 class="heading-1">Order Confirmed!</h1>
+        <p class="body-lg" style="max-width: 480px;">
+          Thank you for your order. Our team will contact you shortly to confirm delivery details.
+        </p>
+        
+        <div class="card" style="padding: var(--space-6); margin-top: var(--space-6); min-width: 280px;">
+          <p class="label" style="margin-bottom: var(--space-2);">Order ID</p>
+          <p class="heading-3 text-accent" id="orderId">—</p>
+        </div>
+        
+        <p class="body-base text-muted" style="margin-top: var(--space-4);">
+          Payment: Cash on Delivery
+        </p>
+
+        <div style="display: flex; gap: var(--space-4); margin-top: var(--space-8); flex-wrap: wrap; justify-content: center;">
+          <a href="/products.html" class="btn btn--primary">
+            Continue Shopping
+            <i class="ri-arrow-right-line"></i>
+          </a>
+          <a href="/" class="btn btn--secondary">
+            Back to Home
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- JS -->
+  <script type="module">
+    import { getQueryParam } from '/js/ui.js';
+
+    const orderId = getQueryParam('orderId');
+    if (orderId) {
+      document.getElementById('orderId').textContent = orderId;
+    }
+  </script>
+
+</body>
+</html>
