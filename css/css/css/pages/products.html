@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Woodbuyy</title>
+  <meta name="description" content="Browse premium furniture collection at Woodbuyy. Sofas, beds, tables, chairs, wardrobes and more. Cash on delivery across UAE.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/products.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <button class="navbar__menu-btn navbar__action-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <i class="ri-menu-line"></i>
+        </button>
+        
+        <a href="/" class="navbar__logo">Woodbuyy</a>
+        
+        <nav class="navbar__links">
+          <a href="/" class="navbar__link">Home</a>
+          <a href="/products.html" class="navbar__link">Products</a>
+          <a href="/categories.html" class="navbar__link">Categories</a>
+          <a href="/about.html" class="navbar__link">About</a>
+          <a href="/contact.html" class="navbar__link">Contact</a>
+        </nav>
+        
+        <div class="navbar__actions">
+          <button class="navbar__action-btn" aria-label="Search">
+            <i class="ri-search-line"></i>
+          </button>
+          <button class="navbar__action-btn" aria-label="Wishlist">
+            <i class="ri-heart-line"></i>
+          </button>
+          <button class="navbar__action-btn" aria-label="Cart" id="cartBtn">
+            <i class="ri-shopping-bag-line"></i>
+            <span class="navbar__cart-count" id="cartCount" style="display:none;">0</span>
+          </button>
+          <a href="/login.html" class="navbar__action-btn" aria-label="Account">
+            <i class="ri-user-line"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MOBILE MENU ========== -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__header">
+      <span class="navbar__logo">Woodbuyy</span>
+      <button class="navbar__action-btn" id="mobileMenuClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <nav class="mobile-menu__links">
+      <a href="/" class="mobile-menu__link">Home</a>
+      <a href="/products.html" class="mobile-menu__link">Products</a>
+      <a href="/categories.html" class="mobile-menu__link">Categories</a>
+      <a href="/about.html" class="mobile-menu__link">About</a>
+      <a href="/contact.html" class="mobile-menu__link">Contact</a>
+      <a href="/login.html" class="mobile-menu__link">Login / Register</a>
+    </nav>
+    <div class="mobile-menu__footer">
+      <p class="body-base text-muted">Luxury furniture for UAE homes</p>
+    </div>
+  </div>
+
+  <!-- ========== PAGE HEADER ========== -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-header__title">All Products</h1>
+      <p class="page-header__subtitle">Premium furniture for every room</p>
+    </div>
+  </section>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="section section--sm">
+    <div class="container">
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-bar__left" id="filterChips">
+          <!-- Active filters appear here -->
+        </div>
+        <div class="filter-bar__right">
+          <select class="sort-select" id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="price_low">Price: Low to High</option>
+            <option value="price_high">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Results Count -->
+      <p class="results-count" id="resultsCount">
+        Loading products...
+      </p>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="productsGrid">
+        <!-- Skeletons render here -->
+      </div>
+
+      <!-- Load More -->
+      <div class="pagination-wrap">
+        <button class="btn btn--secondary load-more-btn" id="loadMoreBtn" style="display:none;">
+          Load More
+          <i class="ri-arrow-down-line"></i>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <h3 class="footer__brand-name">Woodbuyy</h3>
+          <p class="footer__brand-desc">
+            Premium furniture for UAE homes. Crafted with care, delivered with trust.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Shop</h4>
+          <div class="footer__links">
+            <a href="/products.html" class="footer__link">All Products</a>
+            <a href="/categories.html" class="footer__link">Categories</a>
+            <a href="/products.html?featured=true" class="footer__link">Featured</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Company</h4>
+          <div class="footer__links">
+            <a href="/about.html" class="footer__link">About Us</a>
+            <a href="/contact.html" class="footer__link">Contact</a>
+            <a href="/faq.html" class="footer__link">FAQ</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__heading">Support</h4>
+          <div class="footer__links">
+            <a href="/shipping.html" class="footer__link">Shipping Policy</a>
+            <a href="/terms.html" class="footer__link">Terms & Conditions</a>
+            <a href="/privacy.html" class="footer__link">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">
+          © 2026 Woodbuyy. All rights reserved.
+        </p>
+        <div class="footer__bottom-links">
+          <a href="/terms.html" class="footer__bottom-link">Terms</a>
+          <a href="/privacy.html" class="footer__bottom-link">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- JS -->
+  <script type="module" src="/js/firebase-config.js"></script>
+  <script type="module" src="/js/ui.js"></script>
+  <script type="module" src="/js/products.js"></script>
+
+  <script type="module">
+    import { fetchProducts, renderProducts } from '/js/products.js';
+    import { renderSkeletons, handleError, getQueryParam, showToast } from '/js/ui.js';
+
+    const grid = document.getElementById('productsGrid');
+    const sortSelect = document.getElementById('sortSelect');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const resultsCount = document.getElementById('resultsCount');
+
+    let currentSort = 'newest';
+    let lastDoc = null;
+    let isLoading = false;
+
+    // Mobile menu
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const menuClose = document.getElementById('mobileMenuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => mobileMenu?.classList.add('is-open'));
+    menuClose?.addEventListener('click', () => mobileMenu?.classList.remove('is-open'));
+
+    // Load products
+    async function loadProducts(reset = false) {
+      if (isLoading) return;
+      isLoading = true;
+
+      if (reset) {
+        lastDoc = null;
+        renderSkeletons(grid, 8);
+        loadMoreBtn.style.display = 'none';
+      }
+
+      try {
+        const featured = getQueryParam('featured') === 'true';
+        const { products, lastDoc: newLastDoc } = await fetchProducts({
+          featured,
+          sortBy: currentSort,
+          lastDoc: reset ? null : lastDoc
+        });
+
+        if (reset) {
+          renderProducts(grid, products);
+        } else {
+          grid.innerHTML += products.map(p => productCardHTML(p)).join('');
+        }
+
+        lastDoc = newLastDoc;
+        
+        if (products.length > 0) {
+          resultsCount.innerHTML = `<strong>${products.length}</strong> products loaded`;
+          if (newLastDoc) {
+            loadMoreBtn.style.display = 'inline-flex';
+          } else {
+            loadMoreBtn.style.display = 'none';
+          }
+        } else if (reset) {
+          resultsCount.textContent = 'No products found';
+        }
+      } catch (error) {
+        handleError(error, 'Failed to load products.');
+        if (reset) grid.innerHTML = '';
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    // Import productCardHTML from products.js
+    import('/js/products.js').then(({ productCardHTML }) => {
+      window.productCardHTML = productCardHTML;
+    });
+
+    // Sort change
+    sortSelect.addEventListener('change', () => {
+      currentSort = sortSelect.value;
+      loadProducts(true);
+    });
+
+    // Load more
+    loadMoreBtn.addEventListener('click', () => loadProducts(false));
+
+    // Initial load
+    loadProducts(true);
+  </script>
+
+</body>
+</html>
