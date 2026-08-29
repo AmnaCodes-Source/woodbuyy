@@ -1,0 +1,147 @@
+/* ============================================================
+   WOODBUYY — PRODUCTS LISTING PAGE CSS
+   ============================================================ */
+
+@import url('../../WOODBUYY_BRAND.css');
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .filter-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.filter-bar__left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.filter-bar__right {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-mid);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  height: 40px;
+}
+
+.filter-chip:hover {
+  border-color: var(--color-accent-border);
+  color: var(--color-text);
+}
+
+.filter-chip.is-active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+/* ============================================================
+   SORT DROPDOWN
+   ============================================================ */
+
+.sort-select {
+  height: 40px;
+  padding: 0 var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-mid);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.sort-select:focus {
+  border-color: var(--color-border-focus);
+}
+
+.sort-select option {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* ============================================================
+   RESULTS COUNT
+   ============================================================ */
+
+.results-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+}
+
+.results-count strong {
+  color: var(--color-text-mid);
+  font-weight: var(--weight-medium);
+}
+
+/* ============================================================
+   PRODUCTS GRID
+   ============================================================ */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================================
+   PAGINATION AREA
+   ============================================================ */
+
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-12);
+}
+
+.load-more-btn {
+  min-width: 200px;
+}
