@@ -14,18 +14,16 @@
     .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
     .sidebar a { display: flex; align-items: center; gap: 10px; padding: 12px; color: #B0A898; text-decoration: none; font-size: 14px; border-radius: 4px; margin-bottom: 5px; }
     .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
-    .sidebar .logout { color: #E05555; }
     .main { flex: 1; margin-left: 250px; padding: 30px; }
-    .stats-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
+    h1 { font-family: 'Cormorant Garamond', serif; }
+    .stats-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
     .stat-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 20px; }
     .stat-card .label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6E6860; }
     .stat-card .value { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: #C9A96E; margin-top: 5px; }
-    h1 { font-family: 'Cormorant Garamond', serif; }
     @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
   </style>
 </head>
 <body>
-
   <div class="admin-layout">
     <aside class="sidebar">
       <div class="logo">Woodbuyy</div>
@@ -36,15 +34,13 @@
       <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
       <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
       <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
-      <a href="#" class="logout" onclick="logout()"><i class="ri-logout-box-line"></i> Logout</a>
+      <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
     </aside>
-
     <main class="main">
       <h1>Dashboard</h1>
       <div class="stats-grid" id="stats"></div>
     </main>
   </div>
-
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -54,13 +50,11 @@
       if (!user) { window.location.href = 'login.html'; return; }
       const userDoc = await db.collection('users').doc(user.uid).get();
       if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
-
       const [orders, products, customers] = await Promise.all([
         db.collection('orders').get(),
         db.collection('products').get(),
         db.collection('users').where('role', '==', 'customer').get()
       ]);
-
       document.getElementById('stats').innerHTML = `
         <div class="stat-card"><p class="label">Orders</p><p class="value">${orders.size}</p></div>
         <div class="stat-card"><p class="label">Products</p><p class="value">${products.size}</p></div>
@@ -68,12 +62,7 @@
         <div class="stat-card"><p class="label">Revenue</p><p class="value">AED 0</p></div>
       `;
     });
-
-    function logout() {
-      auth.signOut();
-      window.location.href = 'login.html';
-    }
+    function logout() { auth.signOut(); window.location.href = 'login.html'; }
   </script>
-
 </body>
 </html>
