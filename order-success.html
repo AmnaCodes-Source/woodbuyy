@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed — Woodbuyy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .success-page { padding-top: 72px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .success-card { text-align: center; max-width: 450px; padding: 40px 25px; }
+    .success-icon { font-size: 70px; color: #4CAF7D; margin-bottom: 20px; }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: #F5F0E8; margin-bottom: 10px; }
+    .success-subtitle { font-size: 15px; color: #B0A898; margin-bottom: 25px; }
+    .order-id { font-size: 18px; font-weight: 600; color: #C9A96E; margin-bottom: 25px; }
+    .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { padding: 13px 28px; background: #C9A96E; color: #0D0D0D; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; }
+    .btn-secondary { padding: 13px 28px; border: 1px solid rgba(201,169,110,0.4); color: #C9A96E; border-radius: 2px; text-decoration: none; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <main class="success-page">
+    <div class="success-card">
+      <div class="success-icon"><i class="ri-checkbox-circle-fill"></i></div>
+      <h1 class="success-title">Order Confirmed!</h1>
+      <p class="success-subtitle">Thank you for your order. We'll contact you soon to confirm delivery.</p>
+      <p class="order-id" id="order-id-display">—</p>
+      <div class="success-actions">
+        <a href="products.html" class="btn-primary">Continue Shopping</a>
+        <a href="account.html" class="btn-secondary">My Account</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('orderId');
+    if (orderId) {
+      document.getElementById('order-id-display').textContent = orderId;
+    }
+  </script>
+
+</body>
+</html>
