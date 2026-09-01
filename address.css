@@ -1,0 +1,260 @@
+/* ============================================
+   WOODBUYY — ADDRESSES PAGE STYLES
+   ============================================ */
+
+/* ---------- ADDRESSES GRID ---------- */
+.addresses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-lg);
+}
+
+.addresses-loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    color: var(--text-muted);
+}
+
+.addresses-loading i {
+    font-size: 2rem;
+    color: var(--accent);
+}
+
+/* ---------- ADDRESS CARD ---------- */
+.address-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-card);
+    padding: var(--space-lg);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.address-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-md);
+}
+
+.address-card.default {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(201, 169, 110, 0.3);
+}
+
+.address-card-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background-color: rgba(201, 169, 110, 0.1);
+    padding: 4px 10px;
+    border-radius: 2px;
+}
+
+.address-card-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.address-card-phone {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.address-card-phone i {
+    color: var(--accent);
+    font-size: 0.9375rem;
+}
+
+.address-card-detail {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: var(--space-lg);
+}
+
+/* ---------- ADDRESS CARD ACTIONS ---------- */
+.address-card-actions {
+    display: flex;
+    gap: var(--space-sm);
+    border-top: 1px solid var(--border-default);
+    padding-top: var(--space-md);
+}
+
+.address-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: none;
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+}
+
+.address-action-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.address-action-btn.delete:hover {
+    border-color: var(--error);
+    color: var(--error);
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+.address-action-btn i {
+    font-size: 0.9375rem;
+}
+
+/* ---------- EMPTY STATE ---------- */
+.addresses-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.addresses-empty i {
+    font-size: 3rem;
+    color: var(--text-muted);
+}
+
+.addresses-empty p {
+    color: var(--text-muted);
+    font-weight: 300;
+    margin: 0;
+}
+
+/* ---------- ADDRESS MODAL ---------- */
+.address-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: var(--space-lg);
+}
+
+.address-modal {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-card);
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease forwards;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.address-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.address-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.address-modal-close {
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: 1px solid var(--border-default);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.address-modal-close i {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.address-modal-close:hover {
+    border-color: var(--error);
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+.address-modal-close:hover i {
+    color: var(--error);
+}
+
+.address-form {
+    padding: var(--space-lg);
+}
+
+/* ---------- SELECT STYLING ---------- */
+.form-input select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23B0A898' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .addresses-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+    
+    .address-modal {
+        max-width: 100%;
+        margin: var(--space-sm);
+    }
+}
