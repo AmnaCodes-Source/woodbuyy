@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Addresses — Woodbuyy</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="WOODBUYY_BRAND.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="addresses.css">
+</head>
+<body>
+
+    <!-- Account Layout -->
+    <div class="account-layout">
+        
+        <!-- Sidebar -->
+        <aside class="account-sidebar">
+            <div class="account-sidebar-header">
+                <a href="index.html" class="account-logo">Woodbuyy</a>
+            </div>
+            
+            <nav class="account-nav">
+                <a href="account.html" class="account-nav-item">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="orders.html" class="account-nav-item">
+                    <i class="ri-shopping-bag-line"></i>
+                    <span>My Orders</span>
+                </a>
+                <a href="wishlist.html" class="account-nav-item">
+                    <i class="ri-heart-line"></i>
+                    <span>Wishlist</span>
+                </a>
+                <a href="addresses.html" class="account-nav-item active">
+                    <i class="ri-map-pin-line"></i>
+                    <span>Addresses</span>
+                </a>
+                <a href="profile.html" class="account-nav-item">
+                    <i class="ri-user-settings-line"></i>
+                    <span>Profile Settings</span>
+                </a>
+            </nav>
+            
+            <div class="account-sidebar-footer">
+                <a href="index.html" class="account-nav-item">
+                    <i class="ri-store-2-line"></i>
+                    <span>Continue Shopping</span>
+                </a>
+                <button class="account-nav-item logout-btn" id="logoutBtn">
+                    <i class="ri-logout-box-line"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="account-main">
+            
+            <!-- Top Bar -->
+            <div class="account-topbar">
+                <h1 class="account-page-title">My Addresses</h1>
+                <button class="btn btn-primary btn-sm" id="addAddressBtn">
+                    <i class="ri-add-line"></i> Add Address
+                </button>
+            </div>
+            
+            <!-- Addresses Grid -->
+            <div id="addressesGrid" class="addresses-grid">
+                <!-- Addresses will be loaded here -->
+                <div class="addresses-loading">
+                    <i class="ri-loader-4-line ri-spin"></i>
+                    <span>Loading addresses...</span>
+                </div>
+            </div>
+            
+        </main>
+        
+    </div>
+
+    <!-- Address Modal -->
+    <div class="address-modal-overlay" id="addressModal" style="display:none;">
+        <div class="address-modal">
+            <div class="address-modal-header">
+                <h3 class="address-modal-title" id="addressModalTitle">Add Address</h3>
+                <button class="address-modal-close" id="addressModalClose">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <form id="addressForm" class="address-form" novalidate>
+                <input type="hidden" id="addressId">
+                
+                <div class="form-group">
+                    <label for="addressFullName" class="form-label">Full Name</label>
+                    <div class="form-input-wrapper">
+                        <i class="ri-user-line"></i>
+                        <input type="text" id="addressFullName" class="form-input" placeholder="John Doe" required>
+                    </div>
+                    <span class="form-error" id="addressFullNameError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="addressPhone" class="form-label">Phone Number</label>
+                    <div class="form-input-wrapper">
+                        <i class="ri-phone-line"></i>
+                        <input type="tel" id="addressPhone" class="form-input" placeholder="+971 5X XXX XXXX" required>
+                    </div>
+                    <span class="form-error" id="addressPhoneError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="addressLine1" class="form-label">Address Line 1</label>
+                    <div class="form-input-wrapper">
+                        <i class="ri-map-pin-line"></i>
+                        <input type="text" id="addressLine1" class="form-input" placeholder="Street, Building, Apartment" required>
+                    </div>
+                    <span class="form-error" id="addressLine1Error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="addressCity" class="form-label">City</label>
+                    <div class="form-input-wrapper">
+                        <i class="ri-building-line"></i>
+                        <input type="text" id="addressCity" class="form-input" placeholder="Dubai" required>
+                    </div>
+                    <span class="form-error" id="addressCityError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="addressEmirate" class="form-label">Emirate</label>
+                    <div class="form-input-wrapper">
+                        <i class="ri-flag-line"></i>
+                        <select id="addressEmirate" class="form-input" required>
+                            <option value="">Select Emirate</option>
+                            <option value="Dubai">Dubai</option>
+                            <option value="Abu Dhabi">Abu Dhabi</option>
+                            <option value="Sharjah">Sharjah</option>
+                            <option value="Ajman">Ajman</option>
+                            <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                            <option value="Fujairah">Fujairah</option>
+                            <option value="Umm Al Quwain">Umm Al Quwain</option>
+                        </select>
+                    </div>
+                    <span class="form-error" id="addressEmirateError"></span>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="addressIsDefault">
+                        <span>Set as default address</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block" id="addressSubmitBtn">
+                    Save Address
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="ui.js"></script>
+    <script src="auth.js"></script>
+    <script src="addresses.js"></script>
+</body>
+</html>
