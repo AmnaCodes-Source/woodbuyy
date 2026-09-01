@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders — Woodbuyy Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background: #141414; border-right: 1px solid #2E2E2E; padding: 20px; position: fixed; top: 0; bottom: 0; }
+    .sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
+    .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
+    .sidebar a { display: flex; align-items: center; gap: 10px; padding: 12px; color: #B0A898; text-decoration: none; font-size: 14px; border-radius: 4px; margin-bottom: 5px; }
+    .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
+    .main { flex: 1; margin-left: 250px; padding: 30px; }
+    h1 { font-family: 'Cormorant Garamond', serif; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #2E2E2E; font-size: 14px; }
+    th { color: #6E6860; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    td { color: #B0A898; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="logo">Woodbuyy</div>
+      <div class="tag">Admin Panel</div>
+      <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
+      <a href="products.html"><i class="ri-file-list-3-line"></i> Products</a>
+      <a href="orders.html" class="active"><i class="ri-shopping-bag-line"></i> Orders</a>
+      <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
+      <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
+      <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
+    </aside>
+
+    <main class="main">
+      <h1>Orders</h1>
+      <table>
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody id="orders-tbody"></tbody>
+      </table>
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script>
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      const userDoc = await db.collection('users').doc(user.uid).get();
+      if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
+
+      const snap = await db.collection('orders').orderBy('createdAt', 'desc').limit(50).get();
+      const tbody = document.getElementById('orders-tbody');
+
+      if (snap.empty) {
+        tbody.innerHTML = '<tr><td colspan="4">No orders yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = snap.docs.map(doc => {
+        const o = doc.data();
+        return `<tr><td>${doc.id}</td><td>${o.customerName}</td><td>AED ${((o.total) / 100).toFixed(2)}</td><td>${o.status}</td></tr>`;
+      }).join('');
+    });
+  </script>
+
+</body>
+</html>
