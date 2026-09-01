@@ -4,310 +4,267 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Woodbuyy — Luxury Furniture UAE</title>
-  <meta name="description" content="Woodbuyy — Premium furniture store in UAE. Sofas, beds, tables, chairs, wardrobes and more. Cash on delivery.">
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
-  <link rel="stylesheet" href="/css/components.css">
-  <link rel="stylesheet" href="/css/pages/home.css">
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(rgba(13,13,13,0.75), rgba(13,13,13,0.9)), url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600');
+      background-size: cover;
+      background-position: center;
+      padding-top: var(--navbar-height);
+      text-align: center;
+    }
+    .hero__content {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: var(--space-20) var(--space-6);
+    }
+    .hero__eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #C9A96E;
+      margin-bottom: 20px;
+    }
+    .hero__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 50px;
+      font-weight: 700;
+      font-style: italic;
+      color: #F5F0E8;
+      margin-bottom: 25px;
+      line-height: 1.15;
+    }
+    .hero__subtitle {
+      font-size: 17px;
+      color: #B0A898;
+      margin-bottom: 35px;
+      line-height: 1.7;
+    }
+    .hero__actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 30px;
+      height: 50px;
+      border-radius: 2px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn--primary {
+      background: #C9A96E;
+      color: #0D0D0D;
+      border: 1px solid #C9A96E;
+    }
+    .btn--secondary {
+      background: transparent;
+      color: #C9A96E;
+      border: 1px solid rgba(201,169,110,0.4);
+    }
+    .section {
+      padding: 80px 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 25px;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .section-eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #C9A96E;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: #F5F0E8;
+    }
+    .usp-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+      text-align: center;
+    }
+    .usp-item i {
+      font-size: 32px;
+      color: #C9A96E;
+      margin-bottom: 10px;
+    }
+    .usp-item__title {
+      font-size: 15px;
+      font-weight: 500;
+      color: #F5F0E8;
+      margin-bottom: 5px;
+    }
+    .usp-item__text {
+      font-size: 13px;
+      color: #6E6860;
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .category-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      text-decoration: none;
+    }
+    .category-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .category-card__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,0.85), transparent);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+    }
+    .category-card__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: #F5F0E8;
+    }
+    .footer {
+      background: #141414;
+      border-top: 1px solid #242424;
+      padding: 50px 0 30px;
+      text-align: center;
+    }
+    .footer__brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+      font-style: italic;
+      color: #F5F0E8;
+      margin-bottom: 10px;
+    }
+    .footer__tagline {
+      font-size: 13px;
+      color: #6E6860;
+      margin-bottom: 15px;
+    }
+    .footer__copyright {
+      font-size: 13px;
+      color: #6E6860;
+    }
+    @media (min-width: 768px) {
+      .usp-grid { grid-template-columns: repeat(2, 1fr); }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .usp-grid { grid-template-columns: repeat(4, 1fr); }
+      .categories-grid { grid-template-columns: repeat(4, 1fr); }
+      .hero__title { font-size: 65px; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ========== NAVBAR ========== -->
   <header class="navbar">
-    <div class="container">
-      <div class="navbar__inner">
-        <button class="navbar__menu-btn navbar__action-btn" id="mobileMenuBtn" aria-label="Open menu">
-          <i class="ri-menu-line"></i>
-        </button>
-        
-        <a href="/" class="navbar__logo">Woodbuyy</a>
-        
-        <nav class="navbar__links">
-          <a href="/" class="navbar__link">Home</a>
-          <a href="/products.html" class="navbar__link">Products</a>
-          <a href="/categories.html" class="navbar__link">Categories</a>
-          <a href="/about.html" class="navbar__link">About</a>
-          <a href="/contact.html" class="navbar__link">Contact</a>
-        </nav>
-        
-        <div class="navbar__actions">
-          <button class="navbar__action-btn" aria-label="Search">
-            <i class="ri-search-line"></i>
-          </button>
-          <button class="navbar__action-btn" aria-label="Wishlist">
-            <i class="ri-heart-line"></i>
-          </button>
-          <button class="navbar__action-btn" aria-label="Cart" id="cartBtn">
-            <i class="ri-shopping-bag-line"></i>
-            <span class="navbar__cart-count" id="cartCount" style="display:none;">0</span>
-          </button>
-          <a href="/login.html" class="navbar__action-btn" aria-label="Account">
-            <i class="ri-user-line"></i>
-          </a>
-        </div>
+    <div class="container navbar__inner">
+      <button class="navbar__toggle" id="navbar-toggle"><i class="ri-menu-line"></i></button>
+      <a href="index.html" class="navbar__logo">Woodbuyy</a>
+      <nav class="navbar__nav">
+        <a href="products.html" class="navbar__link">Shop All</a>
+        <a href="categories.html" class="navbar__link">Categories</a>
+        <a href="about.html" class="navbar__link">About</a>
+        <a href="contact.html" class="navbar__link">Contact</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="account-wishlist.html" class="navbar__icon"><i class="ri-heart-line"></i></a>
+        <a href="cart.html" class="navbar__icon"><i class="ri-shopping-bag-line"></i><span class="navbar__badge hidden" id="cart-count">0</span></a>
+        <a href="account.html" class="navbar__icon"><i class="ri-user-line"></i></a>
       </div>
     </div>
   </header>
 
-  <!-- ========== MOBILE MENU ========== -->
-  <div class="mobile-menu" id="mobileMenu">
-    <div class="mobile-menu__header">
-      <span class="navbar__logo">Woodbuyy</span>
-      <button class="navbar__action-btn" id="mobileMenuClose" aria-label="Close menu">
-        <i class="ri-close-line"></i>
-      </button>
+  <section class="hero">
+    <div class="hero__content">
+      <p class="hero__eyebrow">Luxury Furniture for UAE Homes</p>
+      <h1 class="hero__title">Crafted Comfort, Delivered to Your Door</h1>
+      <p class="hero__subtitle">Premium sofas, beds, tables and wardrobes — handpicked for modern living. Cash on delivery across all Emirates.</p>
+      <div class="hero__actions">
+        <a href="products.html" class="btn btn--primary">Shop Collection</a>
+        <a href="categories.html" class="btn btn--secondary">Browse Categories</a>
+      </div>
     </div>
-    <nav class="mobile-menu__links">
-      <a href="/" class="mobile-menu__link">Home</a>
-      <a href="/products.html" class="mobile-menu__link">Products</a>
-      <a href="/categories.html" class="mobile-menu__link">Categories</a>
-      <a href="/about.html" class="mobile-menu__link">About</a>
-      <a href="/contact.html" class="mobile-menu__link">Contact</a>
-      <a href="/login.html" class="mobile-menu__link">Login / Register</a>
-    </nav>
-    <div class="mobile-menu__footer">
-      <p class="body-base text-muted">Luxury furniture for UAE homes</p>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="usp-grid">
+        <div class="usp-item"><i class="ri-cash-line"></i><p class="usp-item__title">Cash on Delivery</p><p class="usp-item__text">Pay when furniture arrives</p></div>
+        <div class="usp-item"><i class="ri-truck-line"></i><p class="usp-item__title">UAE-Wide Delivery</p><p class="usp-item__text">All 7 Emirates covered</p></div>
+        <div class="usp-item"><i class="ri-shield-check-line"></i><p class="usp-item__title">Quality Guaranteed</p><p class="usp-item__text">Premium materials</p></div>
+        <div class="usp-item"><i class="ri-phone-line"></i><p class="usp-item__title">Support 7 Days</p><p class="usp-item__text">We're here to help</p></div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- ========== MAIN CONTENT ========== -->
-  <main>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero__bg"></div>
-      <div class="container">
-        <div class="hero__content">
-          <p class="hero__eyebrow">Luxury Furniture Collection</p>
-          <h1 class="hero__title">Crafted for Elegant Living</h1>
-          <p class="hero__subtitle">
-            Discover premium furniture for every room — sofas, beds, tables, 
-            wardrobes and more. Delivered across UAE with cash on delivery.
-          </p>
-          <div class="hero__actions">
-            <a href="/products.html" class="btn btn--primary btn--lg">
-              Shop Collection
-              <i class="ri-arrow-right-line"></i>
-            </a>
-            <a href="/categories.html" class="btn btn--secondary btn--lg">
-              Browse Categories
-            </a>
-          </div>
-        </div>
+  <section class="section" style="background:#141414;">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Curated Selection</p>
+        <h2 class="section-title">Shop by Category</h2>
       </div>
-    </section>
-
-    <!-- VALUE PROPOSITIONS -->
-    <section class="section">
-      <div class="container">
-        <div class="values-grid">
-          <div class="value-card">
-            <i class="ri-truck-line value-card__icon"></i>
-            <h3 class="value-card__title">UAE Wide Delivery</h3>
-            <p class="value-card__text">
-              Fast and reliable delivery across all 7 emirates.
-            </p>
-          </div>
-          <div class="value-card">
-            <i class="ri-cash-line value-card__icon"></i>
-            <h3 class="value-card__title">Cash on Delivery</h3>
-            <p class="value-card__text">
-              Pay only when your furniture arrives at your doorstep.
-            </p>
-          </div>
-          <div class="value-card">
-            <i class="ri-shield-check-line value-card__icon"></i>
-            <h3 class="value-card__title">Quality Guaranteed</h3>
-            <p class="value-card__text">
-              Premium materials and craftsmanship in every piece.
-            </p>
-          </div>
-        </div>
+      <div class="categories-grid">
+        <a href="category.html?slug=sofas" class="category-card">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600" alt="Sofas">
+          <div class="category-card__overlay"><p class="category-card__title">Sofas</p></div>
+        </a>
+        <a href="category.html?slug=beds" class="category-card">
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600" alt="Beds">
+          <div class="category-card__overlay"><p class="category-card__title">Beds</p></div>
+        </a>
+        <a href="category.html?slug=tables" class="category-card">
+          <img src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=600" alt="Tables">
+          <div class="category-card__overlay"><p class="category-card__title">Tables</p></div>
+        </a>
+        <a href="category.html?slug=wardrobes" class="category-card">
+          <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600" alt="Wardrobes">
+          <div class="category-card__overlay"><p class="category-card__title">Wardrobes</p></div>
+        </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CATEGORIES -->
-    <section class="section section--alt">
-      <div class="container">
-        <div class="section-header section-header--center">
-          <p class="section-eyebrow">Shop by Category</p>
-          <h2 class="section-title">Find Your Perfect Piece</h2>
-          <p class="section-subtitle">
-            From living room to bedroom — explore our curated furniture collections.
-          </p>
-        </div>
-        
-        <div class="categories-grid" id="categoriesGrid">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-image"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURED PRODUCTS -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header section-header--center">
-          <p class="section-eyebrow">Featured Collection</p>
-          <h2 class="section-title">Most Loved Pieces</h2>
-          <p class="section-subtitle">
-            Handpicked furniture that our customers adore.
-          </p>
-        </div>
-        
-        <div class="products-grid" id="featuredGrid">
-        </div>
-        
-        <div style="text-align:center; margin-top: var(--space-12);">
-          <a href="/products.html" class="btn btn--secondary">
-            View All Products
-            <i class="ri-arrow-right-line"></i>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="section">
-      <div class="container">
-        <div class="cta-section">
-          <h2 class="cta-section__title">Need Custom Furniture?</h2>
-          <p class="cta-section__text">
-            We craft bespoke furniture tailored to your space and style. 
-            Get in touch for a custom quote.
-          </p>
-          <a href="/contact.html" class="btn btn--primary">
-            Request a Quote
-            <i class="ri-arrow-right-line"></i>
-          </a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ========== FOOTER ========== -->
   <footer class="footer">
     <div class="container">
-      <div class="footer__grid">
-        <div>
-          <h3 class="footer__brand-name">Woodbuyy</h3>
-          <p class="footer__brand-desc">
-            Premium furniture for UAE homes. Crafted with care, delivered with trust.
-          </p>
-        </div>
-        <div>
-          <h4 class="footer__heading">Shop</h4>
-          <div class="footer__links">
-            <a href="/products.html" class="footer__link">All Products</a>
-            <a href="/categories.html" class="footer__link">Categories</a>
-            <a href="/products.html?featured=true" class="footer__link">Featured</a>
-          </div>
-        </div>
-        <div>
-          <h4 class="footer__heading">Company</h4>
-          <div class="footer__links">
-            <a href="/about.html" class="footer__link">About Us</a>
-            <a href="/contact.html" class="footer__link">Contact</a>
-            <a href="/faq.html" class="footer__link">FAQ</a>
-          </div>
-        </div>
-        <div>
-          <h4 class="footer__heading">Support</h4>
-          <div class="footer__links">
-            <a href="/shipping.html" class="footer__link">Shipping Policy</a>
-            <a href="/terms.html" class="footer__link">Terms & Conditions</a>
-            <a href="/privacy.html" class="footer__link">Privacy Policy</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer__bottom">
-        <p class="footer__copyright">
-          © 2026 Woodbuyy. All rights reserved.
-        </p>
-        <div class="footer__bottom-links">
-          <a href="/terms.html" class="footer__bottom-link">Terms</a>
-          <a href="/privacy.html" class="footer__bottom-link">Privacy</a>
-        </div>
-      </div>
+      <p class="footer__brand">Woodbuyy</p>
+      <p class="footer__tagline">Luxury furniture for the modern UAE home.</p>
+      <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
     </div>
   </footer>
-
-  <!-- Toast Container -->
-  <div id="toast-container"></div>
-
-  <!-- JS -->
-  <script type="module" src="/js/firebase-config.js"></script>
-  <script type="module" src="/js/ui.js"></script>
-  <script type="module" src="/js/products.js"></script>
-  
-  <script type="module">
-    import { fetchProducts, fetchCategories, renderProducts } from '/js/products.js';
-    import { renderSkeletons, handleError } from '/js/ui.js';
-
-    const menuBtn = document.getElementById('mobileMenuBtn');
-    const menuClose = document.getElementById('mobileMenuClose');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    menuBtn?.addEventListener('click', () => mobileMenu?.classList.add('is-open'));
-    menuClose?.addEventListener('click', () => mobileMenu?.classList.remove('is-open'));
-
-    async function loadFeatured() {
-      const grid = document.getElementById('featuredGrid');
-      if (!grid) return;
-      
-      renderSkeletons(grid, 4);
-      
-      try {
-        const { products } = await fetchProducts({ featured: true });
-        renderProducts(grid, products.slice(0, 4));
-      } catch (error) {
-        handleError(error, 'Failed to load featured products.');
-        grid.innerHTML = '';
-      }
-    }
-
-    async function loadCategories() {
-      const grid = document.getElementById('categoriesGrid');
-      if (!grid) return;
-      
-      try {
-        const categories = await fetchCategories(1);
-        if (categories.length === 0) {
-          grid.innerHTML = '<p class="body-base text-muted">Categories coming soon.</p>';
-          return;
-        }
-        
-        grid.innerHTML = categories.slice(0, 4).map(cat => `
-          <a href="/category.html?slug=${cat.slug}" class="category-tile">
-            <img class="category-tile__image" src="${cat.image || '/assets/images/placeholder.jpg'}" alt="${cat.name}" loading="lazy">
-            <div class="category-tile__overlay">
-              <div>
-                <h3 class="category-tile__name">${cat.name}</h3>
-              </div>
-            </div>
-          </a>
-        `).join('');
-      } catch (error) {
-        handleError(error, 'Failed to load categories.');
-        grid.innerHTML = '';
-      }
-    }
-
-    loadFeatured();
-    loadCategories();
-  </script>
 
 </body>
 </html>
