@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — Woodbuyy</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="WOODBUYY_BRAND.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="account.css">
+</head>
+<body>
+
+    <!-- Account Layout -->
+    <div class="account-layout">
+        
+        <!-- Sidebar -->
+        <aside class="account-sidebar">
+            <div class="account-sidebar-header">
+                <a href="index.html" class="account-logo">Woodbuyy</a>
+            </div>
+            
+            <nav class="account-nav">
+                <a href="account.html" class="account-nav-item active">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="orders.html" class="account-nav-item">
+                    <i class="ri-shopping-bag-line"></i>
+                    <span>My Orders</span>
+                </a>
+                <a href="wishlist.html" class="account-nav-item">
+                    <i class="ri-heart-line"></i>
+                    <span>Wishlist</span>
+                </a>
+                <a href="addresses.html" class="account-nav-item">
+                    <i class="ri-map-pin-line"></i>
+                    <span>Addresses</span>
+                </a>
+                <a href="profile.html" class="account-nav-item">
+                    <i class="ri-user-settings-line"></i>
+                    <span>Profile Settings</span>
+                </a>
+            </nav>
+            
+            <div class="account-sidebar-footer">
+                <a href="index.html" class="account-nav-item">
+                    <i class="ri-store-2-line"></i>
+                    <span>Continue Shopping</span>
+                </a>
+                <button class="account-nav-item logout-btn" id="logoutBtn">
+                    <i class="ri-logout-box-line"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="account-main">
+            
+            <!-- Top Bar -->
+            <div class="account-topbar">
+                <h1 class="account-page-title">Dashboard</h1>
+                <div class="account-topbar-actions">
+                    <a href="cart.html" class="btn btn-outline btn-sm">
+                        <i class="ri-shopping-cart-line"></i> Cart
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Welcome Section -->
+            <div class="account-welcome">
+                <div class="account-welcome-text">
+                    <h2 id="welcomeMessage">Welcome!</h2>
+                    <p>Manage your orders, wishlist, and profile from your dashboard.</p>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="account-stats">
+                <div class="account-stat-card">
+                    <div class="account-stat-icon">
+                        <i class="ri-shopping-bag-line"></i>
+                    </div>
+                    <div class="account-stat-info">
+                        <span class="account-stat-value" id="totalOrders">0</span>
+                        <span class="account-stat-label">Total Orders</span>
+                    </div>
+                </div>
+                
+                <div class="account-stat-card">
+                    <div class="account-stat-icon">
+                        <i class="ri-heart-line"></i>
+                    </div>
+                    <div class="account-stat-info">
+                        <span class="account-stat-value" id="wishlistCount">0</span>
+                        <span class="account-stat-label">Wishlist Items</span>
+                    </div>
+                </div>
+                
+                <div class="account-stat-card">
+                    <div class="account-stat-icon">
+                        <i class="ri-map-pin-line"></i>
+                    </div>
+                    <div class="account-stat-info">
+                        <span class="account-stat-value" id="addressCount">0</span>
+                        <span class="account-stat-label">Saved Addresses</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Orders -->
+            <div class="account-section">
+                <div class="account-section-header">
+                    <h3 class="account-section-title">Recent Orders</h3>
+                    <a href="orders.html" class="account-section-link">View All <i class="ri-arrow-right-line"></i></a>
+                </div>
+                
+                <div id="recentOrders" class="account-orders-list">
+                    <!-- Orders will be loaded here -->
+                    <div class="account-empty">
+                        <i class="ri-shopping-bag-line"></i>
+                        <p>No orders yet</p>
+                        <a href="index.html" class="btn btn-primary btn-sm">Start Shopping</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="ui.js"></script>
+    <script src="auth.js"></script>
+    <script src="account.js"></script>
+</body>
+</html>
