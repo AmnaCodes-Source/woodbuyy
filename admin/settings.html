@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Woodbuyy Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background: #141414; border-right: 1px solid #2E2E2E; padding: 20px; position: fixed; top: 0; bottom: 0; }
+    .sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
+    .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
+    .sidebar a { display: flex; align-items: center; gap: 10px; padding: 12px; color: #B0A898; text-decoration: none; font-size: 14px; border-radius: 4px; margin-bottom: 5px; }
+    .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
+    .main { flex: 1; margin-left: 250px; padding: 30px; }
+    h1 { font-family: 'Cormorant Garamond', serif; }
+    .form-group { margin-bottom: 15px; max-width: 400px; }
+    label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6E6860; margin-bottom: 6px; }
+    input { width: 100%; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; padding: 10px 12px; font-size: 14px; outline: none; }
+    .btn-primary { padding: 13px 28px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="logo">Woodbuyy</div>
+      <div class="tag">Admin Panel</div>
+      <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
+      <a href="products.html"><i class="ri-file-list-3-line"></i> Products</a>
+      <a href="orders.html"><i class="ri-shopping-bag-line"></i> Orders</a>
+      <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
+      <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
+      <a href="settings.html" class="active"><i class="ri-settings-line"></i> Settings</a>
+      <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
+    </aside>
+    <main class="main">
+      <h1>Settings</h1>
+      <form id="settings-form">
+        <div class="form-group"><label>VAT Rate (%)</label><input type="number" id="vat" step="0.01" value="5"></div>
+        <div class="form-group"><label>Shipping — Dubai (AED)</label><input type="number" id="dubai" step="0.01" value="50"></div>
+        <div class="form-group"><label>Shipping — Abu Dhabi (AED)</label><input type="number" id="abudhabi" step="0.01" value="75"></div>
+        <div class="form-group"><label>Shipping — Sharjah/Ajman (AED)</label><input type="number" id="sharjah" step="0.01" value="60"></div>
+        <div class="form-group"><label>Shipping — RAK/Fujairah (AED)</label><input type="number" id="rak" step="0.01" value="90"></div>
+        <div class="form-group"><label>Shipping — UAQ (AED)</label><input type="number" id="uaq" step="0.01" value="80"></div>
+        <div class="form-group"><label>Free Shipping Threshold (AED)</label><input type="number" id="threshold" step="0.01" value="2000"></div>
+        <button type="submit" class="btn-primary">Save Settings</button>
+      </form>
+    </main>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script>
+    document.getElementById('settings-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      await db.collection('settings').doc('global').set({
+        vatRate: parseFloat(document.getElementById('vat').value) / 100,
+        shippingRates: {
+          'Dubai': Math.round(parseFloat(document.getElementById('dubai').value) * 100),
+          'Abu Dhabi': Math.round(parseFloat(document.getElementById('abudhabi').value) * 100),
+          'Sharjah': Math.round(parseFloat(document.getElementById('sharjah').value) * 100),
+          'Ajman': Math.round(parseFloat(document.getElementById('sharjah').value) * 100),
+          'Ras Al Khaimah': Math.round(parseFloat(document.getElementById('rak').value) * 100),
+          'Fujairah': Math.round(parseFloat(document.getElementById('rak').value) * 100),
+          'Umm Al Quwain': Math.round(parseFloat(document.getElementById('uaq').value) * 100)
+        },
+        freeShippingThreshold: Math.round(parseFloat(document.getElementById('threshold').value) * 100),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      alert('Settings saved!');
+    });
+    function logout() { auth.signOut(); window.location.href = 'login.html'; }
+  </script>
+</body>
+</html>
