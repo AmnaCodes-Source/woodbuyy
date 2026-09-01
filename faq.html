@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — Woodbuyy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .faq-page { padding-top: 72px; min-height: 100vh; }
+    .faq-content { max-width: 700px; margin: 0 auto; padding: 50px 20px; }
+    .faq-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: #F5F0E8; margin-bottom: 30px; text-align: center; }
+    .faq-item { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; margin-bottom: 12px; overflow: hidden; }
+    .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; font-size: 15px; font-weight: 500; color: #F5F0E8; cursor: pointer; background: none; border: none; text-align: left; }
+    .faq-a { display: none; padding: 0 20px 18px; font-size: 14px; color: #B0A898; line-height: 1.7; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-q i { transform: rotate(180deg); }
+    .faq-q i { transition: transform 0.2s; color: #C9A96E; }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <button class="navbar__toggle"><i class="ri-menu-line"></i></button>
+      <a href="index.html" class="navbar__logo">Woodbuyy</a>
+      <nav class="navbar__nav">
+        <a href="products.html" class="navbar__link">Shop All</a>
+        <a href="categories.html" class="navbar__link">Categories</a>
+        <a href="contact.html" class="navbar__link">Contact</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="cart.html" class="navbar__icon"><i class="ri-shopping-bag-line"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="faq-page">
+    <div class="faq-content">
+      <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#C9A96E;text-align:center;">Help Center</p>
+      <h1 class="faq-title">Frequently Asked Questions</h1>
+
+      <div class="faq-item">
+        <button class="faq-q">How does Cash on Delivery work? <i class="ri-arrow-down-s-line"></i></button>
+        <div class="faq-a">Simply place your order online. When our delivery team arrives with your furniture, pay the full amount in cash. No advance payment needed.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Which areas do you deliver to? <i class="ri-arrow-down-s-line"></i></button>
+        <div class="faq-a">We deliver to all 7 Emirates — Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah and Umm Al Quwain.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How long does delivery take? <i class="ri-arrow-down-s-line"></i></button>
+        <div class="faq-a">Delivery typically takes 3-7 working days depending on your location. We'll call to confirm before delivery.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is VAT included in the price? <i class="ri-arrow-down-s-line"></i></button>
+        <div class="faq-a">Yes, 5% UAE VAT is calculated and shown at checkout.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I cancel my order? <i class="ri-arrow-down-s-line"></i></button>
+        <div class="faq-a">You can cancel your order while it's in pending or confirmed status. Contact us to cancel.</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
