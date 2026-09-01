@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category — Woodbuyy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .category-page { padding-top: 72px; min-height: 100vh; }
+    .category-header { padding: 40px 0 20px; text-align: center; }
+    .products-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px 0 60px; }
+    .product-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; overflow: hidden; text-decoration: none; display: block; }
+    .product-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+    .product-card__body { padding: 18px; }
+    .product-card__name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: #F5F0E8; margin-bottom: 8px; }
+    .product-card__price { font-size: 16px; font-weight: 500; color: #C9A96E; }
+    @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1280px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <button class="navbar__toggle"><i class="ri-menu-line"></i></button>
+      <a href="index.html" class="navbar__logo">Woodbuyy</a>
+      <nav class="navbar__nav">
+        <a href="products.html" class="navbar__link">Shop All</a>
+        <a href="categories.html" class="navbar__link">Categories</a>
+        <a href="about.html" class="navbar__link">About</a>
+        <a href="contact.html" class="navbar__link">Contact</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="account-wishlist.html" class="navbar__icon"><i class="ri-heart-line"></i></a>
+        <a href="cart.html" class="navbar__icon"><i class="ri-shopping-bag-line"></i><span class="navbar__badge hidden" id="cart-count">0</span></a>
+        <a href="account.html" class="navbar__icon"><i class="ri-user-line"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="category-page">
+    <div class="container">
+      <div class="category-header">
+        <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#C9A96E;">Collection</p>
+        <h1 id="category-title" style="font-family:'Cormorant Garamond',serif;font-size:36px;color:#F5F0E8;margin-top:10px;">Loading...</h1>
+      </div>
+      <div class="products-grid" id="products-grid"></div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    const grid = document.getElementById('products-grid');
+
+    async function loadCategory() {
+      if (!slug) {
+        window.location.href = 'categories.html';
+        return;
+      }
+
+      try {
+        const catSnap = await db.collection('categories').where('slug', '==', slug).limit(1).get();
+        if (catSnap.empty) {
+          document.getElementById('category-title').textContent = 'Category Not Found';
+          return;
+        }
+        const category = catSnap.docs[0].data();
+        document.getElementById('category-title').textContent = category.name;
+
+        const prodSnap = await db.collection('products').where('isActive', '==', true).where('categorySlug', '==', slug).limit(20).get();
+
+        if (prodSnap.empty) {
+          grid.innerHTML = '<p style="text-align:center;color:#6E6860;padding:60px 0;">No products in this category yet.</p>';
+          return;
+        }
+
+        grid.innerHTML = prodSnap.docs.map(doc => {
+          const p = doc.data();
+          const img = p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
+          const price = p.salePrice || p.price;
+          return `
+            <a href="product.html?id=${doc.id}" class="product-card">
+              <img src="${img}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600'">
+              <div class="product-card__body">
+                <p class="product-card__name">${p.name}</p>
+                <p class="product-card__price">AED ${(price / 100).toFixed(2)}</p>
+              </div>
+            </a>
+          `;
+        }).join('');
+      } catch (err) {
+        grid.innerHTML = '<p style="text-align:center;color:#E05555;">Failed to load.</p>';
+      }
+    }
+
+    loadCategory();
+  </script>
+
+</body>
+</html>
