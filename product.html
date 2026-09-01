@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — Woodbuyy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .product-page { padding-top: 72px; min-height: 100vh; }
+    .product-detail { max-width: 1000px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr; gap: 30px; }
+    .product-image { border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info h1 { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: #F5F0E8; margin-bottom: 12px; }
+    .product-price { font-size: 28px; font-weight: 600; color: #C9A96E; margin-bottom: 15px; }
+    .product-desc { font-size: 15px; color: #B0A898; line-height: 1.7; margin-bottom: 25px; }
+    .qty-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .qty-selector button { width: 36px; height: 36px; background: #141414; border: 1px solid #2E2E2E; color: #F5F0E8; border-radius: 4px; cursor: pointer; font-size: 18px; }
+    .qty-selector span { font-size: 18px; color: #F5F0E8; min-width: 30px; text-align: center; }
+    .btn-add { width: 100%; height: 50px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    @media (min-width: 768px) { .product-detail { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <button class="navbar__toggle"><i class="ri-menu-line"></i></button>
+      <a href="index.html" class="navbar__logo">Woodbuyy</a>
+      <nav class="navbar__nav">
+        <a href="products.html" class="navbar__link">Shop All</a>
+        <a href="categories.html" class="navbar__link">Categories</a>
+        <a href="contact.html" class="navbar__link">Contact</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="cart.html" class="navbar__icon"><i class="ri-shopping-bag-line"></i><span class="navbar__badge hidden" id="cart-count">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="product-page">
+    <div class="product-detail" id="product-detail">
+      <!-- Load hoga -->
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+    let qty = 1;
+    let currentProduct = null;
+
+    async function loadProduct() {
+      if (!productId) {
+        window.location.href = 'products.html';
+        return;
+      }
+
+      try {
+        const doc = await db.collection('products').doc(productId).get();
+        if (!doc.exists) {
+          document.getElementById('product-detail').innerHTML = '<p style="text-align:center;color:#6E6860;padding:60px;">Product not found.</p>';
+          return;
+        }
+
+        currentProduct = { id: doc.id, ...doc.data() };
+        const p = currentProduct;
+        const img = p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800';
+        const price = p.salePrice || p.price;
+
+        document.getElementById('product-detail').innerHTML = `
+          <div class="product-image">
+            <img src="${img}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800'">
+          </div>
+          <div class="product-info">
+            <h1>${p.name}</h1>
+            <p class="product-price">AED ${(price / 100).toFixed(2)}</p>
+            <p class="product-desc">${p.description || 'Premium quality furniture for your home.'}</p>
+            <div class="qty-selector">
+              <button onclick="changeQty(-1)">-</button>
+              <span id="qty-display">1</span>
+              <button onclick="changeQty(1)">+</button>
+            </div>
+            <button class="btn-add" onclick="addToCart()">Add to Cart</button>
+          </div>
+        `;
+      } catch (err) {
+        document.getElementById('product-detail').innerHTML = '<p style="text-align:center;color:#E05555;">Failed to load.</p>';
+      }
+    }
+
+    window.changeQty = (delta) => {
+      qty = Math.max(1, qty + delta);
+      document.getElementById('qty-display').textContent = qty;
+    };
+
+    window.addToCart = () => {
+      const cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+      const existing = cart.find(i => i.productId === currentProduct.id);
+      if (existing) {
+        existing.quantity += qty;
+      } else {
+        cart.push({
+          productId: currentProduct.id,
+          name: currentProduct.name,
+          price: currentProduct.price,
+          salePrice: currentProduct.salePrice || null,
+          quantity: qty,
+          image: currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images[0] : ''
+        });
+      }
+      localStorage.setItem('wb_cart', JSON.stringify(cart));
+      alert('Added to cart!');
+    };
+
+    loadProduct();
+  </script>
+
+</body>
+</html>
