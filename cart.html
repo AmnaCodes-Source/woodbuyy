@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Woodbuyy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .cart-page { padding-top: 72px; min-height: 100vh; }
+    .cart-header { padding: 40px 0 20px; text-align: center; }
+    .cart-layout { display: grid; grid-template-columns: 1fr; gap: 25px; padding-bottom: 60px; }
+    .cart-items { display: flex; flex-direction: column; gap: 15px; }
+    .cart-item { display: flex; align-items: center; gap: 15px; background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 15px; }
+    .cart-item img { width: 70px; height: 70px; border-radius: 4px; object-fit: cover; }
+    .cart-item__info { flex: 1; }
+    .cart-item__name { font-size: 15px; color: #F5F0E8; margin-bottom: 4px; }
+    .cart-item__price { font-size: 14px; color: #C9A96E; }
+    .cart-item__qty { display: flex; align-items: center; gap: 10px; }
+    .cart-item__qty button { width: 30px; height: 30px; background: #141414; border: 1px solid #2E2E2E; color: #F5F0E8; border-radius: 4px; cursor: pointer; }
+    .cart-item__remove { background: none; border: none; color: #E05555; font-size: 20px; cursor: pointer; }
+    .cart-summary { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 25px; height: fit-content; }
+    .cart-summary__row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; color: #B0A898; }
+    .cart-summary__row--total { border-top: 1px solid #2E2E2E; margin-top: 10px; padding-top: 15px; font-size: 18px; font-weight: 600; color: #F5F0E8; }
+    @media (min-width: 1024px) { .cart-layout { grid-template-columns: 1fr 350px; } }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <button class="navbar__toggle"><i class="ri-menu-line"></i></button>
+      <a href="index.html" class="navbar__logo">Woodbuyy</a>
+      <nav class="navbar__nav">
+        <a href="products.html" class="navbar__link">Shop All</a>
+        <a href="categories.html" class="navbar__link">Categories</a>
+        <a href="about.html" class="navbar__link">About</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="account.html" class="navbar__icon"><i class="ri-user-line"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="cart-page">
+    <div class="container">
+      <div class="cart-header">
+        <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#C9A96E;">Your Selection</p>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-size:36px;color:#F5F0E8;margin-top:10px;">Shopping Cart</h1>
+      </div>
+      <div class="cart-layout" id="cart-layout">
+        <!-- Cart items load honge -->
+      </div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    const layout = document.getElementById('cart-layout');
+
+    function getCart() {
+      return JSON.parse(localStorage.getItem('wb_cart') || '[]');
+    }
+
+    function renderCart() {
+      const cart = getCart();
+
+      if (cart.length === 0) {
+        layout.innerHTML = '<p style="text-align:center;color:#6E6860;padding:60px 0;">Your cart is empty.</p>';
+        return;
+      }
+
+      const subtotal = cart.reduce((sum, item) => sum + ((item.salePrice || item.price) * item.quantity), 0);
+
+      layout.innerHTML = `
+        <div class="cart-items">
+          ${cart.map((item, index) => {
+            const price = item.salePrice || item.price;
+            return `
+              <div class="cart-item">
+                <img src="${item.image || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200'}" alt="${item.name}">
+                <div class="cart-item__info">
+                  <p class="cart-item__name">${item.name}</p>
+                  <p class="cart-item__price">AED ${(price / 100).toFixed(2)}</p>
+                </div>
+                <div class="cart-item__qty">
+                  <button onclick="updateQty(${index}, -1)">-</button>
+                  <span>${item.quantity}</span>
+                  <button onclick="updateQty(${index}, 1)">+</button>
+                </div>
+                <button class="cart-item__remove" onclick="removeItem(${index})"><i class="ri-delete-bin-line"></i></button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+        <div class="cart-summary">
+          <div class="cart-summary__row"><span>Subtotal</span><span>AED ${(subtotal / 100).toFixed(2)}</span></div>
+          <div class="cart-summary__row"><span>VAT (5%)</span><span>AED ${(subtotal * 0.05 / 100).toFixed(2)}</span></div>
+          <div class="cart-summary__row cart-summary__row--total"><span>Total</span><span>AED ${(subtotal * 1.05 / 100).toFixed(2)}</span></div>
+          <a href="checkout.html" style="display:block;margin-top:20px;text-align:center;padding:15px;background:#C9A96E;color:#0D0D0D;border-radius:2px;text-decoration:none;font-weight:500;">Proceed to Checkout</a>
+        </div>
+      `;
+    }
+
+    window.updateQty = (index, delta) => {
+      const cart = getCart();
+      cart[index].quantity = Math.max(1, cart[index].quantity + delta);
+      localStorage.setItem('wb_cart', JSON.stringify(cart));
+      renderCart();
+    };
+
+    window.removeItem = (index) => {
+      const cart = getCart();
+      cart.splice(index, 1);
+      localStorage.setItem('wb_cart', JSON.stringify(cart));
+      renderCart();
+    };
+
+    renderCart();
+  </script>
+
+</body>
+</html>
