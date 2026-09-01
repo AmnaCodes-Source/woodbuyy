@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings — Woodbuyy</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="WOODBUYY_BRAND.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+    <!-- Account Layout -->
+    <div class="account-layout">
+        
+        <!-- Sidebar -->
+        <aside class="account-sidebar">
+            <div class="account-sidebar-header">
+                <a href="index.html" class="account-logo">Woodbuyy</a>
+            </div>
+            
+            <nav class="account-nav">
+                <a href="account.html" class="account-nav-item">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="orders.html" class="account-nav-item">
+                    <i class="ri-shopping-bag-line"></i>
+                    <span>My Orders</span>
+                </a>
+                <a href="wishlist.html" class="account-nav-item">
+                    <i class="ri-heart-line"></i>
+                    <span>Wishlist</span>
+                </a>
+                <a href="addresses.html" class="account-nav-item">
+                    <i class="ri-map-pin-line"></i>
+                    <span>Addresses</span>
+                </a>
+                <a href="profile.html" class="account-nav-item active">
+                    <i class="ri-user-settings-line"></i>
+                    <span>Profile Settings</span>
+                </a>
+            </nav>
+            
+            <div class="account-sidebar-footer">
+                <a href="index.html" class="account-nav-item">
+                    <i class="ri-store-2-line"></i>
+                    <span>Continue Shopping</span>
+                </a>
+                <button class="account-nav-item logout-btn" id="logoutBtn">
+                    <i class="ri-logout-box-line"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="account-main">
+            
+            <!-- Top Bar -->
+            <div class="account-topbar">
+                <h1 class="account-page-title">Profile Settings</h1>
+            </div>
+            
+            <!-- Profile Sections -->
+            <div class="profile-sections">
+                
+                <!-- Personal Info -->
+                <div class="profile-section">
+                    <div class="profile-section-header">
+                        <h3 class="profile-section-title">Personal Information</h3>
+                        <p class="profile-section-subtitle">Update your name and phone number</p>
+                    </div>
+                    <form id="profileForm" class="profile-form" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profileFirstName" class="form-label">First Name</label>
+                                <div class="form-input-wrapper">
+                                    <i class="ri-user-line"></i>
+                                    <input type="text" id="profileFirstName" class="form-input" placeholder="John" required>
+                                </div>
+                                <span class="form-error" id="profileFirstNameError"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileLastName" class="form-label">Last Name</label>
+                                <div class="form-input-wrapper">
+                                    <i class="ri-user-line"></i>
+                                    <input type="text" id="profileLastName" class="form-input" placeholder="Doe" required>
+                                </div>
+                                <span class="form-error" id="profileLastNameError"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profileEmail" class="form-label">Email Address</label>
+                            <div class="form-input-wrapper">
+                                <i class="ri-mail-line"></i>
+                                <input type="email" id="profileEmail" class="form-input" placeholder="you@example.com" disabled>
+                            </div>
+                            <span class="form-note">Email cannot be changed</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profilePhone" class="form-label">Phone Number</label>
+                            <div class="form-input-wrapper">
+                                <i class="ri-phone-line"></i>
+                                <input type="tel" id="profilePhone" class="form-input" placeholder="+971 5X XXX XXXX" required>
+                            </div>
+                            <span class="form-error" id="profilePhoneError"></span>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="profileSubmitBtn">
+                            Save Changes
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Change Password -->
+                <div class="profile-section">
+                    <div class="profile-section-header">
+                        <h3 class="profile-section-title">Change Password</h3>
+                        <p class="profile-section-subtitle">Update your account password</p>
+                    </div>
+                    <form id="passwordForm" class="profile-form" novalidate>
+                        <div class="form-group">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <div class="form-input-wrapper">
+                                <i class="ri-lock-line"></i>
+                                <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password" required>
+                                <button type="button" class="password-toggle" data-target="currentPassword">
+                                    <i class="ri-eye-line"></i>
+                                </button>
+                            </div>
+                            <span class="form-error" id="currentPasswordError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <div class="form-input-wrapper">
+                                <i class="ri-lock-line"></i>
+                                <input type="password" id="newPassword" class="form-input" placeholder="Min. 6 characters" required minlength="6">
+                                <button type="button" class="password-toggle" data-target="newPassword">
+                                    <i class="ri-eye-line"></i>
+                                </button>
+                            </div>
+                            <span class="form-error" id="newPasswordError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                            <div class="form-input-wrapper">
+                                <i class="ri-lock-line"></i>
+                                <input type="password" id="confirmNewPassword" class="form-input" placeholder="Re-enter new password" required>
+                                <button type="button" class="password-toggle" data-target="confirmNewPassword">
+                                    <i class="ri-eye-line"></i>
+                                </button>
+                            </div>
+                            <span class="form-error" id="confirmNewPasswordError"></span>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-outline" id="passwordSubmitBtn">
+                            Update Password
+                        </button>
+                    </form>
+                </div>
+                
+            </div>
+            
+        </main>
+        
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="ui.js"></script>
+    <script src="auth.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
