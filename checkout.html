@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Woodbuyy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .checkout-page { padding-top: 72px; min-height: 100vh; }
+    .checkout-header { padding: 40px 0 20px; text-align: center; }
+    .checkout-layout { display: grid; grid-template-columns: 1fr; gap: 25px; padding-bottom: 60px; max-width: 800px; margin: 0 auto; }
+    .form-section { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 25px; margin-bottom: 20px; }
+    .form-section h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #F5F0E8; margin-bottom: 20px; }
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6E6860; margin-bottom: 6px; }
+    .input-group input, .input-group select { width: 100%; height: 45px; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; padding: 0 12px; font-size: 14px; outline: none; }
+    .input-group input:focus, .input-group select:focus { border-color: #C9A96E; }
+    .btn-primary { width: 100%; height: 50px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    @media (min-width: 768px) { .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; } }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <button class="navbar__toggle"><i class="ri-menu-line"></i></button>
+      <a href="index.html" class="navbar__logo">Woodbuyy</a>
+      <nav class="navbar__nav">
+        <a href="products.html" class="navbar__link">Shop All</a>
+        <a href="cart.html" class="navbar__link">Cart</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="account.html" class="navbar__icon"><i class="ri-user-line"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="checkout-page">
+    <div class="container">
+      <div class="checkout-header">
+        <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#C9A96E;">Almost There</p>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-size:36px;color:#F5F0E8;margin-top:10px;">Checkout</h1>
+      </div>
+      <div class="checkout-layout">
+        <form id="checkout-form">
+          <div class="form-section">
+            <h2>Contact Information</h2>
+            <div class="form-row">
+              <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="name" required>
+              </div>
+              <div class="input-group">
+                <label>Phone</label>
+                <input type="tel" id="phone" required>
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Email</label>
+              <input type="email" id="email" required>
+            </div>
+          </div>
+          <div class="form-section">
+            <h2>Delivery Address</h2>
+            <div class="input-group">
+              <label>Address Line 1</label>
+              <input type="text" id="line1" required>
+            </div>
+            <div class="input-group">
+              <label>Address Line 2 (optional)</label>
+              <input type="text" id="line2">
+            </div>
+            <div class="form-row">
+              <div class="input-group">
+                <label>Emirate</label>
+                <select id="emirate" required>
+                  <option value="">Select...</option>
+                  <option>Dubai</option>
+                  <option>Abu Dhabi</option>
+                  <option>Sharjah</option>
+                  <option>Ajman</option>
+                  <option>Ras Al Khaimah</option>
+                  <option>Fujairah</option>
+                  <option>Umm Al Quwain</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>City</label>
+                <input type="text" id="city">
+              </div>
+            </div>
+          </div>
+          <div class="form-section">
+            <h2>Payment</h2>
+            <p style="color:#B0A898;font-size:14px;">💵 Cash on Delivery — pay when your furniture arrives.</p>
+          </div>
+          <button type="submit" class="btn-primary">Place Order</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    document.getElementById('checkout-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+      if (cart.length === 0) {
+        alert('Cart is empty');
+        return;
+      }
+
+      const subtotal = cart.reduce((sum, item) => sum + ((item.salePrice || item.price) * item.quantity), 0);
+      const vat = Math.round(subtotal * 0.05);
+      const shipping = 5000;
+      const total = subtotal + vat + shipping;
+
+      const now = new Date();
+      const yy = String(now.getFullYear()).slice(2);
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const rand = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+      const orderId = `WB-${yy}${mm}${dd}-${rand}`;
+
+      try {
+        await db.collection('orders').doc(orderId).set({
+          customerName: document.getElementById('name').value,
+          customerPhone: document.getElementById('phone').value,
+          customerEmail: document.getElementById('email').value,
+          items: cart,
+          subtotal, vat, shipping, total,
+          address: {
+            line1: document.getElementById('line1').value,
+            line2: document.getElementById('line2').value,
+            emirate: document.getElementById('emirate').value,
+            city: document.getElementById('city').value
+          },
+          status: 'pending',
+          paymentMethod: 'cod',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        localStorage.removeItem('wb_cart');
+        window.location.href = 'order-success.html?orderId=' + orderId;
+      } catch (err) {
+        alert('Order failed: ' + err.message);
+      }
+    });
+  </script>
+
+</body>
+</html>
