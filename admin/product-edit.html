@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Product — Woodbuyy Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background: #141414; border-right: 1px solid #2E2E2E; padding: 20px; position: fixed; top: 0; bottom: 0; }
+    .sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
+    .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
+    .sidebar a { display: flex; align-items: center; gap: 10px; padding: 12px; color: #B0A898; text-decoration: none; font-size: 14px; border-radius: 4px; margin-bottom: 5px; }
+    .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
+    .main { flex: 1; margin-left: 250px; padding: 30px; }
+    h1 { font-family: 'Cormorant Garamond', serif; }
+    .form-group { margin-bottom: 15px; max-width: 400px; }
+    label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6E6860; margin-bottom: 6px; }
+    input, textarea { width: 100%; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; padding: 10px 12px; font-size: 14px; outline: none; }
+    .btn-primary { width: 100%; max-width: 400px; height: 48px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; cursor: pointer; }
+    .btn-danger { width: 100%; max-width: 400px; height: 48px; background: #E05555; color: #fff; border: none; border-radius: 2px; font-size: 14px; cursor: pointer; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="logo">Woodbuyy</div>
+      <div class="tag">Admin Panel</div>
+      <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
+      <a href="products.html" class="active"><i class="ri-file-list-3-line"></i> Products</a>
+      <a href="orders.html"><i class="ri-shopping-bag-line"></i> Orders</a>
+      <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
+      <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
+      <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
+    </aside>
+    <main class="main">
+      <h1>Edit Product</h1>
+      <form id="edit-form">
+        <div class="form-group"><label>Name</label><input type="text" id="name"></div>
+        <div class="form-group"><label>Slug</label><input type="text" id="slug"></div>
+        <div class="form-group"><label>Price (AED)</label><input type="number" id="price" step="0.01"></div>
+        <div class="form-group"><label>Stock</label><input type="number" id="stock"></div>
+        <button type="submit" class="btn-primary">Update</button>
+      </form>
+      <button class="btn-danger" onclick="deleteProduct()">Delete</button>
+    </main>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      const userDoc = await db.collection('users').doc(user.uid).get();
+      if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
+      if (!productId) { window.location.href = 'products.html'; return; }
+      const doc = await db.collection('products').doc(productId).get();
+      if (!doc.exists) { window.location.href = 'products.html'; return; }
+      const p = doc.data();
+      document.getElementById('name').value = p.name;
+      document.getElementById('slug').value = p.slug;
+      document.getElementById('price').value = (p.price / 100).toFixed(2);
+      document.getElementById('stock').value = p.stockCount || 0;
+    });
+
+    document.getElementById('edit-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      await db.collection('products').doc(productId).update({
+        name: document.getElementById('name').value,
+        slug: document.getElementById('slug').value,
+        price: Math.round(parseFloat(document.getElementById('price').value) * 100),
+        stockCount: parseInt(document.getElementById('stock').value) || 0,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      alert('Updated!');
+      window.location.href = 'products.html';
+    });
+
+    async function deleteProduct() {
+      if (!confirm('Delete?')) return;
+      await db.collection('products').doc(productId).update({ isActive: false });
+      alert('Deactivated');
+      window.location.href = 'products.html';
+    }
+  </script>
+</body>
+</html>
