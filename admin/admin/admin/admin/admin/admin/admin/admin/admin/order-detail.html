@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Detail — Woodbuyy Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background: #141414; border-right: 1px solid #2E2E2E; padding: 20px; position: fixed; top: 0; bottom: 0; }
+    .sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
+    .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
+    .sidebar a { display: flex; align-items: center; gap: 10px; padding: 12px; color: #B0A898; text-decoration: none; font-size: 14px; border-radius: 4px; margin-bottom: 5px; }
+    .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
+    .main { flex: 1; margin-left: 250px; padding: 30px; }
+    h1 { font-family: 'Cormorant Garamond', serif; }
+    .card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
+    .card h2 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 15px; }
+    .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: #B0A898; }
+    .btn-primary { padding: 12px 25px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 13px; font-weight: 500; cursor: pointer; margin-right: 10px; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="logo">Woodbuyy</div>
+      <div class="tag">Admin Panel</div>
+      <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
+      <a href="products.html"><i class="ri-file-list-3-line"></i> Products</a>
+      <a href="orders.html" class="active"><i class="ri-shopping-bag-line"></i> Orders</a>
+      <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
+      <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
+      <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
+    </aside>
+
+    <main class="main">
+      <h1 id="order-title">Order Detail</h1>
+      <div id="order-content"></div>
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('id');
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      const userDoc = await db.collection('users').doc(user.uid).get();
+      if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
+
+      if (!orderId) { window.location.href = 'orders.html'; return; }
+
+      const doc = await db.collection('orders').doc(orderId).get();
+      if (!doc.exists) { window.location.href = 'orders.html'; return; }
+
+      const o = doc.data();
+      document.getElementById('order-title').textContent = orderId;
+
+      document.getElementById('order-content').innerHTML = `
+        <div class="card">
+          <h2>Customer</h2>
+          <div class="row"><span>Name</span><span>${o.customerName}</span></div>
+          <div class="row"><span>Phone</span><span>${o.customerPhone}</span></div>
+          <div class="row"><span>Email</span><span>${o.customerEmail}</span></div>
+        </div>
+        <div class="card">
+          <h2>Delivery</h2>
+          <div class="row"><span>Address</span><span>${o.address.line1}</span></div>
+          <div class="row"><span>Emirate</span><span>${o.address.emirate}</span></div>
+        </div>
+        <div class="card">
+          <h2>Totals</h2>
+          <div class="row"><span>Subtotal</span><span>AED ${(o.subtotal / 100).toFixed(2)}</span></div>
+          <div class="row"><span>VAT</span><span>AED ${(o.vat / 100).toFixed(2)}</span></div>
+          <div class="row"><span>Shipping</span><span>AED ${(o.shipping / 100).toFixed(2)}</span></div>
+          <div class="row"><span><strong>Total</strong></span><span><strong>AED ${(o.total / 100).toFixed(2)}</strong></span></div>
+        </div>
+        <div class="card">
+          <h2>Status: ${o.status}</h2>
+          <button class="btn-primary" onclick="updateStatus('confirmed')">Confirm</button>
+          <button class="btn-primary" onclick="updateStatus('delivered')">Delivered</button>
+          <button class="btn-primary" onclick="updateStatus('completed')">Complete</button>
+        </div>
+      `;
+    });
+
+    async function updateStatus(status) {
+      await db.collection('orders').doc(orderId).update({
+        status,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      alert('Status updated!');
+      location.reload();
+    }
+  </script>
+
+</body>
+</html>
