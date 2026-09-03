@@ -3,59 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop Furniture — Woodbuyy</title>
+  <title>Product — Woodbuyy</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
-  <link rel="stylesheet" href="css/components.css">
   <style>
-    body { background: #0D0D0D; font-family: 'Jost', sans-serif; margin: 0; }
-    .products-page { padding-top: 72px; min-height: 100vh; }
-    .products-header { padding: 40px 0 20px; text-align: center; }
-    .products-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px 25px 60px; max-width: 1200px; margin: 0 auto; }
-    .product-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; overflow: hidden; text-decoration: none; display: block; }
-    .product-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
-    .product-card__body { padding: 18px; }
-    .product-card__name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: #F5F0E8; margin-bottom: 8px; }
-    .product-card__price { font-size: 16px; font-weight: 500; color: #C9A96E; }
-    @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+    body { background: #0D0D0D; font-family: 'Jost', sans-serif; margin: 0; color: #F5F0E8; }
+    .product-page { padding-top: 72px; min-height: 100vh; }
+    .product-detail { max-width: 1000px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr; gap: 30px; }
+    .product-image { border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info h1 { font-family: 'Cormorant Garamond', serif; font-size: 32px; margin-bottom: 12px; }
+    .product-price { font-size: 28px; font-weight: 600; color: #C9A96E; margin-bottom: 15px; }
+    .product-desc { font-size: 15px; color: #B0A898; line-height: 1.7; margin-bottom: 25px; }
+    .qty-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .qty-selector button { width: 36px; height: 36px; background: #141414; border: 1px solid #2E2E2E; color: #F5F0E8; border-radius: 4px; cursor: pointer; font-size: 18px; }
+    .qty-selector span { font-size: 18px; min-width: 30px; text-align: center; }
+    .btn-add { width: 100%; height: 50px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; text-transform: uppercase; cursor: pointer; }
+    @media (min-width: 768px) { .product-detail { grid-template-columns: 1fr 1fr; } }
   </style>
 </head>
 <body>
-  <main class="products-page">
-    <div class="products-header">
-      <h1 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;">All Furniture</h1>
-    </div>
-    <div class="products-grid" id="grid"><p style="color:#6E6860;text-align:center;">Loading...</p></div>
+  <main class="product-page">
+    <div class="product-detail" id="detail"><p style="text-align:center;color:#6E6860;">Loading...</p></div>
   </main>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    let qty = 1;
+    let currentProduct = null;
+
     async function load() {
+      if (!id) { window.location.href = 'products.html'; return; }
       try {
-        const snap = await db.collection('products').get();
-        const grid = document.getElementById('grid');
-        if (snap.empty) {
-          grid.innerHTML = '<p style="text-align:center;color:#6E6860;">No products yet.</p>';
-          return;
-        }
-        grid.innerHTML = snap.docs.map(doc => {
-          const p = doc.data();
-          const price = p.price || 0;
-          return `<a href="product.html?id=${doc.id}" class="product-card">
-            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600" alt="${p.name || ''}">
-            <div class="product-card__body">
-              <p class="product-card__name">${p.name || '-'}</p>
-              <p class="product-card__price">AED ${(price / 100).toFixed(2)}</p>
+        const doc = await db.collection('products').doc(id).get();
+        if (!doc.exists) { document.getElementById('detail').innerHTML = '<p style="text-align:center;">Not found.</p>'; return; }
+        currentProduct = { id: doc.id, ...doc.data() };
+        const p = currentProduct;
+        const price = p.price || 0;
+        document.getElementById('detail').innerHTML = `
+          <div class="product-image"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800" alt="${p.name || ''}"></div>
+          <div class="product-info">
+            <h1>${p.name || '-'}</h1>
+            <p class="product-price">AED ${(price / 100).toFixed(2)}</p>
+            <p class="product-desc">${p.description || 'Premium quality furniture.'}</p>
+            <div class="qty-selector">
+              <button onclick="changeQty(-1)">-</button>
+              <span id="qty">1</span>
+              <button onclick="changeQty(1)">+</button>
             </div>
-          </a>`;
-        }).join('');
+            <button class="btn-add" onclick="addToCart()">Add to Cart</button>
+          </div>`;
       } catch (err) {
-        document.getElementById('grid').innerHTML = '<p style="text-align:center;color:#E05555;">Error: ' + err.message + '</p>';
+        document.getElementById('detail').innerHTML = '<p style="text-align:center;color:#E05555;">Error: ' + err.message + '</p>';
       }
     }
+
+    window.changeQty = (delta) => { qty = Math.max(1, qty + delta); document.getElementById('qty').textContent = qty; };
+
+    window.addToCart = () => {
+      const cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+      const found = cart.find(i => i.productId === currentProduct.id);
+      if (found) { found.quantity += qty; } else {
+        cart.push({ productId: currentProduct.id, name: currentProduct.name, price: currentProduct.price, quantity: qty, image: '' });
+      }
+      localStorage.setItem('wb_cart', JSON.stringify(cart));
+      alert('Added to cart!');
+    };
+
     load();
   </script>
 </body>
