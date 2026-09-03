@@ -44,7 +44,7 @@
           const p = doc.data();
           const price = p.price || 0;
           return `<a href="product.html?id=${doc.id}" class="product-card">
-            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600" alt="${p.name || ''}">
+           <img src="${p.images && p.images[0] ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600'}" alt="${p.name || ''}">
             <div class="product-card__body">
               <p class="product-card__name">${p.name || '-'}</p>
               <p class="product-card__price">AED ${(price / 100).toFixed(2)}</p>
