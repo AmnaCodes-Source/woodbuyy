@@ -34,7 +34,7 @@
   <script>
     async function load() {
       try {
-        const snap = await db.collection('products').get();
+        const snap = await db.collection('Products').get();
         const grid = document.getElementById('grid');
         if (snap.empty) {
           grid.innerHTML = '<p style="text-align:center;color:#6E6860;">No products yet.</p>';
