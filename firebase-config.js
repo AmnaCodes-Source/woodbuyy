@@ -19,8 +19,4 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-// Enable persistence
-db.enablePersistence({ synchronizeTabs: true })
-    .catch(() => {});
-
 console.log('Woodbuyy Firebase initialized');
