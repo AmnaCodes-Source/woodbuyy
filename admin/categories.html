@@ -7,23 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
   <style>
-    body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
-    .admin-layout { display: flex; min-height: 100vh; }
-    .sidebar { width: 250px; background: #141414; border-right: 1px solid #2E2E2E; padding: 20px; position: fixed; top: 0; bottom: 0; z-index: 100; }
-    .sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
-    .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
-    .sidebar a { display: flex; align-items: center; gap: 10px; padding: 12px; color: #B0A898; text-decoration: none; font-size: 14px; border-radius: 4px; margin-bottom: 5px; }
-    .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
-    .main { flex: 1; margin-left: 250px; padding: 30px; position: relative; z-index: 1; }
-    h1 { font-family: 'Cormorant Garamond', serif; }
-    .form-group { margin-bottom: 12px; max-width: 400px; }
-    label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6E6860; margin-bottom: 5px; }
-    input { width: 100%; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; padding: 10px 12px; font-size: 14px; outline: none; }
-    .btn-primary { padding: 12px 22px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 13px; font-weight: 500; cursor: pointer; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #2E2E2E; font-size: 14px; }
-    th { color: #6E6860; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
-    td { color: #B0A898; }
+  body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
+.admin-layout { display: flex; min-height: 100vh; }
+.sidebar { width: 250px; background: #141414; border-right: 1px solid #2E2E2E; padding: 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+.sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
+.sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
+.sidebar a { display: flex; align-items: center; gap: 8px; padding: 8px 10px; color: #B0A898; text-decoration: none; font-size: 13px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; }
+.sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
+.main { flex: 1; padding: 30px; min-width: 0; }
   </style>
 </head>
 <body>
