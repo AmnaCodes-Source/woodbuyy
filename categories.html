@@ -69,7 +69,7 @@
 
     async function loadCategories() {
       try {
-        const snap = await db.collection('categories').where('isActive', '==', true).get();
+      const snap = await db.collection('categories').get();
 
         if (snap.empty) {
           grid.innerHTML = '<p style="text-align:center;color:#6E6860;padding:60px 0;">No categories yet. Add from admin panel.</p>';
