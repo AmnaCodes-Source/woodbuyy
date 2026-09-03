@@ -6,7 +6,7 @@ Premium furniture e-commerce platform for the UAE market.
 - **Frontend:** HTML5 + CSS3 + Vanilla JavaScript (ES6+)
 - **Backend:** Firebase (Auth + Firestore)
 - **Hosting:** Vercel
-- **Storage:** Cloudflare R2 (coming soon)
+- **Storage:**   Cloudflare R2 (coming soon)
 
 ## Features
 - Cash on Delivery (COD) only
