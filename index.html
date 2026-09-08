@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -265,6 +267,59 @@
       <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Cart Badge Update -->
+  <script>
+    // Update cart count badge on page load
+    function updateCartBadge() {
+      const badge = document.getElementById('cart-count');
+      if (!badge) return;
+
+      const guestCart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+      let count = guestCart.reduce((sum, item) => sum + item.quantity, 0);
+
+      // If logged in, try Firestore cart
+      if (typeof auth !== 'undefined') {
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            try {
+              const cartRef = db.collection('carts').doc(user.uid);
+              const snap = await cartRef.get();
+              if (snap.exists) {
+                const items = snap.data().items || [];
+                count = items.reduce((sum, item) => sum + item.quantity, 0);
+              }
+            } catch (e) {
+              console.log('Cart fetch error:', e.message);
+            }
+          }
+          if (count > 0) {
+            badge.textContent = count;
+            badge.classList.remove('hidden');
+          } else {
+            badge.classList.add('hidden');
+          }
+        });
+      } else {
+        if (count > 0) {
+          badge.textContent = count;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+    }
+
+    updateCartBadge();
+  </script>
 
 </body>
 </html>
