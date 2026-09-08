@@ -23,6 +23,34 @@
     .btn-add { width: 100%; height: 50px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; text-transform: uppercase; cursor: pointer; }
     .btn-add:hover { background: #B8944F; }
 
+    /* Reviews Section */
+    .reviews-section { max-width: 1000px; margin: 0 auto; padding: 20px 20px 40px; }
+    .reviews-header { margin-bottom: 25px; }
+    .reviews-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #F5F0E8; margin-bottom: 5px; }
+    .reviews-subtitle { font-size: 13px; color: #6E6860; }
+
+    /* Review Form */
+    .review-form { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 20px; margin-bottom: 30px; }
+    .review-form h3 { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #F5F0E8; margin-bottom: 15px; }
+    .star-rating { display: flex; gap: 8px; margin-bottom: 15px; font-size: 28px; }
+    .star-rating i { cursor: pointer; color: #6E6860; transition: color 0.2s; }
+    .star-rating i.active { color: #C9A96E; }
+    .review-form input, .review-form textarea { width: 100%; padding: 12px; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; font-family: 'Jost', sans-serif; font-size: 14px; margin-bottom: 10px; outline: none; }
+    .review-form input:focus, .review-form textarea:focus { border-color: #C9A96E; }
+    .review-form textarea { min-height: 80px; resize: vertical; }
+    .btn-review { width: 100%; height: 45px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 13px; font-weight: 500; text-transform: uppercase; cursor: pointer; }
+    .btn-review:hover { background: #B8944F; }
+    .btn-review:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Review List */
+    .reviews-list { display: flex; flex-direction: column; gap: 15px; }
+    .review-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 18px; }
+    .review-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .review-card__name { font-weight: 500; color: #F5F0E8; font-size: 14px; }
+    .review-card__stars { color: #C9A96E; font-size: 14px; }
+    .review-card__date { font-size: 11px; color: #6E6860; }
+    .review-card__text { font-size: 14px; color: #B0A898; line-height: 1.6; }
+
     /* Related Products */
     .related-section { max-width: 1000px; margin: 0 auto; padding: 20px 20px 60px; }
     .related-header { margin-bottom: 25px; }
@@ -57,6 +85,34 @@
     <!-- Product Detail -->
     <div class="product-detail" id="detail"><p style="text-align:center;color:#6E6860;">Loading...</p></div>
 
+    <!-- Reviews Section -->
+    <section class="reviews-section" id="reviews-section">
+      <div class="reviews-header">
+        <h2 class="reviews-title">Customer Reviews</h2>
+        <p class="reviews-subtitle">Share your experience with this product</p>
+      </div>
+
+      <!-- Review Form -->
+      <div class="review-form">
+        <h3>Write a Review</h3>
+        <div class="star-rating" id="star-rating">
+          <i class="ri-star-line" data-rating="1"></i>
+          <i class="ri-star-line" data-rating="2"></i>
+          <i class="ri-star-line" data-rating="3"></i>
+          <i class="ri-star-line" data-rating="4"></i>
+          <i class="ri-star-line" data-rating="5"></i>
+        </div>
+        <input type="text" id="review-name" placeholder="Your name" required>
+        <textarea id="review-text" placeholder="Your review..." required></textarea>
+        <button class="btn-review" id="btn-submit-review" onclick="submitReview()">Submit Review</button>
+      </div>
+
+      <!-- Reviews List -->
+      <div class="reviews-list" id="reviews-list">
+        <p style="text-align:center;color:#6E6860;">Loading reviews...</p>
+      </div>
+    </section>
+
     <!-- Related Products -->
     <section class="related-section" id="related-section" style="display:none;">
       <div class="related-header">
@@ -78,6 +134,7 @@
     const id = params.get('id');
     let qty = 1;
     let currentProduct = null;
+    let selectedRating = 0;
 
     // Format price (fils → AED)
     function formatAED(fils) {
@@ -96,22 +153,108 @@
     // Save product to recently viewed (localStorage)
     function saveRecentlyViewed(product) {
       let recent = JSON.parse(localStorage.getItem('wb_recently_viewed') || '[]');
-      
-      // Remove if already exists
       recent = recent.filter(item => item.productId !== product.id);
-      
-      // Add to front
       recent.unshift({
         productId: product.id,
         name: product.name,
         price: product.price,
         image: (product.images && product.images[0]) ? product.images[0] : ''
       });
-      
-      // Keep only last 8 products
       recent = recent.slice(0, 8);
-      
       localStorage.setItem('wb_recently_viewed', JSON.stringify(recent));
+    }
+
+    // Star rating logic
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('#star-rating i')) {
+        const rating = parseInt(e.target.dataset.rating);
+        selectedRating = rating;
+        updateStars();
+      }
+    });
+
+    function updateStars() {
+      document.querySelectorAll('#star-rating i').forEach(star => {
+        const rating = parseInt(star.dataset.rating);
+        if (rating <= selectedRating) {
+          star.className = 'ri-star-fill active';
+        } else {
+          star.className = 'ri-star-line';
+        }
+      });
+    }
+
+    // Submit review
+    window.submitReview = async function() {
+      const name = document.getElementById('review-name').value.trim();
+      const text = document.getElementById('review-text').value.trim();
+
+      if (!name) { showToast('Please enter your name'); return; }
+      if (!text) { showToast('Please write a review'); return; }
+      if (selectedRating === 0) { showToast('Please select a rating'); return; }
+
+      const btn = document.getElementById('btn-submit-review');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      try {
+        await db.collection('reviews').add({
+          productId: id,
+          userName: name,
+          rating: selectedRating,
+          text: text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Clear form
+        document.getElementById('review-name').value = '';
+        document.getElementById('review-text').value = '';
+        selectedRating = 0;
+        updateStars();
+
+        showToast('Review submitted!');
+        loadReviews();
+      } catch (err) {
+        showToast('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit Review';
+      }
+    };
+
+    // Load reviews
+    async function loadReviews() {
+      const list = document.getElementById('reviews-list');
+      try {
+        const snap = await db.collection('reviews')
+          .where('productId', '==', id)
+          .orderBy('createdAt', 'desc')
+          .get();
+
+        if (snap.empty) {
+          list.innerHTML = '<p style="text-align:center;color:#6E6860;">No reviews yet. Be the first to review!</p>';
+          return;
+        }
+
+        list.innerHTML = snap.docs.map(doc => {
+          const r = doc.data();
+          const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+          const date = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleDateString('en-AE', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+          return `
+            <div class="review-card">
+              <div class="review-card__header">
+                <span class="review-card__name">${r.userName || 'Anonymous'}</span>
+                <span class="review-card__stars">${stars}</span>
+              </div>
+              <p class="review-card__text">${r.text || ''}</p>
+              ${date ? `<p class="review-card__date">${date}</p>` : ''}
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Reviews error:', err);
+        list.innerHTML = '<p style="text-align:center;color:#6E6860;">Could not load reviews.</p>';
+      }
     }
 
     // Load main product
@@ -146,6 +289,9 @@
         // Save to recently viewed
         saveRecentlyViewed(currentProduct);
 
+        // Load reviews
+        loadReviews();
+
         // Load related products
         loadRelatedProducts(p.categorySlug || p.category || '');
       } catch (err) {
@@ -153,17 +299,15 @@
       }
     }
 
-    // Load related products (same category first, then random fallback)
+    // Load related products
     async function loadRelatedProducts(categorySlug) {
       const section = document.getElementById('related-section');
       const gridEl = document.getElementById('related-grid');
 
-      // Show skeletons
       section.style.display = 'block';
       gridEl.innerHTML = Array(4).fill('<div class="skeleton skeleton-related"></div>').join('');
 
       try {
-        // First try same category
         let sameCategory = [];
         if (categorySlug) {
           const catSnap = await db.collection('Products')
@@ -174,7 +318,6 @@
           sameCategory = catSnap.docs.filter(doc => doc.id !== id).slice(0, 4);
         }
 
-        // If same category has less than 4, fill with random other products
         let related = [...sameCategory];
 
         if (related.length < 4) {
