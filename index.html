@@ -302,8 +302,19 @@
     </div>
   </section>
 
-  <footer class="footer">
+    <footer class="footer">
     <div class="container">
+      <!-- Newsletter -->
+      <div class="newsletter" style="text-align:center;margin-bottom:25px;">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#F5F0E8;margin-bottom:8px;">Join Our Newsletter</p>
+        <p style="font-size:13px;color:#6E6860;margin-bottom:15px;">Get exclusive offers and new arrivals straight to your inbox.</p>
+        <div style="display:flex;gap:10px;max-width:400px;margin:0 auto;">
+          <input type="email" id="newsletter-email" placeholder="Your email address" required style="flex:1;height:45px;padding:0 15px;background:#1C1C1C;border:1px solid #2E2E2E;border-radius:4px;color:#F5F0E8;font-family:'Jost',sans-serif;font-size:14px;outline:none;">
+          <button id="newsletter-btn" onclick="subscribeNewsletter()" style="height:45px;padding:0 20px;background:#C9A96E;color:#0D0D0D;border:none;border-radius:2px;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Subscribe</button>
+        </div>
+        <p id="newsletter-msg" style="font-size:12px;margin-top:8px;"></p>
+      </div>
+
       <p class="footer__brand">Woodbuyy</p>
       <p class="footer__tagline">Luxury furniture for the modern UAE home.</p>
       <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
@@ -390,6 +401,53 @@
         `;
       }).join('');
     }
+
+       // Newsletter subscribe
+    window.subscribeNewsletter = async function() {
+      const emailInput = document.getElementById('newsletter-email');
+      const btn = document.getElementById('newsletter-btn');
+      const msg = document.getElementById('newsletter-msg');
+
+      const email = emailInput.value.trim();
+
+      if (!email || !email.includes('@')) {
+        msg.textContent = 'Please enter a valid email address';
+        msg.style.color = '#E05555';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Subscribing...';
+
+      try {
+        const existing = await db.collection('subscribers')
+          .where('email', '==', email)
+          .get();
+
+        if (!existing.empty) {
+          msg.textContent = 'You are already subscribed!';
+          msg.style.color = '#4CAF7D';
+          emailInput.value = '';
+          return;
+        }
+
+        await db.collection('subscribers').add({
+          email: email,
+          source: 'footer',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        msg.textContent = 'Subscribed successfully!';
+        msg.style.color = '#4CAF7D';
+        emailInput.value = '';
+      } catch (err) {
+        msg.textContent = 'Error: ' + err.message;
+        msg.style.color = '#E05555';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+      }
+    };
 
     // Init
     updateCartBadge();
