@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Quote — Woodbuyy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body { background: #0D0D0D; font-family: 'Jost', sans-serif; margin: 0; color: #F5F0E8; }
+    .quote-page { padding-top: 72px; min-height: 100vh; }
+    .quote-header { padding: 40px 0 20px; text-align: center; }
+    .quote-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: #F5F0E8; margin-bottom: 10px; }
+    .quote-header p { font-size: 14px; color: #6E6860; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+
+    .quote-form-wrap { max-width: 700px; margin: 0 auto; padding: 20px 25px 60px; }
+    .form-section { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 25px; margin-bottom: 20px; }
+    .form-section h2 { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #F5F0E8; margin-bottom: 20px; }
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6E6860; margin-bottom: 6px; }
+    .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 12px; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; font-family: 'Jost', sans-serif; font-size: 14px; outline: none; }
+    .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: #C9A96E; }
+    .input-group textarea { min-height: 100px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr; gap: 15px; }
+
+    .btn-submit { width: 100%; height: 50px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .btn-submit:hover { background: #B8944F; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .success-msg i { font-size: 48px; color: #4CAF7D; margin-bottom: 15px; }
+    .success-msg h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #F5F0E8; margin-bottom: 10px; }
+    .success-msg p { font-size: 14px; color: #B0A898; }
+
+    .toast { position: fixed; bottom: 20px; right: 20px; background: #222222; border: 1px solid #C9A96E; color: #F5F0E8; padding: 14px 20px; border-radius: 6px; font-size: 14px; z-index: 999; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+    @media (min-width: 768px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="quote-page">
+    <div class="quote-header">
+      <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#C9A96E;">Made For You</p>
+      <h1>Custom Furniture Request</h1>
+      <p>Tell us what you need — we'll craft it exactly to your specifications and send you a quote.</p>
+    </div>
+
+    <div class="quote-form-wrap">
+      <!-- Form -->
+      <form id="quote-form">
+        <div class="form-section">
+          <h2>Contact Information</h2>
+          <div class="form-row">
+            <div class="input-group">
+              <label>Full Name</label>
+              <input type="text" id="name" required>
+            </div>
+            <div class="input-group">
+              <label>Phone</label>
+              <input type="tel" id="phone" required>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" required>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Furniture Details</h2>
+          <div class="input-group">
+            <label>Furniture Type</label>
+            <select id="furniture-type" required>
+              <option value="">Select...</option>
+              <option>Sofa</option>
+              <option>Bed</option>
+              <option>Dining Table</option>
+              <option>Coffee Table</option>
+              <option>Wardrobe</option>
+              <option>Chair</option>
+              <option>Bookshelf</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="input-group">
+              <label>Length (cm)</label>
+              <input type="number" id="length" placeholder="e.g. 200">
+            </div>
+            <div class="input-group">
+              <label>Width (cm)</label>
+              <input type="number" id="width" placeholder="e.g. 90">
+            </div>
+            <div class="input-group">
+              <label>Height (cm)</label>
+              <input type="number" id="height" placeholder="e.g. 80">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Material Preference</label>
+            <select id="material">
+              <option value="">Select...</option>
+              <option>Solid Wood</option>
+              <option>Engineered Wood</option>
+              <option>Fabric</option>
+              <option>Leather</option>
+              <option>Metal</option>
+              <option>Mixed</option>
+              <option>Not Sure</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Budget Range (AED)</label>
+            <select id="budget">
+              <option value="">Select...</option>
+              <option>Under 1,000</option>
+              <option>1,000 - 2,500</option>
+              <option>2,500 - 5,000</option>
+              <option>5,000 - 10,000</option>
+              <option>10,000+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Additional Details</h2>
+          <div class="input-group">
+            <label>Description</label>
+            <textarea id="description" placeholder="Describe what you're looking for — style, color, finish, inspiration, etc."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">Submit Request</button>
+      </form>
+
+      <!-- Success Message -->
+      <div class="success-msg" id="success-msg">
+        <i class="ri-checkbox-circle-line"></i>
+        <h2>Request Submitted!</h2>
+        <p>Thank you! We'll review your request and get back to you within 24-48 hours with a quote.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script>
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    document.getElementById('quote-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      const quoteData = {
+        customerName: document.getElementById('name').value.trim(),
+        customerPhone: document.getElementById('phone').value.trim(),
+        customerEmail: document.getElementById('email').value.trim(),
+        furnitureType: document.getElementById('furniture-type').value,
+        dimensions: {
+          length: parseInt(document.getElementById('length').value) || null,
+          width: parseInt(document.getElementById('width').value) || null,
+          height: parseInt(document.getElementById('height').value) || null
+        },
+        material: document.getElementById('material').value,
+        budget: document.getElementById('budget').value,
+        description: document.getElementById('description').value.trim(),
+        status: 'new',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        await db.collection('customQuotes').add(quoteData);
+        document.getElementById('quote-form').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+      } catch (err) {
+        showToast('Error: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = 'Submit Request';
+      }
+    });
+  </script>
+
+</body>
+</html>
