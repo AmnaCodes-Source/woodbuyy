@@ -9,216 +9,44 @@
   <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
   <link rel="stylesheet" href="css/components.css">
   <style>
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(rgba(13,13,13,0.75), rgba(13,13,13,0.9)), url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600');
-      background-size: cover;
-      background-position: center;
-      padding-top: var(--navbar-height);
-      text-align: center;
-    }
-    .hero__content {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: var(--space-20) var(--space-6);
-    }
-    .hero__eyebrow {
-      font-size: 12px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #C9A96E;
-      margin-bottom: 20px;
-    }
-    .hero__title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 50px;
-      font-weight: 700;
-      font-style: italic;
-      color: #F5F0E8;
-      margin-bottom: 25px;
-      line-height: 1.15;
-    }
-    .hero__subtitle {
-      font-size: 17px;
-      color: #B0A898;
-      margin-bottom: 35px;
-      line-height: 1.7;
-    }
-    .hero__actions {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 30px;
-      height: 50px;
-      border-radius: 2px;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .btn--primary {
-      background: #C9A96E;
-      color: #0D0D0D;
-      border: 1px solid #C9A96E;
-    }
-    .btn--secondary {
-      background: transparent;
-      color: #C9A96E;
-      border: 1px solid rgba(201,169,110,0.4);
-    }
-    .section {
-      padding: 80px 0;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 25px;
-    }
-    .section-header {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-    .section-eyebrow {
-      font-size: 12px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #C9A96E;
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
-      font-weight: 600;
-      color: #F5F0E8;
-    }
-    .usp-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 25px;
-      text-align: center;
-    }
-    .usp-item i {
-      font-size: 32px;
-      color: #C9A96E;
-      margin-bottom: 10px;
-    }
-    .usp-item__title {
-      font-size: 15px;
-      font-weight: 500;
-      color: #F5F0E8;
-      margin-bottom: 5px;
-    }
-    .usp-item__text {
-      font-size: 13px;
-      color: #6E6860;
-    }
-    .categories-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    .category-card {
-      position: relative;
-      border-radius: 4px;
-      overflow: hidden;
-      aspect-ratio: 4/3;
-      text-decoration: none;
-    }
-    .category-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .category-card__overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(13,13,13,0.85), transparent);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 20px;
-    }
-    .category-card__title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      color: #F5F0E8;
-    }
-
-    /* Recently Viewed */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(13,13,13,0.75), rgba(13,13,13,0.9)), url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600'); background-size: cover; background-position: center; padding-top: var(--navbar-height); text-align: center; }
+    .hero__content { max-width: 700px; margin: 0 auto; padding: var(--space-20) var(--space-6); }
+    .hero__eyebrow { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #C9A96E; margin-bottom: 20px; }
+    .hero__title { font-family: 'Cormorant Garamond', serif; font-size: 50px; font-weight: 700; font-style: italic; color: #F5F0E8; margin-bottom: 25px; line-height: 1.15; }
+    .hero__subtitle { font-size: 17px; color: #B0A898; margin-bottom: 35px; line-height: 1.7; }
+    .hero__actions { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0 30px; height: 50px; border-radius: 2px; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .btn--primary { background: #C9A96E; color: #0D0D0D; border: 1px solid #C9A96E; }
+    .btn--secondary { background: transparent; color: #C9A96E; border: 1px solid rgba(201,169,110,0.4); }
+    .section { padding: 80px 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 25px; }
+    .section-header { text-align: center; margin-bottom: 50px; }
+    .section-eyebrow { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #C9A96E; margin-bottom: 12px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; color: #F5F0E8; }
+    .usp-grid { display: grid; grid-template-columns: 1fr; gap: 25px; text-align: center; }
+    .usp-item i { font-size: 32px; color: #C9A96E; margin-bottom: 10px; }
+    .usp-item__title { font-size: 15px; font-weight: 500; color: #F5F0E8; margin-bottom: 5px; }
+    .usp-item__text { font-size: 13px; color: #6E6860; }
+    .categories-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    .category-card { position: relative; border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; text-decoration: none; }
+    .category-card img { width: 100%; height: 100%; object-fit: cover; }
+    .category-card__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,13,13,0.85), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
+    .category-card__title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #F5F0E8; }
     .recently-viewed { display: none; }
     .recently-viewed.is-visible { display: block; }
-    .recent-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-    .recent-card {
-      background: #1C1C1C;
-      border: 1px solid #2E2E2E;
-      border-radius: 4px;
-      overflow: hidden;
-      text-decoration: none;
-      display: block;
-      transition: border-color 0.2s;
-    }
+    .recent-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .recent-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; overflow: hidden; text-decoration: none; display: block; transition: border-color 0.2s; }
     .recent-card:hover { border-color: #C9A96E; }
     .recent-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
     .recent-card__body { padding: 12px 15px; }
-    .recent-card__name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      color: #F5F0E8;
-      margin-bottom: 5px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .recent-card__name { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #F5F0E8; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .recent-card__price { font-size: 14px; font-weight: 500; color: #C9A96E; }
-
-    .footer {
-      background: #141414;
-      border-top: 1px solid #242424;
-      padding: 50px 0 30px;
-      text-align: center;
-    }
-    .footer__brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 700;
-      font-style: italic;
-      color: #F5F0E8;
-      margin-bottom: 10px;
-    }
-    .footer__tagline {
-      font-size: 13px;
-      color: #6E6860;
-      margin-bottom: 15px;
-    }
-    .footer__copyright {
-      font-size: 13px;
-      color: #6E6860;
-    }
-    @media (min-width: 768px) {
-      .usp-grid { grid-template-columns: repeat(2, 1fr); }
-      .categories-grid { grid-template-columns: repeat(2, 1fr); }
-      .recent-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    @media (min-width: 1024px) {
-      .usp-grid { grid-template-columns: repeat(4, 1fr); }
-      .categories-grid { grid-template-columns: repeat(4, 1fr); }
-      .hero__title { font-size: 65px; }
-    }
+    .footer { background: #141414; border-top: 1px solid #242424; padding: 50px 0 30px; text-align: center; }
+    .footer__brand { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; font-style: italic; color: #F5F0E8; margin-bottom: 10px; }
+    .footer__tagline { font-size: 13px; color: #6E6860; margin-bottom: 15px; }
+    .footer__copyright { font-size: 13px; color: #6E6860; }
+    @media (min-width: 768px) { .usp-grid { grid-template-columns: repeat(2, 1fr); } .categories-grid { grid-template-columns: repeat(2, 1fr); } .recent-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (min-width: 1024px) { .usp-grid { grid-template-columns: repeat(4, 1fr); } .categories-grid { grid-template-columns: repeat(4, 1fr); } .hero__title { font-size: 65px; } }
   </style>
 </head>
 <body>
@@ -232,6 +60,7 @@
         <a href="categories.html" class="navbar__link">Categories</a>
         <a href="about.html" class="navbar__link">About</a>
         <a href="contact.html" class="navbar__link">Contact</a>
+        <a href="custom-quote.html" class="navbar__link">Custom Quote</a>
       </nav>
       <div class="navbar__actions">
         <a href="account-wishlist.html" class="navbar__icon"><i class="ri-heart-line"></i></a>
@@ -264,7 +93,6 @@
     </div>
   </section>
 
-  <!-- Recently Viewed Section -->
   <section class="section recently-viewed" id="recently-viewed" style="background:#141414;">
     <div class="container">
       <div class="section-header">
@@ -282,29 +110,16 @@
         <h2 class="section-title">Shop by Category</h2>
       </div>
       <div class="categories-grid">
-        <a href="category.html?slug=sofas" class="category-card">
-          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600" alt="Sofas">
-          <div class="category-card__overlay"><p class="category-card__title">Sofas</p></div>
-        </a>
-        <a href="category.html?slug=beds" class="category-card">
-          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600" alt="Beds">
-          <div class="category-card__overlay"><p class="category-card__title">Beds</p></div>
-        </a>
-        <a href="category.html?slug=tables" class="category-card">
-          <img src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=600" alt="Tables">
-          <div class="category-card__overlay"><p class="category-card__title">Tables</p></div>
-        </a>
-        <a href="category.html?slug=wardrobes" class="category-card">
-          <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600" alt="Wardrobes">
-          <div class="category-card__overlay"><p class="category-card__title">Wardrobes</p></div>
-        </a>
+        <a href="category.html?slug=sofas" class="category-card"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600" alt="Sofas"><div class="category-card__overlay"><p class="category-card__title">Sofas</p></div></a>
+        <a href="category.html?slug=beds" class="category-card"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600" alt="Beds"><div class="category-card__overlay"><p class="category-card__title">Beds</p></div></a>
+        <a href="category.html?slug=tables" class="category-card"><img src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=600" alt="Tables"><div class="category-card__overlay"><p class="category-card__title">Tables</p></div></a>
+        <a href="category.html?slug=wardrobes" class="category-card"><img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600" alt="Wardrobes"><div class="category-card__overlay"><p class="category-card__title">Wardrobes</p></div></a>
       </div>
     </div>
   </section>
 
-    <footer class="footer">
+  <footer class="footer">
     <div class="container">
-      <!-- Newsletter -->
       <div class="newsletter" style="text-align:center;margin-bottom:25px;">
         <p style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#F5F0E8;margin-bottom:8px;">Join Our Newsletter</p>
         <p style="font-size:13px;color:#6E6860;margin-bottom:15px;">Get exclusive offers and new arrivals straight to your inbox.</p>
@@ -314,142 +129,73 @@
         </div>
         <p id="newsletter-msg" style="font-size:12px;margin-top:8px;"></p>
       </div>
-
       <p class="footer__brand">Woodbuyy</p>
       <p class="footer__tagline">Luxury furniture for the modern UAE home.</p>
       <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-  <!-- Firebase Config -->
   <script src="js/firebase-config.js"></script>
 
-  <!-- Cart Badge + Recently Viewed -->
   <script>
-    // Format price (fils → AED)
-    function formatAED(fils) {
-      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
+    function formatAED(fils) { return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 
-    // Update cart count badge
     function updateCartBadge() {
       const badge = document.getElementById('cart-count');
       if (!badge) return;
-
       const guestCart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
       let count = guestCart.reduce((sum, item) => sum + item.quantity, 0);
-
       if (typeof auth !== 'undefined') {
         auth.onAuthStateChanged(async (user) => {
           if (user) {
             try {
               const cartRef = db.collection('carts').doc(user.uid);
               const snap = await cartRef.get();
-              if (snap.exists) {
-                const items = snap.data().items || [];
-                count = items.reduce((sum, item) => sum + item.quantity, 0);
-              }
-            } catch (e) {
-              console.log('Cart fetch error:', e.message);
-            }
+              if (snap.exists) { const items = snap.data().items || []; count = items.reduce((sum, item) => sum + item.quantity, 0); }
+            } catch (e) { console.log('Cart fetch error:', e.message); }
           }
           updateBadgeDisplay(badge, count);
         });
-      } else {
-        updateBadgeDisplay(badge, count);
-      }
+      } else { updateBadgeDisplay(badge, count); }
     }
 
     function updateBadgeDisplay(badge, count) {
-      if (count > 0) {
-        badge.textContent = count;
-        badge.classList.remove('hidden');
-      } else {
-        badge.classList.add('hidden');
-      }
+      if (count > 0) { badge.textContent = count; badge.classList.remove('hidden'); }
+      else { badge.classList.add('hidden'); }
     }
 
-    // Load recently viewed products
     function loadRecentlyViewed() {
       const section = document.getElementById('recently-viewed');
       const grid = document.getElementById('recent-grid');
-
       const recent = JSON.parse(localStorage.getItem('wb_recently_viewed') || '[]');
-
-      if (recent.length === 0) {
-        section.classList.remove('is-visible');
-        return;
-      }
-
+      if (recent.length === 0) { section.classList.remove('is-visible'); return; }
       section.classList.add('is-visible');
       grid.innerHTML = recent.slice(0, 4).map(item => {
         const price = item.price || 0;
         const image = item.image || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
-        return `
-          <a href="product.html?id=${item.productId}" class="recent-card">
-            <img src="${image}" alt="${item.name || ''}">
-            <div class="recent-card__body">
-              <p class="recent-card__name">${item.name || '-'}</p>
-              <p class="recent-card__price">${formatAED(price)}</p>
-            </div>
-          </a>
-        `;
+        return `<a href="product.html?id=${item.productId}" class="recent-card"><img src="${image}" alt="${item.name || ''}"><div class="recent-card__body"><p class="recent-card__name">${item.name || '-'}</p><p class="recent-card__price">${formatAED(price)}</p></div></a>`;
       }).join('');
     }
 
-       // Newsletter subscribe
     window.subscribeNewsletter = async function() {
       const emailInput = document.getElementById('newsletter-email');
       const btn = document.getElementById('newsletter-btn');
       const msg = document.getElementById('newsletter-msg');
-
       const email = emailInput.value.trim();
-
-      if (!email || !email.includes('@')) {
-        msg.textContent = 'Please enter a valid email address';
-        msg.style.color = '#E05555';
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Subscribing...';
-
+      if (!email || !email.includes('@')) { msg.textContent = 'Please enter a valid email address'; msg.style.color = '#E05555'; return; }
+      btn.disabled = true; btn.textContent = 'Subscribing...';
       try {
-        const existing = await db.collection('subscribers')
-          .where('email', '==', email)
-          .get();
-
-        if (!existing.empty) {
-          msg.textContent = 'You are already subscribed!';
-          msg.style.color = '#4CAF7D';
-          emailInput.value = '';
-          return;
-        }
-
-        await db.collection('subscribers').add({
-          email: email,
-          source: 'footer',
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        msg.textContent = 'Subscribed successfully!';
-        msg.style.color = '#4CAF7D';
-        emailInput.value = '';
-      } catch (err) {
-        msg.textContent = 'Error: ' + err.message;
-        msg.style.color = '#E05555';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Subscribe';
-      }
+        const existing = await db.collection('subscribers').where('email', '==', email).get();
+        if (!existing.empty) { msg.textContent = 'You are already subscribed!'; msg.style.color = '#4CAF7D'; emailInput.value = ''; return; }
+        await db.collection('subscribers').add({ email: email, source: 'footer', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        msg.textContent = 'Subscribed successfully!'; msg.style.color = '#4CAF7D'; emailInput.value = '';
+      } catch (err) { msg.textContent = 'Error: ' + err.message; msg.style.color = '#E05555'; }
+      finally { btn.disabled = false; btn.textContent = 'Subscribe'; }
     };
 
-    // Init
     updateCartBadge();
     loadRecentlyViewed();
   </script>
