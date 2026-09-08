@@ -129,7 +129,7 @@
       }
     }
 
-    // Load related products (same category)
+    // Load related products (same category first, then random fallback)
     async function loadRelatedProducts(categorySlug) {
       const section = document.getElementById('related-section');
       const gridEl = document.getElementById('related-grid');
@@ -139,17 +139,33 @@
       gridEl.innerHTML = Array(4).fill('<div class="skeleton skeleton-related"></div>').join('');
 
       try {
-        let query = db.collection('Products').where('isActive', '==', true);
-
-        // If category exists, filter by it
+        // First try same category
+        let sameCategory = [];
         if (categorySlug) {
-          query = query.where('categorySlug', '==', categorySlug);
+          const catSnap = await db.collection('Products')
+            .where('isActive', '==', true)
+            .where('categorySlug', '==', categorySlug)
+            .limit(5)
+            .get();
+          sameCategory = catSnap.docs.filter(doc => doc.id !== id).slice(0, 4);
         }
 
-        const snap = await query.limit(5).get();
+        // If same category has less than 4, fill with random other products
+        let related = [...sameCategory];
 
-        // Filter out current product
-        const related = snap.docs.filter(doc => doc.id !== id).slice(0, 4);
+        if (related.length < 4) {
+          const otherSnap = await db.collection('Products')
+            .where('isActive', '==', true)
+            .limit(10)
+            .get();
+
+          const others = otherSnap.docs.filter(doc => 
+            doc.id !== id && !related.find(r => r.id === doc.id)
+          );
+
+          const needed = 4 - related.length;
+          related = [...related, ...others.slice(0, needed)];
+        }
 
         if (related.length === 0) {
           section.style.display = 'none';
