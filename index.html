@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,6 +154,38 @@
       font-size: 22px;
       color: #F5F0E8;
     }
+
+    /* Recently Viewed */
+    .recently-viewed { display: none; }
+    .recently-viewed.is-visible { display: block; }
+    .recent-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    .recent-card {
+      background: #1C1C1C;
+      border: 1px solid #2E2E2E;
+      border-radius: 4px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s;
+    }
+    .recent-card:hover { border-color: #C9A96E; }
+    .recent-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+    .recent-card__body { padding: 12px 15px; }
+    .recent-card__name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: #F5F0E8;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .recent-card__price { font-size: 14px; font-weight: 500; color: #C9A96E; }
+
     .footer {
       background: #141414;
       border-top: 1px solid #242424;
@@ -182,6 +212,7 @@
     @media (min-width: 768px) {
       .usp-grid { grid-template-columns: repeat(2, 1fr); }
       .categories-grid { grid-template-columns: repeat(2, 1fr); }
+      .recent-grid { grid-template-columns: repeat(4, 1fr); }
     }
     @media (min-width: 1024px) {
       .usp-grid { grid-template-columns: repeat(4, 1fr); }
@@ -233,6 +264,17 @@
     </div>
   </section>
 
+  <!-- Recently Viewed Section -->
+  <section class="section recently-viewed" id="recently-viewed" style="background:#141414;">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Your Journey</p>
+        <h2 class="section-title">Recently Viewed</h2>
+      </div>
+      <div class="recent-grid" id="recent-grid"></div>
+    </div>
+  </section>
+
   <section class="section" style="background:#141414;">
     <div class="container">
       <div class="section-header">
@@ -276,9 +318,14 @@
   <!-- Firebase Config -->
   <script src="js/firebase-config.js"></script>
 
-  <!-- Cart Badge Update -->
+  <!-- Cart Badge + Recently Viewed -->
   <script>
-    // Update cart count badge on page load
+    // Format price (fils → AED)
+    function formatAED(fils) {
+      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Update cart count badge
     function updateCartBadge() {
       const badge = document.getElementById('cart-count');
       if (!badge) return;
@@ -286,7 +333,6 @@
       const guestCart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
       let count = guestCart.reduce((sum, item) => sum + item.quantity, 0);
 
-      // If logged in, try Firestore cart
       if (typeof auth !== 'undefined') {
         auth.onAuthStateChanged(async (user) => {
           if (user) {
@@ -301,24 +347,53 @@
               console.log('Cart fetch error:', e.message);
             }
           }
-          if (count > 0) {
-            badge.textContent = count;
-            badge.classList.remove('hidden');
-          } else {
-            badge.classList.add('hidden');
-          }
+          updateBadgeDisplay(badge, count);
         });
       } else {
-        if (count > 0) {
-          badge.textContent = count;
-          badge.classList.remove('hidden');
-        } else {
-          badge.classList.add('hidden');
-        }
+        updateBadgeDisplay(badge, count);
       }
     }
 
+    function updateBadgeDisplay(badge, count) {
+      if (count > 0) {
+        badge.textContent = count;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    // Load recently viewed products
+    function loadRecentlyViewed() {
+      const section = document.getElementById('recently-viewed');
+      const grid = document.getElementById('recent-grid');
+
+      const recent = JSON.parse(localStorage.getItem('wb_recently_viewed') || '[]');
+
+      if (recent.length === 0) {
+        section.classList.remove('is-visible');
+        return;
+      }
+
+      section.classList.add('is-visible');
+      grid.innerHTML = recent.slice(0, 4).map(item => {
+        const price = item.price || 0;
+        const image = item.image || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
+        return `
+          <a href="product.html?id=${item.productId}" class="recent-card">
+            <img src="${image}" alt="${item.name || ''}">
+            <div class="recent-card__body">
+              <p class="recent-card__name">${item.name || '-'}</p>
+              <p class="recent-card__price">${formatAED(price)}</p>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Init
     updateCartBadge();
+    loadRecentlyViewed();
   </script>
 
 </body>
