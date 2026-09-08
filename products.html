@@ -10,52 +10,257 @@
     body { background: #0D0D0D; font-family: 'Jost', sans-serif; margin: 0; }
     .products-page { padding-top: 72px; min-height: 100vh; }
     .products-header { padding: 40px 0 20px; text-align: center; }
-    .products-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px 25px 60px; max-width: 1200px; margin: 0 auto; }
-    .product-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; overflow: hidden; text-decoration: none; display: block; }
+    .products-header h1 { font-family: 'Cormorant Garamond', serif; color: #F5F0E8; margin-bottom: 25px; }
+
+    /* Search Bar */
+    .search-wrap { max-width: 500px; margin: 0 auto; position: relative; }
+    .search-input {
+      width: 100%;
+      height: 50px;
+      padding: 0 45px 0 20px;
+      background: #1C1C1C;
+      border: 1px solid #2E2E2E;
+      border-radius: 4px;
+      color: #F5F0E8;
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input::placeholder { color: #6E6860; }
+    .search-input:focus { border-color: #C9A96E; }
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6E6860;
+      font-size: 20px;
+      pointer-events: none;
+    }
+    .search-clear {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6E6860;
+      font-size: 18px;
+      cursor: pointer;
+      display: none;
+    }
+    .search-clear.is-visible { display: block; }
+
+    /* Results info */
+    .search-info {
+      text-align: center;
+      color: #6E6860;
+      font-size: 13px;
+      margin-top: 15px;
+      display: none;
+    }
+    .search-info.is-visible { display: block; }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 20px 25px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .product-card {
+      background: #1C1C1C;
+      border: 1px solid #2E2E2E;
+      border-radius: 4px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s;
+    }
+    .product-card:hover { border-color: #C9A96E; }
     .product-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
     .product-card__body { padding: 18px; }
     .product-card__name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: #F5F0E8; margin-bottom: 8px; }
     .product-card__price { font-size: 16px; font-weight: 500; color: #C9A96E; }
+    .product-card__category { font-size: 12px; color: #6E6860; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6E6860;
+    }
+    .empty-state i { font-size: 48px; color: #6E6860; opacity: 0.5; margin-bottom: 15px; }
+    .empty-state p { font-size: 16px; margin-bottom: 5px; }
+    .empty-state span { font-size: 13px; color: #6E6860; opacity: 0.7; }
+
+    /* Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #1C1C1C 25%, #222222 50%, #1C1C1C 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+    .skeleton-card { height: 300px; }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
     @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
   </style>
 </head>
 <body>
+
   <main class="products-page">
     <div class="products-header">
-      <h1 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;">All Furniture</h1>
+      <h1>All Furniture</h1>
+
+      <!-- Search Bar -->
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="search-input" placeholder="Search sofas, beds, tables..." autocomplete="off">
+        <i class="ri-close-line search-clear" id="search-clear"></i>
+        <i class="ri-search-line search-icon"></i>
+      </div>
+      <p class="search-info" id="search-info"></p>
     </div>
-    <div class="products-grid" id="grid"><p style="color:#6E6860;text-align:center;">Loading...</p></div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" id="grid"></div>
   </main>
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
+
   <script>
-    async function load() {
-      try {
-        const snap = await db.collection('Products').get();
-        const grid = document.getElementById('grid');
-        if (snap.empty) {
-          grid.innerHTML = '<p style="text-align:center;color:#6E6860;">No products yet.</p>';
-          return;
-        }
-        grid.innerHTML = snap.docs.map(doc => {
-          const p = doc.data();
-          const price = p.price || 0;
-          return `<a href="product.html?id=${doc.id}" class="product-card">
-           <img src="${p.images && p.images[0] ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600'}" alt="${p.name || ''}">
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('search-input');
+    const searchClear = document.getElementById('search-clear');
+    const searchInfo = document.getElementById('search-info');
+
+    let allProducts = [];
+    let searchTimeout = null;
+
+    // Format price (fils → AED)
+    function formatAED(fils) {
+      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Render products to grid
+    function renderProducts(products) {
+      if (products.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1/-1;">
+            <i class="ri-search-line"></i>
+            <p>No products found</p>
+            <span>Try a different search term</span>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = products.map(doc => {
+        const p = doc.data ? doc.data() : doc;
+        const id = doc.id || p.id;
+        const price = p.price || 0;
+        const image = (p.images && p.images[0]) ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
+        const category = p.categorySlug || p.category || '';
+        return `
+          <a href="product.html?id=${id}" class="product-card">
+            <img src="${image}" alt="${p.name || ''}">
             <div class="product-card__body">
+              ${category ? `<p class="product-card__category">${category}</p>` : ''}
               <p class="product-card__name">${p.name || '-'}</p>
-              <p class="product-card__price">AED ${(price / 100).toFixed(2)}</p>
+              <p class="product-card__price">${formatAED(price)}</p>
             </div>
-          </a>`;
-        }).join('');
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Show skeleton loaders
+    function showSkeletons(count = 8) {
+      grid.innerHTML = Array(count).fill(`
+        <div class="skeleton skeleton-card"></div>
+      `).join('');
+    }
+
+    // Filter products by search term
+    function filterProducts(searchTerm) {
+      const term = searchTerm.toLowerCase().trim();
+
+      if (!term) {
+        searchInfo.classList.remove('is-visible');
+        searchClear.classList.remove('is-visible');
+        renderProducts(allProducts);
+        return;
+      }
+
+      searchClear.classList.add('is-visible');
+
+      const filtered = allProducts.filter(p => {
+        const data = p.data ? p.data() : p;
+        const name = (data.name || '').toLowerCase();
+        const category = (data.categorySlug || data.category || '').toLowerCase();
+        const description = (data.description || '').toLowerCase();
+        return name.includes(term) || category.includes(term) || description.includes(term);
+      });
+
+      searchInfo.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''} for "${searchTerm}"`;
+      searchInfo.classList.add('is-visible');
+      renderProducts(filtered);
+    }
+
+    // Load all products from Firestore
+    async function loadProducts() {
+      showSkeletons(8);
+      try {
+        const snap = await db.collection('Products').where('isActive', '==', true).get();
+        allProducts = snap.docs;
+        renderProducts(allProducts);
       } catch (err) {
-        document.getElementById('grid').innerHTML = '<p style="text-align:center;color:#E05555;">Error: ' + err.message + '</p>';
+        console.error('Error loading products:', err);
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1/-1;">
+            <i class="ri-error-warning-line"></i>
+            <p>Error loading products</p>
+            <span>${err.message}</span>
+          </div>
+        `;
       }
     }
-    load();
+
+    // Search input handler (debounced)
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        filterProducts(e.target.value);
+      }, 300);
+    });
+
+    // Clear search
+    searchClear.addEventListener('click', () => {
+      searchInput.value = '';
+      filterProducts('');
+      searchInput.focus();
+    });
+
+    // Escape key clears search
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        filterProducts('');
+      }
+    });
+
+    // Load products on page load
+    loadProducts();
   </script>
+
 </body>
 </html>
