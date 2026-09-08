@@ -19,6 +19,12 @@
     .input-group input, .input-group select { width: 100%; height: 45px; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; padding: 0 12px; font-size: 14px; outline: none; }
     .input-group input:focus, .input-group select:focus { border-color: #C9A96E; }
     .btn-primary { width: 100%; height: 50px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .btn-primary:hover { background: #B8944F; }
+    .btn-whatsapp { width: 100%; height: 50px; background: #25D366; color: #fff; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 10px; display: none; }
+    .btn-whatsapp:hover { background: #1EBE5A; }
+    .order-summary { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 20px; margin-top: 10px; display: none; }
+    .order-summary h3 { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #F5F0E8; margin-bottom: 10px; }
+    .order-summary p { font-size: 13px; color: #B0A898; margin-bottom: 5px; }
     @media (min-width: 768px) { .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; } }
   </style>
 </head>
@@ -99,6 +105,17 @@
           </div>
           <button type="submit" class="btn-primary">Place Order</button>
         </form>
+
+        <!-- WhatsApp Confirmation -->
+        <div class="order-summary" id="order-summary">
+          <h3>✅ Order Placed Successfully!</h3>
+          <p id="summary-order-id"></p>
+          <p id="summary-total"></p>
+          <p style="margin-top:10px;color:#6E6860;">Send order details to WhatsApp for faster confirmation:</p>
+          <button type="button" class="btn-whatsapp" id="btn-whatsapp">
+            <i class="ri-whatsapp-line"></i> Send Order on WhatsApp
+          </button>
+        </div>
       </div>
     </div>
   </main>
@@ -106,10 +123,66 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
- <script src="js/firebase-config.js"></script>
+  <script src="js/firebase-config.js"></script>
+
   <script>
+    // ============================================================
+    // WOODBUYY ADMIN WHATSAPP NUMBER
+    // Change this to your WhatsApp number (UAE format, no +)
+    // ============================================================
+    const ADMIN_WHATSAPP = '9715XXXXXXXX'; // ← APNA NUMBER YAHAN DALO
+
+    // Format price
+    function formatAED(fils) {
+      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Generate Order ID
+    function generateOrderId() {
+      const now = new Date();
+      const yy = String(now.getFullYear()).slice(2);
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const rand = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+      return `WB-${yy}${mm}${dd}-${rand}`;
+    }
+
+    // Build WhatsApp message
+    function buildWhatsAppMessage(orderData) {
+      const itemsList = orderData.items.map(item =>
+        `• ${item.name} x${item.quantity} = ${formatAED((item.salePrice || item.price) * item.quantity)}`
+      ).join('\n');
+
+      return [
+        '🔔 *NEW ORDER — WOODBUYY*',
+        '',
+        `📋 Order ID: ${orderData.orderId}`,
+        '',
+        '👤 *Customer:*',
+        `Name: ${orderData.customerName}`,
+        `Phone: ${orderData.customerPhone}`,
+        `Email: ${orderData.customerEmail}`,
+        '',
+        '📍 *Delivery Address:*',
+        `${orderData.address.line1}${orderData.address.line2 ? ', ' + orderData.address.line2 : ''}`,
+        `${orderData.address.emirate}${orderData.address.city ? ', ' + orderData.address.city : ''}`,
+        '',
+        '🛒 *Items:*',
+        itemsList,
+        '',
+        '💰 *Total:*',
+        `Subtotal: ${formatAED(orderData.subtotal)}`,
+        `VAT (5%): ${formatAED(orderData.vat)}`,
+        `Shipping: ${formatAED(orderData.shipping)}`,
+        `*TOTAL: ${formatAED(orderData.total)}*`,
+        '',
+        '💵 Payment: Cash on Delivery'
+      ].join('\n');
+    }
+
     document.getElementById('checkout-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+
       const cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
       if (cart.length === 0) {
         alert('Cart is empty');
@@ -121,33 +194,56 @@
       const shipping = 5000;
       const total = subtotal + vat + shipping;
 
-      const now = new Date();
-      const yy = String(now.getFullYear()).slice(2);
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      const rand = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
-      const orderId = `WB-${yy}${mm}${dd}-${rand}`;
+      const orderId = generateOrderId();
+
+      const orderData = {
+        orderId,
+        customerName: document.getElementById('name').value,
+        customerPhone: document.getElementById('phone').value,
+        customerEmail: document.getElementById('email').value,
+        items: cart,
+        subtotal, vat, shipping, total,
+        address: {
+          line1: document.getElementById('line1').value,
+          line2: document.getElementById('line2').value,
+          emirate: document.getElementById('emirate').value,
+          city: document.getElementById('city').value
+        }
+      };
 
       try {
+        // Save order to Firestore
         await db.collection('orders').doc(orderId).set({
-          customerName: document.getElementById('name').value,
-          customerPhone: document.getElementById('phone').value,
-          customerEmail: document.getElementById('email').value,
+          customerName: orderData.customerName,
+          customerPhone: orderData.customerPhone,
+          customerEmail: orderData.customerEmail,
           items: cart,
           subtotal, vat, shipping, total,
-          address: {
-            line1: document.getElementById('line1').value,
-            line2: document.getElementById('line2').value,
-            emirate: document.getElementById('emirate').value,
-            city: document.getElementById('city').value
-          },
+          address: orderData.address,
           status: 'pending',
           paymentMethod: 'cod',
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
+        // Clear cart
         localStorage.removeItem('wb_cart');
-        window.location.href = 'order-success.html?orderId=' + orderId;
+
+        // Hide form, show summary
+        document.getElementById('checkout-form').style.display = 'none';
+        document.getElementById('order-summary').style.display = 'block';
+        document.getElementById('summary-order-id').textContent = 'Order ID: ' + orderId;
+        document.getElementById('summary-total').textContent = 'Total: ' + formatAED(total);
+
+        // Setup WhatsApp button
+        const waMessage = buildWhatsAppMessage(orderData);
+        const waUrl = 'https://wa.me/' + ADMIN_WHATSAPP + '?text=' + encodeURIComponent(waMessage);
+        const btnWhatsApp = document.getElementById('btn-whatsapp');
+        btnWhatsApp.style.display = 'flex';
+        btnWhatsApp.onclick = () => window.open(waUrl, '_blank');
+
+        // Auto-open WhatsApp after 1 second
+        setTimeout(() => window.open(waUrl, '_blank'), 1000);
+
       } catch (err) {
         alert('Order failed: ' + err.message);
       }
