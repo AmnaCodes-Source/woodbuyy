@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Products — Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
- <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
   <div class="admin-layout">
@@ -22,41 +24,160 @@
       <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
     </aside>
     <main class="main">
-      <h1>Products</h1>
-      <a href="product-new.html" class="btn-primary">+ Add Product</a>
-      <table>
-        <thead><tr><th>Name</th><th>Price</th><th>Stock</th><th>Status</th></tr></thead>
-        <tbody id="products-tbody"><tr><td colspan="4">Loading...</td></tr></tbody>
-      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:20px;">
+        <h1>Products</h1>
+        <a href="product-new.html" class="btn btn--primary">+ Add Product</a>
+      </div>
+
+      <!-- Search -->
+      <div style="margin-bottom:20px;">
+        <input type="text" id="search-input" class="input" placeholder="Search products..." style="max-width:300px;">
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="6">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
- <script src="../js/firebase-config.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
   <script>
+    let allProducts = [];
+
+    function formatAED(fils) {
+      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
+
+    function renderProducts(products) {
+      const tbody = document.getElementById('products-tbody');
+      
+      if (products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6">No products found.</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = products.map(doc => {
+        const p = doc.data();
+        const id = doc.id;
+        const price = p.salePrice || p.price || 0;
+        const image = (p.images && p.images[0]) ? p.images[0] : '';
+        return `
+          <tr>
+            <td>
+              ${image ? `<img src="${image}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;" alt="">` : '<i class="ri-image-line" style="font-size:24px;color:#6E6860;"></i>'}
+            </td>
+            <td>${escapeHTML(p.name || '-')}</td>
+            <td>${formatAED(price)}</td>
+            <td>${p.stockCount || 0}</td>
+            <td>
+              <span class="badge ${p.isActive ? 'badge--completed' : 'badge--cancelled'}">
+                ${p.isActive ? 'Active' : 'Inactive'}
+              </span>
+            </td>
+            <td>
+              <a href="product-edit.html?id=${id}" class="btn btn--secondary btn--sm" style="margin-right:5px;">
+                <i class="ri-edit-line"></i> Edit
+              </a>
+              <button class="btn btn--danger btn--sm" onclick="deleteProduct('${id}', '${escapeHTML(p.name || '')}')">
+                <i class="ri-delete-bin-line"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.deleteProduct = async function(id, name) {
+      if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+      
+      try {
+        await db.collection('Products').doc(id).delete();
+        alert('Product deleted');
+        loadProducts();
+      } catch (err) {
+        console.error('[admin/products] Delete error:', err);
+        alert('Failed to delete: ' + err.message);
+      }
+    };
+
+    async function loadProducts() {
+      try {
+        const snap = await db.collection('Products')  // ← Capital P
+          .orderBy('createdAt', 'desc')
+          .get();
+        
+        allProducts = snap.docs;
+        renderProducts(allProducts);
+      } catch (err) {
+        console.error('[admin/products] Error:', err);
+        document.getElementById('products-tbody').innerHTML = 
+          `<tr><td colspan="6">Error: ${escapeHTML(err.message)}</td></tr>`;
+      }
+    }
+
+    // Search filter
+    document.getElementById('search-input').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase().trim();
+      
+      if (!term) {
+        renderProducts(allProducts);
+        return;
+      }
+      
+      const filtered = allProducts.filter(doc => {
+        const p = doc.data();
+        return (p.name || '').toLowerCase().includes(term);
+      });
+      
+      renderProducts(filtered);
+    });
+
     auth.onAuthStateChanged(async (user) => {
       if (!user) { window.location.href = 'login.html'; return; }
+      
       try {
         const userDoc = await db.collection('users').doc(user.uid).get();
-        if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
+        if (!userDoc.exists || userDoc.data().role !== 'admin') { 
+          window.location.href = 'login.html'; 
+          return; 
+        }
         
-        const snap = await db.collection('products').get();
-        const tbody = document.getElementById('products-tbody');
-        
-        if (snap.empty) { tbody.innerHTML = '<tr><td colspan="4">No products yet.</td></tr>'; return; }
-        
-        tbody.innerHTML = snap.docs.map(doc => {
-          const p = doc.data();
-          const price = p.salePrice || p.price || 0;
-          return `<tr><td>${p.name || '-'}</td><td>AED ${(price / 100).toFixed(2)}</td><td>${p.stockCount || 0}</td><td>${p.isActive ? 'Active' : 'Inactive'}</td></tr>`;
-        }).join('');
+        loadProducts();
       } catch (err) {
-        console.error('Error:', err);
-        document.getElementById('products-tbody').innerHTML = '<tr><td colspan="4">Error: ' + err.message + '</td></tr>';
+        console.error('[admin/products] Auth error:', err);
       }
     });
-    function logout() { auth.signOut(); window.location.href = 'login.html'; }
+
+    function logout() { 
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
+    }
   </script>
 </body>
 </html>
