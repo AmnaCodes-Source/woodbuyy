@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Orders — Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
- <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
   <div class="admin-layout">
@@ -23,30 +25,180 @@
     </aside>
     <main class="main">
       <h1>Orders</h1>
-      <table>
-        <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
-        <tbody id="orders-tbody"></tbody>
-      </table>
+
+      <!-- Status Filter -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;" id="status-filter">
+        <button class="btn btn--secondary btn--sm filter-btn active" data-status="all">All</button>
+        <button class="btn btn--secondary btn--sm filter-btn" data-status="pending">Pending</button>
+        <button class="btn btn--secondary btn--sm filter-btn" data-status="confirmed">Confirmed</button>
+        <button class="btn btn--secondary btn--sm filter-btn" data-status="in_progress">In Progress</button>
+        <button class="btn btn--secondary btn--sm filter-btn" data-status="delivered">Delivered</button>
+        <button class="btn btn--secondary btn--sm filter-btn" data-status="completed">Completed</button>
+        <button class="btn btn--secondary btn--sm filter-btn" data-status="cancelled">Cancelled</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <tr><td colspan="6">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
- <script src="../js/firebase-config.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
   <script>
+    let allOrders = [];
+    let currentFilter = 'all';
+
+    function formatAED(fils) {
+      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
+
+    function getStatusBadge(status) {
+      const map = {
+        pending: 'badge--pending',
+        confirmed: 'badge--confirmed',
+        in_progress: 'badge--progress',
+        delivered: 'badge--delivered',
+        completed: 'badge--completed',
+        cancelled: 'badge--cancelled'
+      };
+      const label = status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      return `<span class="badge ${map[status] || 'badge--default'}">${label}</span>`;
+    }
+
+    function renderOrders(orders) {
+      const tbody = document.getElementById('orders-tbody');
+      
+      if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6">No orders found.</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = orders.map(doc => {
+        const o = doc.data();
+        const id = doc.id;
+        const status = o.status || 'pending';
+        const total = o.total || 0;
+        
+        return `
+          <tr>
+            <td><strong>${id}</strong></td>
+            <td>${escapeHTML(o.customerName || '-')}</td>
+            <td>${escapeHTML(o.customerPhone || '-')}</td>
+            <td>${formatAED(total)}</td>
+            <td>${getStatusBadge(status)}</td>
+            <td>
+              <a href="order-detail.html?id=${id}" class="btn btn--secondary btn--sm" style="margin-right:5px;">
+                <i class="ri-eye-line"></i> View
+              </a>
+              <select onchange="updateStatus('${id}', this.value)" style="height:36px;background:#141414;border:1px solid #2E2E2E;border-radius:4px;color:#F5F0E8;padding:0 8px;font-size:13px;cursor:pointer;">
+                <option value="pending" ${status === 'pending' ? 'selected' : ''}>Pending</option>
+                <option value="confirmed" ${status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="in_progress" ${status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                <option value="delivered" ${status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="completed" ${status === 'completed' ? 'selected' : ''}>Completed</option>
+                <option value="cancelled" ${status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.updateStatus = async function(orderId, newStatus) {
+      try {
+        await db.collection('orders').doc(orderId).update({
+          status: newStatus,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert('Status updated to: ' + newStatus.replace('_', ' '));
+        loadOrders();
+      } catch (err) {
+        console.error('[admin/orders] Update error:', err);
+        alert('Failed to update status: ' + err.message);
+      }
+    };
+
+    async function loadOrders() {
+      try {
+        const snap = await db.collection('orders')
+          .orderBy('createdAt', 'desc')
+          .limit(100)
+          .get();
+        
+        allOrders = snap.docs;
+        filterOrders();
+      } catch (err) {
+        console.error('[admin/orders] Error:', err);
+        document.getElementById('orders-tbody').innerHTML = 
+          `<tr><td colspan="6">Error: ${escapeHTML(err.message)}</td></tr>`;
+      }
+    }
+
+    function filterOrders() {
+      if (currentFilter === 'all') {
+        renderOrders(allOrders);
+      } else {
+        const filtered = allOrders.filter(doc => doc.data().status === currentFilter);
+        renderOrders(filtered);
+      }
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.dataset.status;
+        filterOrders();
+      });
+    });
+
     auth.onAuthStateChanged(async (user) => {
       if (!user) { window.location.href = 'login.html'; return; }
-      const userDoc = await db.collection('users').doc(user.uid).get();
-      if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
-      const snap = await db.collection('orders').orderBy('createdAt', 'desc').limit(50).get();
-      const tbody = document.getElementById('orders-tbody');
-      if (snap.empty) { tbody.innerHTML = '<tr><td colspan="4">No orders yet.</td></tr>'; return; }
-      tbody.innerHTML = snap.docs.map(doc => {
-        const o = doc.data();
-        return `<tr><td>${doc.id}</td><td>${o.customerName || '-'}</td><td>AED ${((o.total || 0) / 100).toFixed(2)}</td><td>${o.status}</td></tr>`;
-      }).join('');
+      
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') { 
+          window.location.href = 'login.html'; 
+          return; 
+        }
+        
+        loadOrders();
+      } catch (err) {
+        console.error('[admin/orders] Auth error:', err);
+      }
     });
-    function logout() { auth.signOut(); window.location.href = 'login.html'; }
+
+    function logout() { 
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
+    }
   </script>
 </body>
 </html>
