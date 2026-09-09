@@ -16,19 +16,20 @@ function formatCurrency(fils) {
 
 // ---------- TOAST SYSTEM ----------
 function showToast(message, type = 'success') {
-    let container = document.querySelector('.toast-container');
+    let container = document.getElementById('toast-container');
     if (!container) {
         container = document.createElement('div');
-        container.className = 'toast-container';
+        container.id = 'toast-container';
         document.body.appendChild(container);
     }
 
     const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
+    toast.className = `toast toast--${type}`;
     
     let icon = 'ri-checkbox-circle-line';
     if (type === 'error') icon = 'ri-close-circle-line';
     if (type === 'warning') icon = 'ri-alert-line';
+    if (type === 'info') icon = 'ri-information-line';
     
     toast.innerHTML = `
         <i class="${icon}"></i>
@@ -37,10 +38,9 @@ function showToast(message, type = 'success') {
     
     container.appendChild(toast);
     
+    // Auto remove after 3 seconds
     setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(20px)';
-        toast.style.transition = 'all 0.3s ease';
+        toast.classList.add('toast--out');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
@@ -48,7 +48,7 @@ function showToast(message, type = 'success') {
 // ---------- MODAL SYSTEM ----------
 function showModal({ title, content, actions = [], onClose = null }) {
     const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
+    modal.className = 'overlay is-active';
     modal.innerHTML = `
         <div class="modal">
             <div class="modal-header">
@@ -61,7 +61,7 @@ function showModal({ title, content, actions = [], onClose = null }) {
             ${actions.length ? `
                 <div class="modal-actions">
                     ${actions.map(action => `
-                        <button class="btn ${action.class || 'btn-outline'}" data-action="${action.value || ''}">
+                        <button class="btn ${action.class || 'btn--secondary'}" data-action="${action.value || ''}">
                             ${action.label}
                         </button>
                     `).join('')}
@@ -131,11 +131,13 @@ function setFieldError(inputId, errorId, message) {
     if (!input || !error) return;
     
     if (message) {
-        input.classList.add('error');
+        input.classList.add('input--error');
         error.textContent = message;
+        error.style.display = 'block';
     } else {
-        input.classList.remove('error');
+        input.classList.remove('input--error');
         error.textContent = '';
+        error.style.display = 'none';
     }
 }
 
@@ -198,4 +200,4 @@ function getUrlParam(param) {
     return urlParams.get(param);
 }
 
-console.log('Woodbuyy UI helpers loaded');
+console.log('[ui.js] UI helpers loaded');
