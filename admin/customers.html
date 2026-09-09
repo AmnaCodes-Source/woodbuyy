@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customers — Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
- <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
   <div class="admin-layout">
@@ -23,30 +25,132 @@
     </aside>
     <main class="main">
       <h1>Customers</h1>
-      <table>
-        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Type</th></tr></thead>
-        <tbody id="customers-tbody"></tbody>
-      </table>
+
+      <!-- Search -->
+      <div style="margin-bottom:20px;">
+        <input type="text" id="search-input" class="input" placeholder="Search by name, email, or phone..." style="max-width:350px;">
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Type</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody id="customers-tbody">
+            <tr><td colspan="5">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="../js/firebase-config.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
   <script>
+    let allCustomers = [];
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
+
+    function renderCustomers(customers) {
+      const tbody = document.getElementById('customers-tbody');
+      
+      if (customers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5">No customers found.</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = customers.map(doc => {
+        const c = doc.data();
+        const createdAt = c.createdAt && c.createdAt.toDate ? c.createdAt.toDate() : null;
+        const dateStr = createdAt ? createdAt.toLocaleDateString('en-AE', { month: 'short', day: 'numeric', year: 'numeric' }) : '-';
+        
+        return `
+          <tr>
+            <td><strong>${escapeHTML(c.name || c.firstName || '-')}</strong></td>
+            <td>${escapeHTML(c.email || '-')}</td>
+            <td>${escapeHTML(c.phone || '-')}</td>
+            <td>
+              <span class="badge ${c.isGuest ? 'badge--default' : 'badge--confirmed'}">
+                ${c.isGuest ? 'Guest' : 'Registered'}
+              </span>
+            </td>
+            <td>${dateStr}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function loadCustomers() {
+      try {
+        const snap = await db.collection('users')
+          .where('role', '==', 'customer')
+          .orderBy('createdAt', 'desc')
+          .get();
+        
+        allCustomers = snap.docs;
+        renderCustomers(allCustomers);
+      } catch (err) {
+        console.error('[admin/customers] Error:', err);
+        document.getElementById('customers-tbody').innerHTML = 
+          `<tr><td colspan="5">Error: ${escapeHTML(err.message)}</td></tr>`;
+      }
+    }
+
+    // Search filter
+    document.getElementById('search-input').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase().trim();
+      
+      if (!term) {
+        renderCustomers(allCustomers);
+        return;
+      }
+      
+      const filtered = allCustomers.filter(doc => {
+        const c = doc.data();
+        const name = (c.name || c.firstName || '').toLowerCase();
+        const email = (c.email || '').toLowerCase();
+        const phone = (c.phone || '').toLowerCase();
+        return name.includes(term) || email.includes(term) || phone.includes(term);
+      });
+      
+      renderCustomers(filtered);
+    });
+
     auth.onAuthStateChanged(async (user) => {
       if (!user) { window.location.href = 'login.html'; return; }
-      const userDoc = await db.collection('users').doc(user.uid).get();
-      if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
-      const snap = await db.collection('users').where('role', '==', 'customer').get();
-      const tbody = document.getElementById('customers-tbody');
-      if (snap.empty) { tbody.innerHTML = '<tr><td colspan="4">No customers yet.</td></tr>'; return; }
-      tbody.innerHTML = snap.docs.map(doc => {
-        const c = doc.data();
-        return `<tr><td>${c.name || '-'}</td><td>${c.email || '-'}</td><td>${c.phone || '-'}</td><td>${c.isGuest ? 'Guest' : 'Registered'}</td></tr>`;
-      }).join('');
+      
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') { 
+          window.location.href = 'login.html'; 
+          return; 
+        }
+        
+        loadCustomers();
+      } catch (err) {
+        console.error('[admin/customers] Auth error:', err);
+      }
     });
-    function logout() { auth.signOut(); window.location.href = 'login.html'; }
+
+    function logout() { 
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
+    }
   </script>
 </body>
 </html>
