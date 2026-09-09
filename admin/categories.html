@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Categories — Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-<link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
   <div class="admin-layout">
@@ -19,49 +21,220 @@
       <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
       <a href="categories.html" class="active"><i class="ri-folder-line"></i> Categories</a>
       <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
+      <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
     </aside>
     <main class="main">
       <h1>Categories</h1>
-      <div class="form-group"><label>Category Name</label><input type="text" id="cat-name" placeholder="e.g. Sofas"></div>
-      <div class="form-group"><label>Slug</label><input type="text" id="cat-slug" placeholder="e.g. sofas"></div>
-      <button class="btn-primary" onclick="addCategory()">+ Add Category</button>
-      <table>
-        <thead><tr><th>Name</th><th>Slug</th><th>Status</th></tr></thead>
-        <tbody id="categories-tbody"></tbody>
-      </table>
+
+      <!-- Add Category Form -->
+      <div class="card" style="padding:20px;margin-bottom:25px;">
+        <div class="form-row" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>Category Name</label>
+            <input type="text" id="cat-name" class="input" placeholder="e.g. Sofas">
+          </div>
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>Slug (lowercase, no spaces)</label>
+            <input type="text" id="cat-slug" class="input" placeholder="e.g. sofas">
+          </div>
+          <button class="btn btn--primary" onclick="addCategory()" id="add-btn">+ Add</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Slug</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="categories-tbody">
+            <tr><td colspan="4">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
- <script src="../js/firebase-config.js"></script>
-  <script>
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) { window.location.href = 'login.html'; return; }
-      const userDoc = await db.collection('users').doc(user.uid).get();
-      if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
-      loadCategories();
-    });
+  <script src="../js/firebase-config.js"></script>
 
-    async function loadCategories() {
-      const snap = await db.collection('categories').get();
-      const tbody = document.getElementById('categories-tbody');
-      if (snap.empty) { tbody.innerHTML = '<tr><td colspan="3">No categories yet.</td></tr>'; return; }
-      tbody.innerHTML = snap.docs.map(doc => {
-        const c = doc.data();
-        return `<tr><td>${c.name}</td><td>${c.slug}</td><td>${c.isActive ? 'Active' : 'Inactive'}</td></tr>`;
-      }).join('');
+  <script>
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
     }
 
-    async function addCategory() {
-      const name = document.getElementById('cat-name').value.trim();
-      const slug = document.getElementById('cat-slug').value.trim();
-      if (!name || !slug) { alert('Fill both fields'); return; }
-      await db.collection('categories').add({ name, slug, level: 1, parentId: null, isActive: true, order: 0, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-      document.getElementById('cat-name').value = '';
-      document.getElementById('cat-slug').value = '';
-      loadCategories();
-      alert('Category added!');
+    function slugify(text) {
+      return text.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+    }
+
+    async function loadCategories() {
+      const tbody = document.getElementById('categories-tbody');
+      
+      try {
+        const snap = await db.collection('categories')
+          .orderBy('order', 'asc')
+          .get();
+        
+        if (snap.empty) {
+          tbody.innerHTML = '<tr><td colspan="4">No categories yet.</td></tr>';
+          return;
+        }
+        
+        tbody.innerHTML = snap.docs.map(doc => {
+          const c = doc.data();
+          return `
+            <tr>
+              <td><strong>${escapeHTML(c.name)}</strong></td>
+              <td>${escapeHTML(c.slug)}</td>
+              <td>
+                <span class="badge ${c.isActive ? 'badge--completed' : 'badge--cancelled'}">
+                  ${c.isActive ? 'Active' : 'Inactive'}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn--secondary btn--sm" onclick="toggleActive('${doc.id}', ${!c.isActive})" style="margin-right:5px;">
+                  <i class="ri-toggle-line"></i> ${c.isActive ? 'Deactivate' : 'Activate'}
+                </button>
+                <button class="btn btn--danger btn--sm" onclick="deleteCategory('${doc.id}', '${escapeHTML(c.name)}')">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('[admin/categories] Error:', err);
+        tbody.innerHTML = `<tr><td colspan="4">Error: ${escapeHTML(err.message)}</td></tr>`;
+      }
+    }
+
+    window.toggleActive = async function(id, newStatus) {
+      try {
+        await db.collection('categories').doc(id).update({
+          isActive: newStatus,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        loadCategories();
+      } catch (err) {
+        console.error('[admin/categories] Toggle error:', err);
+        alert('Failed to update: ' + err.message);
+      }
+    };
+
+    window.deleteCategory = async function(id, name) {
+      if (!confirm(`Delete category "${name}"? Products in this category will not be deleted.`)) return;
+      
+      try {
+        await db.collection('categories').doc(id).delete();
+        loadCategories();
+      } catch (err) {
+        console.error('[admin/categories] Delete error:', err);
+        alert('Failed to delete: ' + err.message);
+      }
+    };
+
+    window.addCategory = async function() {
+      const nameInput = document.getElementById('cat-name');
+      const slugInput = document.getElementById('cat-slug');
+      const addBtn = document.getElementById('add-btn');
+      
+      const name = nameInput.value.trim();
+      let slug = slugInput.value.trim();
+      
+      if (!name) { alert('Please enter category name'); return; }
+      
+      // Auto-generate slug if empty
+      if (!slug) {
+        slug = slugify(name);
+      } else {
+        slug = slugify(slug);
+      }
+      
+      if (!slug) { alert('Invalid slug'); return; }
+      
+      // Check duplicate slug
+      try {
+        const existing = await db.collection('categories')
+          .where('slug', '==', slug)
+          .get();
+        
+        if (!existing.empty) {
+          alert('Slug already exists. Please use a different one.');
+          return;
+        }
+      } catch (err) {
+        console.error('[admin/categories] Check error:', err);
+      }
+      
+      // Get next order number
+      let nextOrder = 0;
+      try {
+        const snap = await db.collection('categories').get();
+        nextOrder = snap.size;
+      } catch (err) {
+        console.error('[admin/categories] Count error:', err);
+      }
+      
+      addBtn.disabled = true;
+      addBtn.textContent = 'Adding...';
+      
+      try {
+        await db.collection('categories').add({
+          name,
+          slug,
+          level: 1,
+          parentId: null,
+          isActive: true,
+          order: nextOrder,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        nameInput.value = '';
+        slugInput.value = '';
+        loadCategories();
+        alert('Category added successfully!');
+      } catch (err) {
+        console.error('[admin/categories] Add error:', err);
+        alert('Failed to add: ' + err.message);
+      } finally {
+        addBtn.disabled = false;
+        addBtn.textContent = '+ Add';
+      }
+    };
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') { 
+          window.location.href = 'login.html'; 
+          return; 
+        }
+        
+        loadCategories();
+      } catch (err) {
+        console.error('[admin/categories] Auth error:', err);
+      }
+    });
+
+    function logout() { 
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
     }
   </script>
 </body>
