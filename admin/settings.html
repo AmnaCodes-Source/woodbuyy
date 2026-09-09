@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings — Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
   <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
@@ -23,42 +25,164 @@
     </aside>
     <main class="main">
       <h1>Settings</h1>
-      <form id="settings-form">
-        <div class="form-group"><label>VAT Rate (%)</label><input type="number" id="vat" step="0.01" value="5"></div>
-        <div class="form-group"><label>Shipping — Dubai (AED)</label><input type="number" id="dubai" step="0.01" value="50"></div>
-        <div class="form-group"><label>Shipping — Abu Dhabi (AED)</label><input type="number" id="abudhabi" step="0.01" value="75"></div>
-        <div class="form-group"><label>Shipping — Sharjah/Ajman (AED)</label><input type="number" id="sharjah" step="0.01" value="60"></div>
-        <div class="form-group"><label>Shipping — RAK/Fujairah (AED)</label><input type="number" id="rak" step="0.01" value="90"></div>
-        <div class="form-group"><label>Shipping — UAQ (AED)</label><input type="number" id="uaq" step="0.01" value="80"></div>
-        <div class="form-group"><label>Free Shipping Threshold (AED)</label><input type="number" id="threshold" step="0.01" value="2000"></div>
-        <button type="submit" class="btn-primary">Save Settings</button>
-      </form>
+
+      <div class="card" style="padding:25px;max-width:600px;">
+        <form id="settings-form">
+          <div class="input-group">
+            <label>VAT Rate (%)</label>
+            <input type="number" id="vat" class="input" step="0.01" min="0" max="20" value="5">
+          </div>
+          
+          <div class="input-group">
+            <label>Shipping — Dubai (AED)</label>
+            <input type="number" id="dubai" class="input" step="0.01" min="0" value="50">
+          </div>
+          
+          <div class="input-group">
+            <label>Shipping — Abu Dhabi (AED)</label>
+            <input type="number" id="abudhabi" class="input" step="0.01" min="0" value="75">
+          </div>
+          
+          <div class="input-group">
+            <label>Shipping — Sharjah/Ajman (AED)</label>
+            <input type="number" id="sharjah" class="input" step="0.01" min="0" value="60">
+          </div>
+          
+          <div class="input-group">
+            <label>Shipping — RAK/Fujairah (AED)</label>
+            <input type="number" id="rak" class="input" step="0.01" min="0" value="90">
+          </div>
+          
+          <div class="input-group">
+            <label>Shipping — UAQ (AED)</label>
+            <input type="number" id="uaq" class="input" step="0.01" min="0" value="80">
+          </div>
+          
+          <div class="input-group">
+            <label>Free Shipping Threshold (AED)</label>
+            <input type="number" id="threshold" class="input" step="0.01" min="0" value="2000">
+          </div>
+          
+          <button type="submit" class="btn btn--primary btn--full" id="save-btn" style="margin-top:15px;">
+            Save Settings
+          </button>
+        </form>
+      </div>
     </main>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
- <script src="../js/firebase-config.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
   <script>
+    // Load existing settings on page load
+    async function loadSettings() {
+      try {
+        const snap = await db.collection('settings').doc('global').get();
+        
+        if (!snap.exists) return;
+        
+        const s = snap.data();
+        
+        // VAT rate: stored as decimal (0.05), display as percentage
+        if (s.vatRate !== undefined) {
+          document.getElementById('vat').value = (s.vatRate * 100).toFixed(2);
+        }
+        
+        // Shipping rates: stored in fils, display in AED
+        if (s.shippingRates) {
+          if (s.shippingRates['Dubai']) document.getElementById('dubai').value = (s.shippingRates['Dubai'] / 100).toFixed(2);
+          if (s.shippingRates['Abu Dhabi']) document.getElementById('abudhabi').value = (s.shippingRates['Abu Dhabi'] / 100).toFixed(2);
+          if (s.shippingRates['Sharjah']) document.getElementById('sharjah').value = (s.shippingRates['Sharjah'] / 100).toFixed(2);
+          if (s.shippingRates['Ras Al Khaimah']) document.getElementById('rak').value = (s.shippingRates['Ras Al Khaimah'] / 100).toFixed(2);
+          if (s.shippingRates['Umm Al Quwain']) document.getElementById('uaq').value = (s.shippingRates['Umm Al Quwain'] / 100).toFixed(2);
+        }
+        
+        if (s.freeShippingThreshold !== undefined) {
+          document.getElementById('threshold').value = (s.freeShippingThreshold / 100).toFixed(2);
+        }
+      } catch (err) {
+        console.error('[admin/settings] Load error:', err);
+      }
+    }
+
     document.getElementById('settings-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      await db.collection('settings').doc('global').set({
-        vatRate: parseFloat(document.getElementById('vat').value) / 100,
-        shippingRates: {
-          'Dubai': Math.round(parseFloat(document.getElementById('dubai').value) * 100),
-          'Abu Dhabi': Math.round(parseFloat(document.getElementById('abudhabi').value) * 100),
-          'Sharjah': Math.round(parseFloat(document.getElementById('sharjah').value) * 100),
-          'Ajman': Math.round(parseFloat(document.getElementById('sharjah').value) * 100),
-          'Ras Al Khaimah': Math.round(parseFloat(document.getElementById('rak').value) * 100),
-          'Fujairah': Math.round(parseFloat(document.getElementById('rak').value) * 100),
-          'Umm Al Quwain': Math.round(parseFloat(document.getElementById('uaq').value) * 100)
-        },
-        freeShippingThreshold: Math.round(parseFloat(document.getElementById('threshold').value) * 100),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-      alert('Settings saved!');
+      
+      const saveBtn = document.getElementById('save-btn');
+      
+      // Validate
+      const vat = parseFloat(document.getElementById('vat').value);
+      const dubai = parseFloat(document.getElementById('dubai').value);
+      const abudhabi = parseFloat(document.getElementById('abudhabi').value);
+      const sharjah = parseFloat(document.getElementById('sharjah').value);
+      const rak = parseFloat(document.getElementById('rak').value);
+      const uaq = parseFloat(document.getElementById('uaq').value);
+      const threshold = parseFloat(document.getElementById('threshold').value);
+      
+      if (isNaN(vat) || vat < 0 || vat > 20) {
+        alert('VAT rate must be between 0 and 20%');
+        return;
+      }
+      
+      if ([dubai, abudhabi, sharjah, rak, uaq, threshold].some(v => isNaN(v) || v < 0)) {
+        alert('All values must be positive numbers');
+        return;
+      }
+      
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+      
+      try {
+        await db.collection('settings').doc('global').set({
+          vatRate: vat / 100,
+          shippingRates: {
+            'Dubai': Math.round(dubai * 100),
+            'Abu Dhabi': Math.round(abudhabi * 100),
+            'Sharjah': Math.round(sharjah * 100),
+            'Ajman': Math.round(sharjah * 100),
+            'Ras Al Khaimah': Math.round(rak * 100),
+            'Fujairah': Math.round(rak * 100),
+            'Umm Al Quwain': Math.round(uaq * 100)
+          },
+          freeShippingThreshold: Math.round(threshold * 100),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        
+        alert('Settings saved successfully!');
+      } catch (err) {
+        console.error('[admin/settings] Save error:', err);
+        alert('Failed to save: ' + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Settings';
+      }
     });
-    function logout() { auth.signOut(); window.location.href = 'login.html'; }
+
+    // Auth guard
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') { 
+          window.location.href = 'login.html'; 
+          return; 
+        }
+        
+        loadSettings();
+      } catch (err) {
+        console.error('[admin/settings] Auth error:', err);
+      }
+    });
+
+    function logout() { 
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
+    }
   </script>
 </body>
 </html>
