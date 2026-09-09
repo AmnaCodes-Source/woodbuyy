@@ -3,40 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Categories — Woodbuyy</title>
+  <title>Categories — Woodbuyy UAE | Sofas, Beds, Tables, Wardrobes</title>
+  <meta name="description" content="Browse furniture categories at Woodbuyy. Sofas, beds, dining tables, wardrobes, chairs & more. Cash on delivery across UAE.">
+  <meta name="robots" content="index, follow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
   <link rel="stylesheet" href="css/components.css">
-  <style>
-    .categories-page { padding-top: 72px; min-height: 100vh; }
-    .categories-header { padding: 40px 0 20px; text-align: center; }
-    .categories-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px 0 60px; }
-    .category-card { position: relative; border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; text-decoration: none; display: block; }
-    .category-card img { width: 100%; height: 100%; object-fit: cover; }
-    .category-card__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,13,13,0.85), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
-    .category-card__title { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #F5F0E8; }
-    @media (min-width: 768px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 1024px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } }
-    .category-card__title { color: #F5F0E8 !important; font-weight: 600; }
-  </style>
 </head>
 <body>
 
   <header class="navbar">
-    <div class="navbar__inner">
-      <button class="navbar__toggle"><i class="ri-menu-line"></i></button>
+    <div class="container navbar__inner">
+      <button class="navbar__toggle" id="navbar-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
       <a href="index.html" class="navbar__logo">Woodbuyy</a>
       <nav class="navbar__nav">
         <a href="products.html" class="navbar__link">Shop All</a>
         <a href="categories.html" class="navbar__link">Categories</a>
         <a href="about.html" class="navbar__link">About</a>
         <a href="contact.html" class="navbar__link">Contact</a>
+        <a href="custom-quote.html" class="navbar__link">Custom Quote</a>
       </nav>
       <div class="navbar__actions">
-        <a href="account-wishlist.html" class="navbar__icon"><i class="ri-heart-line"></i></a>
-        <a href="cart.html" class="navbar__icon"><i class="ri-shopping-bag-line"></i><span class="navbar__badge hidden" id="cart-count">0</span></a>
-        <a href="account.html" class="navbar__icon"><i class="ri-user-line"></i></a>
+        <a href="account-wishlist.html" class="navbar__icon" aria-label="Wishlist">
+          <i class="ri-heart-line"></i>
+          <span class="navbar__badge hidden" data-wishlist-count>0</span>
+        </a>
+        <a href="cart.html" class="navbar__icon" aria-label="Cart">
+          <i class="ri-shopping-bag-line"></i>
+          <span class="navbar__badge hidden" data-cart-count>0</span>
+        </a>
+        <a href="account.html" class="navbar__icon" aria-label="Account"><i class="ri-user-line"></i></a>
       </div>
     </div>
   </header>
@@ -44,19 +41,43 @@
   <main class="categories-page">
     <div class="container">
       <div class="categories-header">
-        <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#C9A96E;">Explore</p>
-        <h1 style="font-family:'Cormorant Garamond',serif;font-size:36px;color:#F5F0E8;margin-top:10px;">All Categories</h1>
+        <p class="section-eyebrow">Explore</p>
+        <h1 class="section-title">All Categories</h1>
       </div>
       <div class="categories-grid" id="categories-grid">
-        <!-- Categories load honge Firebase se -->
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
       </div>
     </div>
   </main>
 
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__brand">Woodbuyy</p>
+      <p class="footer__tagline">Luxury furniture for the modern UAE home.</p>
+      <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
+
+  <!-- Firebase Config -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- UI Helpers -->
+  <script src="js/ui.js"></script>
+
+  <!-- Cart System -->
+  <script src="js/cart.js"></script>
+
+  <!-- Wishlist System -->
+  <script src="js/wishlist.js"></script>
+
+  <!-- Page Script -->
   <script>
     const grid = document.getElementById('categories-grid');
     const images = {
@@ -70,10 +91,21 @@
 
     async function loadCategories() {
       try {
-      const snap = await db.collection('categories').get();
+        const snap = await db.collection('categories')
+          .where('isActive', '==', true)
+          .orderBy('order', 'asc')
+          .get();
 
         if (snap.empty) {
-          grid.innerHTML = '<p style="text-align:center;color:#6E6860;padding:60px 0;">No categories yet. Add from admin panel.</p>';
+          grid.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+              <div class="empty-state__icon">
+                <i class="ri-grid-line"></i>
+              </div>
+              <h3 class="empty-state__title">No categories yet</h3>
+              <p class="empty-state__text">Categories will appear here once added.</p>
+            </div>
+          `;
           return;
         }
 
@@ -82,16 +114,32 @@
           const img = c.image || images[c.slug] || images.default;
           return `
             <a href="category.html?slug=${c.slug}" class="category-card">
-              <img src="${img}" alt="${c.name}" onerror="this.src='${images.default}'">
+              <img src="${img}" alt="${escapeHTML(c.name)}" loading="lazy" onerror="this.src='${images.default}'">
               <div class="category-card__overlay">
-                <p class="category-card__title">${c.name}</p>
+                <p class="category-card__title">${escapeHTML(c.name)}</p>
               </div>
             </a>
           `;
         }).join('');
       } catch (err) {
-        grid.innerHTML = '<p style="text-align:center;color:#E05555;">Failed to load categories.</p>';
+        console.error('[categories.html] Error:', err);
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <div class="empty-state__icon">
+              <i class="ri-error-warning-line"></i>
+            </div>
+            <h3 class="empty-state__title">Failed to load categories</h3>
+            <p class="empty-state__text">Please try again later.</p>
+          </div>
+        `;
       }
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
     }
 
     loadCategories();
