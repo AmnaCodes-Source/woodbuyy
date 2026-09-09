@@ -4,93 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Premium Furniture — Woodbuyy UAE</title>
-<meta name="description" content="Premium quality furniture at Woodbuyy. Cash on delivery across UAE. 5% VAT included. Browse our collection of luxury sofas, beds, tables & wardrobes.">
-<meta name="keywords" content="furniture UAE, premium furniture, luxury furniture Dubai, cash on delivery furniture">
-<meta property="og:title" content="Premium Furniture — Woodbuyy UAE">
-<meta property="og:description" content="Premium quality furniture at Woodbuyy. Cash on delivery across UAE.">
-<meta property="og:type" content="product">
-<meta property="og:url" content="https://amnacodes-source.github.io/woodbuyy/product.html">
-<meta name="robots" content="index, follow">
+  <meta name="description" content="Premium quality furniture at Woodbuyy. Cash on delivery across UAE. 5% VAT included. Browse our collection of luxury sofas, beds, tables & wardrobes.">
+  <meta name="keywords" content="furniture UAE, premium furniture, luxury furniture Dubai, cash on delivery furniture">
+  <meta property="og:title" content="Premium Furniture — Woodbuyy UAE">
+  <meta property="og:description" content="Premium quality furniture at Woodbuyy. Cash on delivery across UAE.">
+  <meta property="og:type" content="product">
+  <meta property="og:url" content="https://amnacodes-source.github.io/woodbuyy/product.html">
+  <meta name="robots" content="index, follow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-  <style>
-    body { background: #0D0D0D; font-family: 'Jost', sans-serif; margin: 0; color: #F5F0E8; }
-    .product-page { padding-top: 72px; min-height: 100vh; }
-
-    /* Product Detail */
-    .product-detail { max-width: 1000px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr; gap: 30px; }
-    .product-image { border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; }
-    .product-image img { width: 100%; height: 100%; object-fit: cover; }
-    .product-info h1 { font-family: 'Cormorant Garamond', serif; font-size: 32px; margin-bottom: 12px; }
-    .product-price { font-size: 28px; font-weight: 600; color: #C9A96E; margin-bottom: 15px; }
-    .product-desc { font-size: 15px; color: #B0A898; line-height: 1.7; margin-bottom: 25px; }
-    .qty-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-    .qty-selector button { width: 44px; height: 44px; background: #141414; border: 1px solid #2E2E2E; color: #F5F0E8; border-radius: 4px; cursor: pointer; font-size: 18px; }
-    .qty-selector span { font-size: 18px; min-width: 30px; text-align: center; }
-    .btn-add { width: 100%; height: 50px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; text-transform: uppercase; cursor: pointer; }
-    .btn-add:hover { background: #B8944F; }
-
-    /* Reviews Section */
-    .reviews-section { max-width: 1000px; margin: 0 auto; padding: 20px 20px 40px; }
-    .reviews-header { margin-bottom: 25px; }
-    .reviews-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #F5F0E8; margin-bottom: 5px; }
-    .reviews-subtitle { font-size: 13px; color: #6E6860; }
-
-    /* Review Form */
-    .review-form { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 20px; margin-bottom: 30px; }
-    .review-form h3 { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #F5F0E8; margin-bottom: 15px; }
-    .star-rating { display: flex; gap: 8px; margin-bottom: 15px; font-size: 28px; }
-    .star-rating i { cursor: pointer; color: #6E6860; transition: color 0.2s; }
-    .star-rating i.active { color: #C9A96E; }
-    .review-form input, .review-form textarea { width: 100%; padding: 12px; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; font-family: 'Jost', sans-serif; font-size: 14px; margin-bottom: 10px; outline: none; }
-    .review-form input:focus, .review-form textarea:focus { border-color: #C9A96E; }
-    .review-form textarea { min-height: 80px; resize: vertical; }
-    .btn-review { width: 100%; height: 45px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 13px; font-weight: 500; text-transform: uppercase; cursor: pointer; }
-    .btn-review:hover { background: #B8944F; }
-    .btn-review:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* Review List */
-    .reviews-list { display: flex; flex-direction: column; gap: 15px; }
-    .review-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 18px; }
-    .review-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .review-card__name { font-weight: 500; color: #F5F0E8; font-size: 14px; }
-    .review-card__stars { color: #C9A96E; font-size: 14px; }
-    .review-card__date { font-size: 11px; color: #6E6860; }
-    .review-card__text { font-size: 14px; color: #B0A898; line-height: 1.6; }
-
-    /* Related Products */
-    .related-section { max-width: 1000px; margin: 0 auto; padding: 20px 20px 60px; }
-    .related-header { margin-bottom: 25px; }
-    .related-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #F5F0E8; margin-bottom: 5px; }
-    .related-subtitle { font-size: 13px; color: #6E6860; }
-    .related-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-    .related-card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; overflow: hidden; text-decoration: none; display: block; transition: border-color 0.2s; }
-    .related-card:hover { border-color: #C9A96E; }
-    .related-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
-    .related-card__body { padding: 12px 15px; }
-    .related-card__name { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #F5F0E8; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .related-card__price { font-size: 14px; font-weight: 500; color: #C9A96E; }
-
-    /* Skeleton */
-    .skeleton { background: linear-gradient(90deg, #1C1C1C 25%, #222222 50%, #1C1C1C 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
-    .skeleton-related { height: 220px; }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-    /* Toast */
-    .toast { position: fixed; bottom: 20px; right: 20px; background: #222222; border: 1px solid #C9A96E; color: #F5F0E8; padding: 14px 20px; border-radius: 6px; font-size: 14px; z-index: 999; animation: slideIn 0.3s ease; }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-
-    @media (min-width: 768px) {
-      .product-detail { grid-template-columns: 1fr 1fr; }
-      .related-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-  </style>
+  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <button class="navbar__toggle" id="navbar-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
+      <a href="index.html" class="navbar__logo">Woodbuyy</a>
+      <nav class="navbar__nav">
+        <a href="products.html" class="navbar__link">Shop All</a>
+        <a href="categories.html" class="navbar__link">Categories</a>
+        <a href="about.html" class="navbar__link">About</a>
+        <a href="contact.html" class="navbar__link">Contact</a>
+        <a href="custom-quote.html" class="navbar__link">Custom Quote</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="account-wishlist.html" class="navbar__icon" aria-label="Wishlist">
+          <i class="ri-heart-line"></i>
+          <span class="navbar__badge hidden" data-wishlist-count>0</span>
+        </a>
+        <a href="cart.html" class="navbar__icon" aria-label="Cart">
+          <i class="ri-shopping-bag-line"></i>
+          <span class="navbar__badge hidden" data-cart-count>0</span>
+        </a>
+        <a href="account.html" class="navbar__icon" aria-label="Account"><i class="ri-user-line"></i></a>
+      </div>
+    </div>
+  </header>
+
   <main class="product-page">
     <!-- Product Detail -->
-    <div class="product-detail" id="detail"><p style="text-align:center;color:#6E6860;">Loading...</p></div>
+    <div class="product-detail" id="detail">
+      <div class="skeleton" style="width:100%;aspect-ratio:4/3;"></div>
+      <div>
+        <div class="skeleton skeleton-text skeleton-text--lg"></div>
+        <div class="skeleton skeleton-text" style="width:40%;"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-text" style="width:60%;"></div>
+      </div>
+    </div>
 
     <!-- Reviews Section -->
     <section class="reviews-section" id="reviews-section">
@@ -99,7 +64,6 @@
         <p class="reviews-subtitle">Share your experience with this product</p>
       </div>
 
-      <!-- Review Form -->
       <div class="review-form">
         <h3>Write a Review</h3>
         <div class="star-rating" id="star-rating">
@@ -109,12 +73,11 @@
           <i class="ri-star-line" data-rating="4"></i>
           <i class="ri-star-line" data-rating="5"></i>
         </div>
-        <input type="text" id="review-name" placeholder="Your name" required>
-        <textarea id="review-text" placeholder="Your review..." required></textarea>
-        <button class="btn-review" id="btn-submit-review" onclick="submitReview()">Submit Review</button>
+        <input type="text" id="review-name" class="input" placeholder="Your name" required>
+        <textarea id="review-text" class="input" placeholder="Your review..." required></textarea>
+        <button class="btn btn--primary btn--full" id="btn-submit-review" onclick="submitReview()">Submit Review</button>
       </div>
 
-      <!-- Reviews List -->
       <div class="reviews-list" id="reviews-list">
         <p style="text-align:center;color:#6E6860;">Loading reviews...</p>
       </div>
@@ -130,32 +93,39 @@
     </section>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__brand">Woodbuyy</p>
+      <p class="footer__tagline">Luxury furniture for the modern UAE home.</p>
+      <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
+    </div>
+  </footer>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config -->
   <script src="js/firebase-config.js"></script>
 
+  <!-- UI Helpers -->
+  <script src="js/ui.js"></script>
+
+  <!-- Cart System -->
+  <script src="js/cart.js"></script>
+
+  <!-- Wishlist System -->
+  <script src="js/wishlist.js"></script>
+
+  <!-- Page Script -->
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     let qty = 1;
     let currentProduct = null;
     let selectedRating = 0;
-
-    // Format price (fils → AED)
-    function formatAED(fils) {
-      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-
-    // Show toast notification
-    function showToast(message) {
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.textContent = message;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 2500);
-    }
 
     // Save product to recently viewed (localStorage)
     function saveRecentlyViewed(product) {
@@ -196,9 +166,9 @@
       const name = document.getElementById('review-name').value.trim();
       const text = document.getElementById('review-text').value.trim();
 
-      if (!name) { showToast('Please enter your name'); return; }
-      if (!text) { showToast('Please write a review'); return; }
-      if (selectedRating === 0) { showToast('Please select a rating'); return; }
+      if (!name) { showToast('Please enter your name', 'warning'); return; }
+      if (!text) { showToast('Please write a review', 'warning'); return; }
+      if (selectedRating === 0) { showToast('Please select a rating', 'warning'); return; }
 
       const btn = document.getElementById('btn-submit-review');
       btn.disabled = true;
@@ -213,16 +183,16 @@
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // Clear form
         document.getElementById('review-name').value = '';
         document.getElementById('review-text').value = '';
         selectedRating = 0;
         updateStars();
 
-        showToast('Review submitted!');
+        showToast('Review submitted!', 'success');
         loadReviews();
       } catch (err) {
-        showToast('Error: ' + err.message);
+        console.error('[product.html] Review error:', err);
+        showToast('Failed to submit review', 'error');
       } finally {
         btn.disabled = false;
         btn.textContent = 'Submit Review';
@@ -250,16 +220,16 @@
           return `
             <div class="review-card">
               <div class="review-card__header">
-                <span class="review-card__name">${r.userName || 'Anonymous'}</span>
+                <span class="review-card__name">${escapeHTML(r.userName || 'Anonymous')}</span>
                 <span class="review-card__stars">${stars}</span>
               </div>
-              <p class="review-card__text">${r.text || ''}</p>
+              <p class="review-card__text">${escapeHTML(r.text || '')}</p>
               ${date ? `<p class="review-card__date">${date}</p>` : ''}
             </div>
           `;
         }).join('');
       } catch (err) {
-        console.error('Reviews error:', err);
+        console.error('[product.html] Reviews error:', err);
         list.innerHTML = '<p style="text-align:center;color:#6E6860;">Could not load reviews.</p>';
       }
     }
@@ -267,6 +237,7 @@
     // Load main product
     async function load() {
       if (!id) { window.location.href = 'products.html'; return; }
+      
       try {
         const doc = await db.collection('Products').doc(id).get();
         if (!doc.exists) {
@@ -277,32 +248,40 @@
         currentProduct = { id: doc.id, ...doc.data() };
         const p = currentProduct;
         const price = p.price || 0;
+        const salePrice = p.salePrice || null;
+        const displayPrice = salePrice || price;
+        const hasSale = salePrice && salePrice < price;
         const image = (p.images && p.images[0]) ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800';
 
         document.getElementById('detail').innerHTML = `
-          <div class="product-image"><img src="${image}" alt="${p.name || ''}"></div>
+          <div class="product-image">
+            <img src="${image}" alt="${escapeHTML(p.name || '')}">
+          </div>
           <div class="product-info">
-            <h1>${p.name || '-'}</h1>
-            <p class="product-price">${formatAED(price)}</p>
-            <p class="product-desc">${p.description || 'Premium quality furniture.'}</p>
+            <h1>${escapeHTML(p.name || '-')}</h1>
+            <p class="product-price">
+              ${formatCurrency(displayPrice)}
+              ${hasSale ? `<span style="text-decoration:line-through;color:#6E6860;font-size:18px;">${formatCurrency(price)}</span>` : ''}
+            </p>
+            <p class="product-desc">${escapeHTML(p.description || 'Premium quality furniture.')}</p>
             <div class="qty-selector">
               <button onclick="changeQty(-1)" aria-label="Decrease quantity">−</button>
               <span id="qty">1</span>
               <button onclick="changeQty(1)" aria-label="Increase quantity">+</button>
             </div>
-            <button class="btn-add" onclick="addToCart()">Add to Cart</button>
+            <button class="btn btn--primary btn--full" onclick="addToCart()">Add to Cart</button>
+            <button class="btn btn--secondary btn--full" style="margin-top:10px;" onclick="addToWishlistClick()">
+              <i class="ri-heart-line"></i> Add to Wishlist
+            </button>
           </div>`;
 
-        // Save to recently viewed
         saveRecentlyViewed(currentProduct);
-
-        // Load reviews
         loadReviews();
-
-        // Load related products
-        loadRelatedProducts(p.categorySlug || p.category || '');
+        loadRelatedProducts(p.categorySlug || '');
+        
       } catch (err) {
-        document.getElementById('detail').innerHTML = '<p style="text-align:center;color:#E05555;">Error: ' + err.message + '</p>';
+        console.error('[product.html] Load error:', err);
+        document.getElementById('detail').innerHTML = '<p style="text-align:center;color:#E05555;">Error loading product</p>';
       }
     }
 
@@ -312,20 +291,19 @@
       const gridEl = document.getElementById('related-grid');
 
       section.style.display = 'block';
-      gridEl.innerHTML = Array(4).fill('<div class="skeleton skeleton-related"></div>').join('');
+      gridEl.innerHTML = Array(4).fill('<div class="skeleton" style="height:220px;"></div>').join('');
 
       try {
-        let sameCategory = [];
+        let related = [];
+        
         if (categorySlug) {
           const catSnap = await db.collection('Products')
             .where('isActive', '==', true)
             .where('categorySlug', '==', categorySlug)
             .limit(5)
             .get();
-          sameCategory = catSnap.docs.filter(doc => doc.id !== id).slice(0, 4);
+          related = catSnap.docs.filter(doc => doc.id !== id).slice(0, 4);
         }
-
-        let related = [...sameCategory];
 
         if (related.length < 4) {
           const otherSnap = await db.collection('Products')
@@ -352,16 +330,16 @@
           const image = (p.images && p.images[0]) ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
           return `
             <a href="product.html?id=${doc.id}" class="related-card">
-              <img src="${image}" alt="${p.name || ''}">
+              <img src="${image}" alt="${escapeHTML(p.name || '')}" loading="lazy">
               <div class="related-card__body">
-                <p class="related-card__name">${p.name || '-'}</p>
-                <p class="related-card__price">${formatAED(price)}</p>
+                <p class="related-card__name">${escapeHTML(p.name || '-')}</p>
+                <p class="related-card__price">${formatCurrency(price)}</p>
               </div>
             </a>
           `;
         }).join('');
       } catch (err) {
-        console.error('Related products error:', err);
+        console.error('[product.html] Related error:', err);
         section.style.display = 'none';
       }
     }
@@ -371,23 +349,50 @@
       document.getElementById('qty').textContent = qty;
     };
 
+    // Add to cart using cart.js
     window.addToCart = () => {
-      const cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
-      const found = cart.find(i => i.productId === currentProduct.id);
-      if (found) {
-        found.quantity += qty;
-      } else {
-        cart.push({
+      if (!currentProduct) return;
+      
+      if (typeof addToCart === 'function') {
+        addToCart({
           productId: currentProduct.id,
           name: currentProduct.name,
+          slug: currentProduct.slug || '',
           price: currentProduct.price,
+          salePrice: currentProduct.salePrice || null,
           quantity: qty,
           image: (currentProduct.images && currentProduct.images[0]) ? currentProduct.images[0] : ''
         });
+      } else {
+        showToast('Cart system not available', 'error');
       }
-      localStorage.setItem('wb_cart', JSON.stringify(cart));
-      showToast('Added to cart!');
     };
+
+    // Add to wishlist using wishlist.js
+    window.addToWishlistClick = () => {
+      if (!currentProduct) return;
+      
+      if (typeof addToWishlist === 'function') {
+        addToWishlist(currentProduct.id, {
+          name: currentProduct.name,
+          slug: currentProduct.slug || '',
+          price: currentProduct.price,
+          salePrice: currentProduct.salePrice || null,
+          image: (currentProduct.images && currentProduct.images[0]) ? currentProduct.images[0] : '',
+          category: currentProduct.categorySlug || ''
+        });
+      } else {
+        showToast('Wishlist not available', 'error');
+      }
+    };
+
+    // Escape HTML helper (local copy)
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
 
     load();
   </script>
