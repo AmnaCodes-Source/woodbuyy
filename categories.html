@@ -93,7 +93,6 @@
       try {
         const snap = await db.collection('categories')
           .where('isActive', '==', true)
-          .orderBy('order', 'asc')
           .get();
 
         if (snap.empty) {
