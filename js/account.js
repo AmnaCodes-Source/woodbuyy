@@ -94,7 +94,6 @@ async function loadRecentOrders(uid) {
     try {
         const ordersSnapshot = await db.collection('orders')
             .where('userId', '==', uid)
-            .orderBy('createdAt', 'desc')
             .limit(5)
             .get();
         
