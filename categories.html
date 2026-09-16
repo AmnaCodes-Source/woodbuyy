@@ -92,7 +92,6 @@
     async function loadCategories() {
       try {
         const snap = await db.collection('categories')
-          .where('isActive', '==', true)
           .get();
 
         if (snap.empty) {
