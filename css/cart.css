@@ -1,0 +1,229 @@
+/* ============================================================
+   WOODBUYY — CART PAGE
+   ============================================================ */
+
+.cart-page {
+    padding-top: 72px;
+    min-height: 100vh;
+}
+
+.cart-header {
+    padding: 60px 20px 30px;
+    text-align: center;
+}
+
+.cart-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 600;
+    color: #F5F0E8;
+    margin-top: 10px;
+}
+
+/* ---------- LAYOUT ---------- */
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+}
+
+/* ---------- CART ITEMS ---------- */
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #1C1C1C;
+    border: 1px solid #2E2E2E;
+    border-radius: 4px;
+    padding: 20px;
+    transition: border-color 0.2s;
+}
+
+.cart-item:hover {
+    border-color: #C9A96E;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #141414;
+}
+
+.cart-item__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-item__name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #F5F0E8;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cart-item__price {
+    font-size: 15px;
+    font-weight: 500;
+    color: #C9A96E;
+}
+
+.cart-item__qty {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 15px;
+}
+
+.cart-item__qty button {
+    width: 36px;
+    height: 36px;
+    background: #141414;
+    border: 1px solid #2E2E2E;
+    color: #F5F0E8;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+}
+
+.cart-item__qty button:hover {
+    border-color: #C9A96E;
+}
+
+.cart-item__qty span {
+    font-size: 16px;
+    min-width: 30px;
+    text-align: center;
+    color: #F5F0E8;
+}
+
+.cart-item__remove {
+    background: none;
+    border: none;
+    color: #E05555;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.2s;
+}
+
+.cart-item__remove:hover {
+    color: #FF6666;
+}
+
+/* ---------- CART SUMMARY ---------- */
+.cart-summary {
+    background: #1C1C1C;
+    border: 1px solid #2E2E2E;
+    border-radius: 4px;
+    padding: 30px;
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.cart-summary h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #F5F0E8;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #2E2E2E;
+}
+
+.cart-summary__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 15px;
+    color: #B0A898;
+}
+
+.cart-summary__row--total {
+    border-top: 1px solid #2E2E2E;
+    margin-top: 10px;
+    padding-top: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #F5F0E8;
+}
+
+.cart-summary .btn {
+    margin-top: 15px;
+}
+
+/* ---------- EMPTY STATE ---------- */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.empty-state__icon {
+    font-size: 64px;
+    color: #6E6860;
+    opacity: 0.5;
+}
+
+.empty-state__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: #B0A898;
+}
+
+.empty-state__text {
+    font-size: 15px;
+    color: #6E6860;
+    max-width: 400px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (min-width: 1024px) {
+    .cart-layout {
+        grid-template-columns: 1fr 380px;
+        padding: 20px 40px 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cart-item {
+        flex-wrap: wrap;
+    }
+    
+    .cart-item img {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .cart-item__qty {
+        margin: 0;
+    }
+    
+    .cart-summary {
+        position: static;
+    }
+}
