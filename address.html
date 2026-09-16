@@ -14,10 +14,11 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="WOODBUYY_BRAND.css">
-    <link rel="stylesheet" href="auth.css">
-    <link rel="stylesheet" href="account.css">
-    <link rel="stylesheet" href="addresses.css">
+    <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/account.css">
+    <link rel="stylesheet" href="css/address.css">
 </head>
 <body>
 
@@ -35,7 +36,7 @@
                     <i class="ri-dashboard-line"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="orders.html" class="account-nav-item">
+                <a href="order.html" class="account-nav-item">
                     <i class="ri-shopping-bag-line"></i>
                     <span>My Orders</span>
                 </a>
@@ -43,7 +44,7 @@
                     <i class="ri-heart-line"></i>
                     <span>Wishlist</span>
                 </a>
-                <a href="addresses.html" class="account-nav-item active">
+                <a href="address.html" class="account-nav-item active">
                     <i class="ri-map-pin-line"></i>
                     <span>Addresses</span>
                 </a>
@@ -71,7 +72,7 @@
             <!-- Top Bar -->
             <div class="account-topbar">
                 <h1 class="account-page-title">My Addresses</h1>
-                <button class="btn btn-primary btn-sm" id="addAddressBtn">
+                <button class="btn btn--primary btn--sm" id="addAddressBtn">
                     <i class="ri-add-line"></i> Add Address
                 </button>
             </div>
@@ -162,7 +163,7 @@
                     </label>
                 </div>
                 
-                <button type="submit" class="btn btn-primary btn-block" id="addressSubmitBtn">
+                <button type="submit" class="btn btn--primary btn--full" id="addressSubmitBtn">
                     Save Address
                 </button>
             </form>
@@ -175,9 +176,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
     
     <!-- App Scripts -->
-    <script src="firebase-config.js"></script>
-    <script src="ui.js"></script>
-    <script src="auth.js"></script>
-    <script src="addresses.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/address.js"></script>
 </body>
 </html>
