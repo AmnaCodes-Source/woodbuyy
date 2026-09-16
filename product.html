@@ -19,7 +19,6 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <header class="navbar">
     <div class="container navbar__inner">
       <button class="navbar__toggle" id="navbar-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
@@ -46,7 +45,6 @@
   </header>
 
   <main class="product-page">
-    <!-- Product Detail -->
     <div class="product-detail" id="detail">
       <div class="skeleton" style="width:100%;aspect-ratio:4/3;"></div>
       <div>
@@ -58,7 +56,6 @@
       </div>
     </div>
 
-    <!-- Reviews Section -->
     <section class="reviews-section" id="reviews-section">
       <div class="reviews-header">
         <h2 class="reviews-title">Customer Reviews</h2>
@@ -84,7 +81,6 @@
       </div>
     </section>
 
-    <!-- Related Products -->
     <section class="related-section" id="related-section" style="display:none;">
       <div class="related-header">
         <h2 class="related-title">You May Also Like</h2>
@@ -94,7 +90,6 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <p class="footer__brand">Woodbuyy</p>
@@ -103,24 +98,14 @@
     </div>
   </footer>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-  <!-- Firebase Config -->
   <script src="js/firebase-config.js"></script>
-
-  <!-- UI Helpers -->
   <script src="js/ui.js"></script>
-
-  <!-- Cart System -->
   <script src="js/cart.js"></script>
-
-  <!-- Wishlist System -->
   <script src="js/wishlist.js"></script>
 
-  <!-- Page Script -->
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -128,7 +113,13 @@
     let currentProduct = null;
     let selectedRating = 0;
 
-    // Save product to recently viewed (localStorage)
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
+
     function saveRecentlyViewed(product) {
       let recent = JSON.parse(localStorage.getItem('wb_recently_viewed') || '[]');
       recent = recent.filter(item => item.productId !== product.id);
@@ -142,7 +133,6 @@
       localStorage.setItem('wb_recently_viewed', JSON.stringify(recent));
     }
 
-    // Star rating logic
     document.addEventListener('click', function(e) {
       if (e.target.closest('#star-rating i')) {
         const rating = parseInt(e.target.dataset.rating);
@@ -162,7 +152,6 @@
       });
     }
 
-    // Submit review
     window.submitReview = async function() {
       const name = document.getElementById('review-name').value.trim();
       const text = document.getElementById('review-text').value.trim();
@@ -200,13 +189,11 @@
       }
     };
 
-    // Load reviews
     async function loadReviews() {
       const list = document.getElementById('reviews-list');
       try {
         const snap = await db.collection('reviews')
           .where('productId', '==', id)
-          .orderBy('createdAt', 'desc')
           .get();
 
         if (snap.empty) {
@@ -235,7 +222,6 @@
       }
     }
 
-    // Load main product
     async function load() {
       if (!id) { window.location.href = 'products.html'; return; }
       
@@ -270,7 +256,7 @@
               <span id="qty">1</span>
               <button onclick="changeQty(1)" aria-label="Increase quantity">+</button>
             </div>
-            <button class="btn btn--primary btn--full" onclick="addToCart()">Add to Cart</button>
+            <button class="btn btn--primary btn--full" onclick="addToCartFromProduct()">Add to Cart</button>
             <button class="btn btn--secondary btn--full" style="margin-top:10px;" onclick="addToWishlistClick()">
               <i class="ri-heart-line"></i> Add to Wishlist
             </button>
@@ -286,7 +272,6 @@
       }
     }
 
-    // Load related products
     async function loadRelatedProducts(categorySlug) {
       const section = document.getElementById('related-section');
       const gridEl = document.getElementById('related-grid');
@@ -299,7 +284,6 @@
         
         if (categorySlug) {
           const catSnap = await db.collection('Products')
-            .where('isActive', '==', true)
             .where('categorySlug', '==', categorySlug)
             .limit(5)
             .get();
@@ -308,7 +292,6 @@
 
         if (related.length < 4) {
           const otherSnap = await db.collection('Products')
-            .where('isActive', '==', true)
             .limit(10)
             .get();
 
@@ -350,12 +333,13 @@
       document.getElementById('qty').textContent = qty;
     };
 
-    // Add to cart using cart.js
-    window.addToCart = () => {
+    // Add to cart — calls cart.js function directly
+    window.addToCartFromProduct = () => {
       if (!currentProduct) return;
       
-      if (typeof addToCart === 'function') {
-        addToCart({
+      // cart.js function ka naam check karo
+      if (typeof window.addToCartFromCart === 'function') {
+        window.addToCartFromCart({
           productId: currentProduct.id,
           name: currentProduct.name,
           slug: currentProduct.slug || '',
@@ -365,11 +349,11 @@
           image: (currentProduct.images && currentProduct.images[0]) ? currentProduct.images[0] : ''
         });
       } else {
+        console.error('cart.js addToCartFromCart function not found');
         showToast('Cart system not available', 'error');
       }
     };
 
-    // Add to wishlist using wishlist.js
     window.addToWishlistClick = () => {
       if (!currentProduct) return;
       
@@ -387,16 +371,9 @@
       }
     };
 
-    // Escape HTML helper (local copy)
-    function escapeHTML(str) {
-      if (!str) return '';
-      const div = document.createElement('div');
-      div.textContent = String(str);
-      return div.innerHTML;
-    }
-
     load();
   </script>
 
 </body>
 </html>
+
