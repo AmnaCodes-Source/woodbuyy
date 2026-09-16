@@ -5,12 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop All Furniture — Woodbuyy UAE | Sofas, Beds, Tables, Wardrobes</title>
   <meta name="description" content="Browse all furniture at Woodbuyy. Premium sofas, beds, dining tables, wardrobes & more. Cash on delivery across UAE. 5% VAT included.">
-  <meta name="keywords" content="furniture shop UAE, buy furniture online, sofas, beds, tables, wardrobes, COD furniture Dubai">
-  <meta property="og:title" content="Shop All Furniture — Woodbuyy UAE">
-  <meta property="og:description" content="Browse premium furniture collection. Cash on delivery across UAE.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://amnacodes-source.github.io/woodbuyy/products.html">
-  <meta name="robots" content="index, follow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
@@ -18,7 +12,6 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <header class="navbar">
     <div class="container navbar__inner">
       <button class="navbar__toggle" id="navbar-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
@@ -47,7 +40,6 @@
   <main class="products-page">
     <div class="products-header">
       <h1>All Furniture</h1>
-
       <div class="search-wrap">
         <input type="text" class="search-input" id="search-input" placeholder="Search sofas, beds, tables..." autocomplete="off">
         <i class="ri-close-line search-clear" id="search-clear"></i>
@@ -55,11 +47,9 @@
       </div>
       <p class="search-info" id="search-info"></p>
     </div>
-
     <div class="products-grid" id="grid"></div>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <p class="footer__brand">Woodbuyy</p>
@@ -68,24 +58,14 @@
     </div>
   </footer>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-  <!-- Firebase Config -->
   <script src="js/firebase-config.js"></script>
-
-  <!-- UI Helpers -->
   <script src="js/ui.js"></script>
-
-  <!-- Cart System -->
   <script src="js/cart.js"></script>
-
-  <!-- Wishlist System -->
   <script src="js/wishlist.js"></script>
 
-  <!-- Page Script -->
   <script>
     const grid = document.getElementById('grid');
     const searchInput = document.getElementById('search-input');
@@ -95,7 +75,6 @@
     let allProducts = [];
     let searchTimeout = null;
 
-    // Render products to grid
     function renderProducts(products) {
       if (products.length === 0) {
         grid.innerHTML = `
@@ -133,14 +112,12 @@
       }).join('');
     }
 
-    // Show skeleton loaders
     function showSkeletons(count = 8) {
       grid.innerHTML = Array(count).fill(`
         <div class="skeleton skeleton-card"></div>
       `).join('');
     }
 
-    // Filter products by search term
     function filterProducts(searchTerm) {
       const term = searchTerm.toLowerCase().trim();
 
@@ -166,13 +143,11 @@
       renderProducts(filtered);
     }
 
-    // Load all products from Firestore
     async function loadProducts() {
       showSkeletons(8);
       try {
         const snap = await db.collection('Products')
           .where('isActive', '==', true)
-          .orderBy('createdAt', 'desc')
           .get();
         allProducts = snap.docs;
         renderProducts(allProducts);
@@ -188,7 +163,6 @@
       }
     }
 
-    // Search input handler (debounced)
     searchInput.addEventListener('input', (e) => {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
@@ -196,14 +170,12 @@
       }, 300);
     });
 
-    // Clear search
     searchClear.addEventListener('click', () => {
       searchInput.value = '';
       filterProducts('');
       searchInput.focus();
     });
 
-    // Escape key clears search
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         searchInput.value = '';
@@ -211,7 +183,6 @@
       }
     });
 
-    // Load products on page load
     loadProducts();
   </script>
 
