@@ -98,7 +98,6 @@
       try {
         const snap = await db.collection('users')
           .where('role', '==', 'customer')
-          .orderBy('createdAt', 'desc')
           .get();
         
         allCustomers = snap.docs;
