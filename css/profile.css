@@ -6,33 +6,34 @@
 .profile-sections {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl);
+    gap: var(--space-8);
     max-width: 700px;
 }
 
 .profile-section {
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-card);
-    padding: var(--space-xl);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-8);
 }
 
 .profile-section-header {
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-md);
-    border-bottom: 1px solid var(--border-default);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .profile-section-title {
+    font-family: var(--font-display);
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 var(--space-xs) 0;
+    color: var(--color-text);
+    margin: 0 0 var(--space-1) 0;
 }
 
 .profile-section-subtitle {
     font-size: 0.875rem;
-    color: var(--text-muted);
+    color: var(--color-text-muted);
     font-weight: 300;
     margin: 0;
 }
@@ -41,31 +42,148 @@
 .profile-form {
     display: flex;
     flex-direction: column;
+    gap: var(--space-4);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+}
+
+@media (min-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-4);
+    }
+}
+
+.form-group {
+    margin-bottom: var(--space-4);
+}
+
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-mid);
+    margin-bottom: var(--space-2);
+}
+
+.form-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-input-wrapper > i {
+    position: absolute;
+    left: 14px;
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.form-input {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px 14px 44px;
+    transition: all 150ms ease;
+    outline: none;
+    height: 48px;
+}
+
+.form-input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.form-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(201, 169, 110, 0.15);
+}
+
+.form-input.error {
+    border-color: var(--color-error);
+}
+
+.form-error {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-error);
+    margin-top: var(--space-1);
+    min-height: 18px;
 }
 
 .form-note {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--color-text-muted);
     font-weight: 300;
     font-style: italic;
-    margin-top: var(--space-xs);
+    margin-top: var(--space-1);
+    display: block;
+}
+
+/* ---------- PASSWORD TOGGLE ---------- */
+.password-toggle {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: color 150ms ease;
+    z-index: 1;
+}
+
+.password-toggle:hover {
+    color: var(--color-text);
 }
 
 /* ---------- DISABLED INPUT ---------- */
 .form-input:disabled {
-    background-color: var(--bg-elevated);
-    color: var(--text-muted);
+    background-color: var(--color-surface-high);
+    color: var(--color-text-muted);
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+/* ---------- CHECKBOX ---------- */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.875rem;
+    color: var(--color-text-mid);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-accent);
+    cursor: pointer;
 }
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
     .profile-sections {
-        gap: var(--space-lg);
+        gap: var(--space-6);
     }
     
     .profile-section {
-        padding: var(--space-lg);
+        padding: var(--space-6);
     }
 }
