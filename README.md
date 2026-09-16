@@ -3,7 +3,7 @@ aaaaa# Woodbuyy — Luxury Furniture Store (UAE)
 Premium furniture e-commerce platform for the UAE market.
 
 ## Tech Stack
-- **Frontend:**   HTML5    + CSS3 + Vanilla JavaScript (ES6+)
+- **Frontend:**      HTML5    + CSS3 + Vanilla JavaScript (ES6+)
 - **Backend:** Firebase (Auth + Firestore)
 - **Hosting:** Vercel
 - **Storage:  **   Cloudflare R2 (coming soon)
@@ -19,3 +19,26 @@ Premium furniture e-commerce platform for the UAE market.
 ## License
 
 Private — All rights reserved.
+September 2026
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
