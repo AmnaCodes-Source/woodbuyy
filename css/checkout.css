@@ -1,0 +1,200 @@
+/* ============================================================
+   WOODBUYY — CHECKOUT PAGE
+   ============================================================ */
+
+.checkout-page {
+    padding-top: 72px;
+    min-height: 100vh;
+}
+
+.checkout-header {
+    padding: 60px 20px 30px;
+    text-align: center;
+}
+
+.checkout-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 600;
+    color: #F5F0E8;
+    margin-top: 10px;
+}
+
+/* ---------- LAYOUT ---------- */
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+}
+
+/* ---------- FORM SECTION ---------- */
+.form-section {
+    background: #1C1C1C;
+    border: 1px solid #2E2E2E;
+    border-radius: 4px;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.form-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #F5F0E8;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #2E2E2E;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6E6860;
+    margin-bottom: 8px;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    height: 48px;
+    background: #141414;
+    border: 1px solid #2E2E2E;
+    border-radius: 4px;
+    color: #F5F0E8;
+    padding: 0 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #C9A96E;
+}
+
+.input-group input::placeholder {
+    color: #6E6860;
+}
+
+/* ---------- FORM ROW ---------- */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+}
+
+/* ---------- PAYMENT INFO ---------- */
+.payment-info {
+    color: #B0A898;
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 15px 0;
+}
+
+.payment-info strong {
+    color: #C9A96E;
+    font-weight: 500;
+}
+
+/* ---------- PLACE ORDER BUTTON ---------- */
+.btn-place-order {
+    width: 100%;
+    height: 56px;
+    background: #C9A96E;
+    color: #0D0D0D;
+    border: none;
+    border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-place-order:hover {
+    background: #B8944F;
+}
+
+.btn-place-order:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ---------- ORDER SUMMARY (WhatsApp) ---------- */
+.order-summary {
+    background: #1C1C1C;
+    border: 1px solid #2E2E2E;
+    border-radius: 4px;
+    padding: 30px;
+    display: none;
+    text-align: center;
+}
+
+.order-summary h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #4CAF7D;
+    margin-bottom: 15px;
+}
+
+.order-summary p {
+    font-size: 15px;
+    color: #B0A898;
+    margin-bottom: 8px;
+}
+
+.btn-whatsapp {
+    width: 100%;
+    height: 56px;
+    background: #25D366;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.btn-whatsapp:hover {
+    background: #1EBE5A;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (min-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .checkout-layout {
+        grid-template-columns: 1fr;
+        max-width: 900px;
+        padding: 20px 40px 80px;
+    }
+}
