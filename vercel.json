@@ -1,7 +1,10 @@
 {
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/admin/(.*)", "destination": "/admin/$1.html" }
+    {
+      "source": "/admin/(.*)",
+      "destination": "/admin/$1.html"
+    }
   ]
 }
