@@ -11,8 +11,18 @@
   <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+
+  <!-- Mobile menu button -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+    <i class="ri-menu-line"></i>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <div class="admin-layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
       <div class="logo">Woodbuyy</div>
       <div class="tag">Admin Panel</div>
       <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
@@ -23,6 +33,7 @@
       <a href="settings.html" class="active"><i class="ri-settings-line"></i> Settings</a>
       <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
     </aside>
+
     <main class="main">
       <h1>Settings</h1>
 
@@ -77,7 +88,34 @@
   <script src="../js/firebase-config.js"></script>
 
   <script>
-    // Load existing settings on page load
+    // ---------- MOBILE MENU ----------
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('is-open');
+        sidebarOverlay.classList.add('is-visible');
+      });
+    }
+
+    if (sidebarClose) {
+      sidebarClose.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    // ---------- SETTINGS ----------
     async function loadSettings() {
       try {
         const snap = await db.collection('settings').doc('global').get();
@@ -86,12 +124,10 @@
         
         const s = snap.data();
         
-        // VAT rate: stored as decimal (0.05), display as percentage
         if (s.vatRate !== undefined) {
           document.getElementById('vat').value = (s.vatRate * 100).toFixed(2);
         }
         
-        // Shipping rates: stored in fils, display in AED
         if (s.shippingRates) {
           if (s.shippingRates['Dubai']) document.getElementById('dubai').value = (s.shippingRates['Dubai'] / 100).toFixed(2);
           if (s.shippingRates['Abu Dhabi']) document.getElementById('abudhabi').value = (s.shippingRates['Abu Dhabi'] / 100).toFixed(2);
@@ -113,7 +149,6 @@
       
       const saveBtn = document.getElementById('save-btn');
       
-      // Validate
       const vat = parseFloat(document.getElementById('vat').value);
       const dubai = parseFloat(document.getElementById('dubai').value);
       const abudhabi = parseFloat(document.getElementById('abudhabi').value);
@@ -161,7 +196,6 @@
       }
     });
 
-    // Auth guard
     auth.onAuthStateChanged(async (user) => {
       if (!user) { window.location.href = 'login.html'; return; }
       
