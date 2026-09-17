@@ -11,8 +11,18 @@
   <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+
+  <!-- Mobile menu button -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+    <i class="ri-menu-line"></i>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <div class="admin-layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
       <div class="logo">Woodbuyy</div>
       <div class="tag">Admin Panel</div>
       <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
@@ -23,6 +33,7 @@
       <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
       <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
     </aside>
+
     <main class="main">
       <h1>Orders</h1>
 
@@ -63,6 +74,34 @@
   <script src="../js/firebase-config.js"></script>
 
   <script>
+    // ---------- MOBILE MENU ----------
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('is-open');
+        sidebarOverlay.classList.add('is-visible');
+      });
+    }
+
+    if (sidebarClose) {
+      sidebarClose.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    // ---------- ORDERS ----------
     let allOrders = [];
     let currentFilter = 'all';
 
@@ -146,8 +185,6 @@
     async function loadOrders() {
       try {
         const snap = await db.collection('orders')
-          .orderBy('createdAt', 'desc')
-          .limit(100)
           .get();
         
         allOrders = snap.docs;
