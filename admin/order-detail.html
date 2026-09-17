@@ -4,27 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Detail — Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-  <style>
-    body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
-    .admin-layout { display: flex; min-height: 100vh; }
-   .sidebar → position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
-    .sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
-    .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
-    .sidebar a { display: flex; align-items: center; gap: 10px; padding: 12px; color: #B0A898; text-decoration: none; font-size: 14px; border-radius: 4px; margin-bottom: 5px; }
-    .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
- .main → flex: 1; padding: 30px; min-width: 0;
-    h1 { font-family: 'Cormorant Garamond', serif; }
-    .card { background: #1C1C1C; border: 1px solid #2E2E2E; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
-    .card h2 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 15px; }
-    .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: #B0A898; }
-    .btn-primary { padding: 12px 25px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 13px; font-weight: 500; cursor: pointer; margin-right: 10px; }
-  </style>
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+
+  <!-- Mobile menu button -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+    <i class="ri-menu-line"></i>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <div class="admin-layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
       <div class="logo">Woodbuyy</div>
       <div class="tag">Admin Panel</div>
       <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
@@ -33,52 +31,184 @@
       <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
       <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
       <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
+      <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
     </aside>
+
     <main class="main">
       <h1 id="order-title">Order Detail</h1>
-      <div id="order-content"></div>
+      <div id="order-content">
+        <p>Loading...</p>
+      </div>
     </main>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="../firebase-config.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
   <script>
+    // ---------- MOBILE MENU ----------
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('is-open');
+        sidebarOverlay.classList.add('is-visible');
+      });
+    }
+
+    if (sidebarClose) {
+      sidebarClose.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    // ---------- ORDER DETAIL ----------
     const params = new URLSearchParams(window.location.search);
     const orderId = params.get('id');
 
+    function escapeHTML(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
+
+    function formatAED(fils) {
+      return 'AED ' + (fils / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function getStatusBadge(status) {
+      const map = {
+        pending: 'badge--pending',
+        confirmed: 'badge--confirmed',
+        in_progress: 'badge--progress',
+        delivered: 'badge--delivered',
+        completed: 'badge--completed',
+        cancelled: 'badge--cancelled'
+      };
+      const label = status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      return `<span class="badge ${map[status] || 'badge--default'}">${label}</span>`;
+    }
+
     auth.onAuthStateChanged(async (user) => {
       if (!user) { window.location.href = 'login.html'; return; }
-      const userDoc = await db.collection('users').doc(user.uid).get();
-      if (!userDoc.exists || userDoc.data().role !== 'admin') { window.location.href = 'login.html'; return; }
-      if (!orderId) { window.location.href = 'orders.html'; return; }
-      const doc = await db.collection('orders').doc(orderId).get();
-      if (!doc.exists) { window.location.href = 'orders.html'; return; }
-      const o = doc.data();
-      document.getElementById('order-title').textContent = orderId;
-      document.getElementById('order-content').innerHTML = `
-        <div class="card"><h2>Customer</h2>
-          <div class="row"><span>Name</span><span>${o.customerName || '-'}</span></div>
-          <div class="row"><span>Phone</span><span>${o.customerPhone || '-'}</span></div>
-          <div class="row"><span>Email</span><span>${o.customerEmail || '-'}</span></div>
-        </div>
-        <div class="card"><h2>Totals</h2>
-          <div class="row"><span>Subtotal</span><span>AED ${((o.subtotal || 0) / 100).toFixed(2)}</span></div>
-          <div class="row"><span>VAT</span><span>AED ${((o.vat || 0) / 100).toFixed(2)}</span></div>
-          <div class="row"><span>Total</span><span><strong>AED ${((o.total || 0) / 100).toFixed(2)}</strong></span></div>
-        </div>
-        <div class="card"><h2>Status: ${o.status}</h2>
-          <button class="btn-primary" onclick="updateStatus('confirmed')">Confirm</button>
-          <button class="btn-primary" onclick="updateStatus('delivered')">Delivered</button>
-          <button class="btn-primary" onclick="updateStatus('completed')">Complete</button>
-        </div>
-      `;
+      
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') { 
+          window.location.href = 'login.html'; 
+          return; 
+        }
+        
+        if (!orderId) { window.location.href = 'orders.html'; return; }
+        
+        const doc = await db.collection('orders').doc(orderId).get();
+        if (!doc.exists) { window.location.href = 'orders.html'; return; }
+        
+        const o = doc.data();
+        document.getElementById('order-title').textContent = orderId;
+        
+        const address = o.address || {};
+        const itemsHTML = (o.items || []).map(item => `
+          <div class="order-item-row" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2E2E2E;">
+            <span>${escapeHTML(item.name)} × ${item.quantity}</span>
+            <span>${formatAED((item.salePrice || item.price) * item.quantity)}</span>
+          </div>
+        `).join('');
+        
+        document.getElementById('order-content').innerHTML = `
+          <div class="card" style="background:#1C1C1C;border:1px solid #2E2E2E;border-radius:4px;padding:20px;margin-bottom:20px;">
+            <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:15px;">Customer</h2>
+            <div class="row" style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#B0A898;">
+              <span>Name</span><span>${escapeHTML(o.customerName || '-')}</span>
+            </div>
+            <div class="row" style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#B0A898;">
+              <span>Phone</span><span>${escapeHTML(o.customerPhone || '-')}</span>
+            </div>
+            <div class="row" style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#B0A898;">
+              <span>Email</span><span>${escapeHTML(o.customerEmail || '-')}</span>
+            </div>
+          </div>
+          
+          <div class="card" style="background:#1C1C1C;border:1px solid #2E2E2E;border-radius:4px;padding:20px;margin-bottom:20px;">
+            <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:15px;">Delivery Address</h2>
+            <div style="font-size:14px;color:#B0A898;line-height:1.7;">
+              ${escapeHTML(address.line1 || '-')}<br>
+              ${address.line2 ? escapeHTML(address.line2) + '<br>' : ''}
+              ${escapeHTML(address.emirate || '')}${address.city ? ', ' + escapeHTML(address.city) : ''}
+            </div>
+          </div>
+          
+          <div class="card" style="background:#1C1C1C;border:1px solid #2E2E2E;border-radius:4px;padding:20px;margin-bottom:20px;">
+            <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:15px;">Items</h2>
+            ${itemsHTML}
+          </div>
+          
+          <div class="card" style="background:#1C1C1C;border:1px solid #2E2E2E;border-radius:4px;padding:20px;margin-bottom:20px;">
+            <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:15px;">Totals</h2>
+            <div class="row" style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#B0A898;">
+              <span>Subtotal</span><span>${formatAED(o.subtotal || 0)}</span>
+            </div>
+            <div class="row" style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#B0A898;">
+              <span>VAT (5%)</span><span>${formatAED(o.vat || 0)}</span>
+            </div>
+            <div class="row" style="display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#B0A898;">
+              <span>Shipping</span><span>${formatAED(o.shipping || 0)}</span>
+            </div>
+            <div class="row" style="display:flex;justify-content:space-between;padding:8px 0;font-size:18px;color:#F5F0E8;font-weight:600;border-top:1px solid #2E2E2E;margin-top:10px;padding-top:15px;">
+              <span>Total</span><span>${formatAED(o.total || 0)}</span>
+            </div>
+          </div>
+          
+          <div class="card" style="background:#1C1C1C;border:1px solid #2E2E2E;border-radius:4px;padding:20px;margin-bottom:20px;">
+            <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:15px;">Status: ${getStatusBadge(o.status || 'pending')}</h2>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;">
+              <button class="btn btn--primary" onclick="updateStatus('confirmed')">Confirm</button>
+              <button class="btn btn--primary" onclick="updateStatus('in_progress')">In Progress</button>
+              <button class="btn btn--primary" onclick="updateStatus('delivered')">Delivered</button>
+              <button class="btn btn--primary" onclick="updateStatus('completed')">Complete</button>
+              <button class="btn btn--danger" onclick="updateStatus('cancelled')">Cancel</button>
+            </div>
+          </div>
+        `;
+        
+      } catch (err) {
+        console.error('[admin/order-detail] Error:', err);
+        document.getElementById('order-content').innerHTML = '<p>Failed to load order.</p>';
+      }
     });
 
     async function updateStatus(status) {
-      await db.collection('orders').doc(orderId).update({ status, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-      alert('Status updated!');
-      location.reload();
+      try {
+        await db.collection('orders').doc(orderId).update({ 
+          status, 
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp() 
+        });
+        alert('Status updated!');
+        location.reload();
+      } catch (err) {
+        console.error('[admin/order-detail] Update error:', err);
+        alert('Failed to update: ' + err.message);
+      }
+    }
+
+    function logout() { 
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
     }
   </script>
 </body>
