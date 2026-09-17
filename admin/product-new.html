@@ -4,27 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Product — Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-  <style>
-    body { font-family: 'Jost', sans-serif; background: #0D0D0D; color: #F5F0E8; margin: 0; }
-    .admin-layout { display: flex; min-height: 100vh; }
-.sidebar → position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
-    .sidebar .logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; margin-bottom: 5px; }
-    .sidebar .tag { font-size: 10px; letter-spacing: 2px; color: #C9A96E; text-transform: uppercase; margin-bottom: 30px; }
-    .sidebar a { display: flex; align-items: center; gap: 8px; padding: 8px 10px; color: #B0A898; text-decoration: none; font-size: 13px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; }
-    .sidebar a:hover, .sidebar a.active { background: #1C1C1C; color: #F5F0E8; }
-    .main → flex: 1; padding: 30px; min-width: 0;
-    h1 { font-family: 'Cormorant Garamond', serif; font-size: 32px; }
-    .form-group { margin-bottom: 15px; max-width: 400px; }
-    label { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6E6860; margin-bottom: 6px; }
-    input, textarea { width: 100%; background: #141414; border: 1px solid #2E2E2E; border-radius: 4px; color: #F5F0E8; padding: 10px 12px; font-size: 14px; outline: none; }
-    .btn-primary { width: 100%; max-width: 400px; height: 48px; background: #C9A96E; color: #0D0D0D; border: none; border-radius: 2px; font-size: 14px; font-weight: 500; cursor: pointer; }
-  </style>
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+
+  <!-- Mobile menu button -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+    <i class="ri-menu-line"></i>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <div class="admin-layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
       <div class="logo">Woodbuyy</div>
       <div class="tag">Admin Panel</div>
       <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
@@ -33,44 +31,144 @@
       <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
       <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
       <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
+      <a href="#" onclick="logout()" style="color:#E05555;"><i class="ri-logout-box-line"></i> Logout</a>
     </aside>
+
     <main class="main">
       <h1>Add Product</h1>
-      <form id="product-form">
-        <div class="form-group"><label>Product Name</label><input type="text" id="name" required></div>
-        <div class="form-group"><label>Slug</label><input type="text" id="slug" required></div>
-        <div class="form-group"><label>Description</label><textarea id="description"></textarea></div>
-        <div class="form-group"><label>Price (AED)</label><input type="number" id="price" step="0.01" required></div>
-        <div class="form-group"><label>Stock</label><input type="number" id="stock" value="0"></div>
-        <div class="form-group"><label>Category Slug</label><input type="text" id="categorySlug" placeholder="sofas"></div>
-        <div class="form-group"><label>Image URL</label><input type="text" id="image" placeholder="https://..."></div>
-        <button type="submit" class="btn-primary">Save Product</button>
-      </form>
+
+      <div class="card" style="padding:25px;max-width:600px;">
+        <form id="product-form">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="name" required>
+          </div>
+
+          <div class="form-group">
+            <label>Slug</label>
+            <input type="text" id="slug" required>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="description" rows="4"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Price (AED)</label>
+            <input type="number" id="price" step="0.01" min="0" required>
+          </div>
+
+          <div class="form-group">
+            <label>Stock</label>
+            <input type="number" id="stock" value="0" min="0">
+          </div>
+
+          <div class="form-group">
+            <label>Category Slug</label>
+            <input type="text" id="categorySlug" placeholder="sofas">
+          </div>
+
+          <div class="form-group">
+            <label>Image URL</label>
+            <input type="text" id="image" placeholder="https://...">
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full" id="save-btn">
+            Save Product
+          </button>
+        </form>
+      </div>
     </main>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="../firebase-config.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
   <script>
+    // ---------- MOBILE MENU ----------
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('is-open');
+        sidebarOverlay.classList.add('is-visible');
+      });
+    }
+
+    if (sidebarClose) {
+      sidebarClose.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('is-open');
+        sidebarOverlay.classList.remove('is-visible');
+      });
+    }
+
+    // ---------- ADD PRODUCT ----------
     document.getElementById('product-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      const saveBtn = document.getElementById('save-btn');
       const price = Math.round(parseFloat(document.getElementById('price').value) * 100);
-      const img = document.getElementById('image').value;
-      await db.collection('Products').add({
-        name: document.getElementById('name').value,
-        slug: document.getElementById('slug').value,
-        description: document.getElementById('description').value,
-        price: price,
-        stockCount: parseInt(document.getElementById('stock').value) || 0,
-        categorySlug: document.getElementById('categorySlug').value,
-        images: img ? [img] : [],
-        isActive: true,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      alert('Product added!');
-      window.location.href = 'products.html';
+      const img = document.getElementById('image').value.trim();
+      
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+      
+      try {
+        await db.collection('Products').add({
+          name: document.getElementById('name').value.trim(),
+          slug: document.getElementById('slug').value.trim(),
+          description: document.getElementById('description').value.trim(),
+          price: price,
+          stockCount: parseInt(document.getElementById('stock').value) || 0,
+          categorySlug: document.getElementById('categorySlug').value.trim(),
+          images: img ? [img] : [],
+          isActive: true,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        alert('Product added successfully!');
+        window.location.href = 'products.html';
+      } catch (err) {
+        console.error('[admin/product-new] Error:', err);
+        alert('Failed to add product: ' + err.message);
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Product';
+      }
     });
+
+    // ---------- AUTH GUARD ----------
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') { 
+          window.location.href = 'login.html'; 
+          return; 
+        }
+      } catch (err) {
+        console.error('[admin/product-new] Auth error:', err);
+      }
+    });
+
+    function logout() { 
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      });
+    }
   </script>
 </body>
 </html>
