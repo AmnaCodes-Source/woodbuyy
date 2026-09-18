@@ -23,7 +23,8 @@
     .links { text-align: center; margin-top: 20px; font-size: 14px; color: #6E6860; }
     .links a { color: #C9A96E; text-decoration: none; }
     .error { background: rgba(224,85,85,0.1); color: #E05555; padding: 10px; border-radius: 4px; font-size: 13px; text-align: center; margin-top: 15px; display: none; }
-    .success { background: rgba(76,175,125,0.1); color: #4CAF7D; padding: 15px; border-radius: 4px; font-size: 14px; text-align: center; margin-top: 15px; display: none; line-height: 1.6; }
+    .success { background: rgba(76,175,125,0.1); color: #4CAF7D; padding: 20px; border-radius: 4px; font-size: 14px; text-align: center; margin-top: 15px; display: none; line-height: 1.7; }
+    .success .highlight { background: rgba(201,169,110,0.2); color: #C9A96E; padding: 6px 12px; border-radius: 4px; display: inline-block; margin: 8px 0; font-weight: 500; }
   </style>
 </head>
 <body>
@@ -104,11 +105,20 @@
         const cred = await auth.createUserWithEmailAndPassword(email, password);
         const user = cred.user;
         
-        // Send email verification
-        await user.sendEmailVerification();
+        // Send email verification (non-blocking)
+        try {
+          await user.sendEmailVerification();
+        } catch (emailErr) {
+          console.warn('[register] Email verification failed:', emailErr);
+          // Continue even if email fails
+        }
         
         // Update display name
-        await user.updateProfile({ displayName: name });
+        try {
+          await user.updateProfile({ displayName: name });
+        } catch (profileErr) {
+          console.warn('[register] Profile update failed:', profileErr);
+        }
         
         // Save to Firestore
         await db.collection('users').doc(user.uid).set({
@@ -121,22 +131,26 @@
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         
-        // Show success message
+        // Show success message with spam folder warning
         successMsg.innerHTML = `
-          <strong>Account created successfully!</strong><br><br>
-          We've sent a verification email to <strong>${email}</strong>.<br>
-          Please check your inbox and click the verification link.<br><br>
-          <a href="account.html" style="color:#C9A96E;">Continue to Account →</a>
+          <strong style="font-size:16px;">✅ Account created successfully!</strong><br><br>
+          
+          We've sent a verification email to:<br>
+          <strong>${email}</strong><br><br>
+          
+          <span class="highlight">📧 Check your INBOX and SPAM folder</span><br><br>
+          
+          <a href="account.html" style="color:#C9A96E;font-weight:500;">Continue to Account →</a>
         `;
         successMsg.style.display = 'block';
         
         // Clear form
         document.getElementById('register-form').reset();
         
-        // Redirect after 5 seconds
+        // Redirect after 6 seconds
         setTimeout(() => {
           window.location.href = 'account.html';
-        }, 5000);
+        }, 6000);
         
       } catch (err) {
         console.error('[register] Error:', err);
