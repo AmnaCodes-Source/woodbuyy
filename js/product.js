@@ -60,7 +60,7 @@ function loadProduct() {
     showToast('No product specified', 'error');
     return;
   }
-  db.collection('products').doc(id).get()
+  db.collection('Products').doc(id).get()
     .then(function (snap) {
       if (!snap.exists) {
         showToast('Product not found', 'error');
