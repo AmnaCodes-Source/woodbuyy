@@ -3,377 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Premium Furniture — Woodbuyy UAE</title>
-  <meta name="description" content="Premium quality furniture at Woodbuyy. Cash on delivery across UAE. 5% VAT included. Browse our collection of luxury sofas, beds, tables & wardrobes.">
-  <meta name="keywords" content="furniture UAE, premium furniture, luxury furniture Dubai, cash on delivery furniture">
-  <meta property="og:title" content="Premium Furniture — Woodbuyy UAE">
-  <meta property="og:description" content="Premium quality furniture at Woodbuyy. Cash on delivery across UAE.">
-  <meta property="og:type" content="product">
-  <meta property="og:url" content="https://amnacodes-source.github.io/woodbuyy/product.html">
-  <meta name="robots" content="index, follow">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>Product - Woodbuyy</title>
+  <meta name="description" content="Premium furniture, delivered across the UAE. Cash on delivery.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/WOODBUYY_BRAND.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/product.css">
+
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/product.css">
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="container navbar__inner">
-      <button class="navbar__toggle" id="navbar-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
-      <a href="index.html" class="navbar__logo">Woodbuyy</a>
-      <nav class="navbar__nav">
-        <a href="products.html" class="navbar__link">Shop All</a>
-        <a href="categories.html" class="navbar__link">Categories</a>
-        <a href="about.html" class="navbar__link">About</a>
-        <a href="contact.html" class="navbar__link">Contact</a>
-        <a href="custom-quote.html" class="navbar__link">Custom Quote</a>
-      </nav>
-      <div class="navbar__actions">
-        <a href="account-wishlist.html" class="navbar__icon" aria-label="Wishlist">
-          <i class="ri-heart-line"></i>
-          <span class="navbar__badge hidden" data-wishlist-count>0</span>
-        </a>
-        <a href="cart.html" class="navbar__icon" aria-label="Cart">
-          <i class="ri-shopping-bag-line"></i>
-          <span class="navbar__badge hidden" data-cart-count>0</span>
-        </a>
-        <a href="account.html" class="navbar__icon" aria-label="Account"><i class="ri-user-line"></i></a>
-      </div>
-    </div>
-  </header>
+  <header id="navbar"></header>
 
   <main class="product-page">
-    <div class="product-detail" id="detail">
-      <div class="skeleton" style="width:100%;aspect-ratio:4/3;"></div>
-      <div>
-        <div class="skeleton skeleton-text skeleton-text--lg"></div>
-        <div class="skeleton skeleton-text" style="width:40%;"></div>
-        <div class="skeleton skeleton-text"></div>
-        <div class="skeleton skeleton-text"></div>
-        <div class="skeleton skeleton-text" style="width:60%;"></div>
-      </div>
-    </div>
+    <div class="container">
 
-    <section class="reviews-section" id="reviews-section">
-      <div class="reviews-header">
-        <h2 class="reviews-title">Customer Reviews</h2>
-        <p class="reviews-subtitle">Share your experience with this product</p>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <i class="ri-arrow-right-s-line"></i>
+        <a href="/products.html">Products</a>
+        <i class="ri-arrow-right-s-line"></i>
+        <span id="breadcrumbName">Product</span>
+      </nav>
+
+      <div class="product-layout">
+
+        <section class="product-gallery" aria-label="Product images">
+
+          <div class="product-gallery__stage">
+            <button class="product-gallery__nav product-gallery__nav--prev" id="galleryPrev" aria-label="Previous image" type="button">
+              <i class="ri-arrow-left-line"></i>
+            </button>
+
+            <div class="product-gallery__frame">
+              <div class="skeleton product-gallery__skeleton" id="gallerySkeleton"></div>
+              <img id="mainImage" class="product-gallery__image" alt="" loading="eager" decoding="async">
+              <span class="product-gallery__badge" id="galleryBadge"></span>
+            </div>
+
+            <button class="product-gallery__nav product-gallery__nav--next" id="galleryNext" aria-label="Next image" type="button">
+              <i class="ri-arrow-right-line"></i>
+            </button>
+          </div>
+
+          <div class="product-gallery__thumbs" id="thumbStrip"></div>
+
+        </section>
+
+        <section class="product-info" aria-label="Product details">
+
+          <p class="product-info__eyebrow label" id="productCategory">Category</p>
+
+          <h1 class="product-info__title" id="productName">Product Name</h1>
+
+          <p class="product-info__sku" id="productSku"></p>
+
+          <p class="product-info__subtitle" id="productSubtitle"></p>
+
+          <div class="product-info__rating">
+            <span class="product-info__stars" id="productStars" aria-label="Rating"></span>
+            <span class="product-info__reviews" id="productReviews">0 reviews</span>
+          </div>
+
+          <div class="product-info__price">
+            <span class="product-info__price-current" id="productPrice">AED 0.00</span>
+            <span class="product-info__price-original" id="productPriceOriginal"></span>
+            <span class="product-info__price-save" id="productSave"></span>
+          </div>
+
+          <p class="product-info__dimline" id="productDimLine"></p>
+
+          <div class="product-info__attr" id="colorGroup">
+            <span class="label">Colour</span>
+            <div class="swatch-row" id="colorSwatches"></div>
+          </div>
+
+          <div class="product-info__attr" id="materialGroup">
+            <span class="label">Material</span>
+            <select class="input" id="materialSelect">
+              <option value="">Select material</option>
+            </select>
+          </div>
+
+          <div class="product-info__qty">
+            <span class="label">Quantity</span>
+            <div class="qty-stepper">
+              <button type="button" id="qtyMinus" aria-label="Decrease quantity">-</button>
+              <input type="number" id="qtyInput" value="1" min="1" max="99" inputmode="numeric">
+              <button type="button" id="qtyPlus" aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+
+          <div class="product-info__ctas">
+            <button type="button" class="btn btn--primary btn--full" id="addToCartBtn">
+              <i class="ri-shopping-bag-3-line"></i>
+              <span>Add to Cart</span>
+            </button>
+            <button type="button" class="btn btn--secondary btn--full" id="buyNowBtn">
+              <i class="ri-flashlight-line"></i>
+              <span>Buy Now - COD</span>
+            </button>
+            <button type="button" class="btn btn--ghost btn--full" id="enquiryBtn">
+              <i class="ri-mail-send-line"></i>
+              <span>Product Enquiry</span>
+            </button>
+          </div>
+
+          <ul class="product-info__trust">
+            <li><i class="ri-truck-line"></i><span>Free delivery over AED 2,000</span></li>
+            <li><i class="ri-shield-check-line"></i><span>1-year warranty</span></li>
+            <li><i class="ri-arrow-go-back-line"></i><span>7-day returns</span></li>
+            <li><i class="ri-money-dollar-circle-line"></i><span>Cash on Delivery</span></li>
+          </ul>
+
+        </section>
+
       </div>
 
-      <div class="review-form">
-        <h3>Write a Review</h3>
-        <div class="star-rating" id="star-rating">
-          <i class="ri-star-line" data-rating="1"></i>
-          <i class="ri-star-line" data-rating="2"></i>
-          <i class="ri-star-line" data-rating="3"></i>
-          <i class="ri-star-line" data-rating="4"></i>
-          <i class="ri-star-line" data-rating="5"></i>
+      <section class="product-section" aria-label="Key features">
+        <h2 class="section-title">Key Features</h2>
+        <ul class="feature-list" id="featureList">
+          <li class="skeleton skeleton-text"></li>
+          <li class="skeleton skeleton-text"></li>
+          <li class="skeleton skeleton-text"></li>
+        </ul>
+      </section>
+
+      <section class="product-section" aria-label="Dimensions">
+        <h2 class="section-title">Dimensions</h2>
+        <div class="dimension-grid">
+          <div class="dimension-item">
+            <span class="dimension-item__label label">Width</span>
+            <span class="dimension-item__value" id="dimWidth">-</span>
+          </div>
+          <div class="dimension-item">
+            <span class="dimension-item__label label">Depth</span>
+            <span class="dimension-item__value" id="dimDepth">-</span>
+          </div>
+          <div class="dimension-item">
+            <span class="dimension-item__label label">Height</span>
+            <span class="dimension-item__value" id="dimHeight">-</span>
+          </div>
+          <div class="dimension-item">
+            <span class="dimension-item__label label">Weight</span>
+            <span class="dimension-item__value" id="dimWeight">-</span>
+          </div>
         </div>
-        <input type="text" id="review-name" class="input" placeholder="Your name" required>
-        <textarea id="review-text" class="input" placeholder="Your review..." required></textarea>
-        <button class="btn btn--primary btn--full" id="btn-submit-review" onclick="submitReview()">Submit Review</button>
-      </div>
+        <p class="product-section__note" id="assemblyNote"></p>
+      </section>
 
-      <div class="reviews-list" id="reviews-list">
-        <p style="text-align:center;color:#6E6860;">Loading reviews...</p>
-      </div>
-    </section>
+      <section class="product-section" aria-label="Material and care">
+        <h2 class="section-title">Material &amp; Care</h2>
+        <div class="material-grid">
+          <div class="material-item">
+            <h3 class="material-item__title">Material</h3>
+            <p class="material-item__text" id="materialText">-</p>
+          </div>
+          <div class="material-item">
+            <h3 class="material-item__title">Care Instructions</h3>
+            <p class="material-item__text" id="careText">-</p>
+          </div>
+        </div>
+      </section>
 
-    <section class="related-section" id="related-section" style="display:none;">
-      <div class="related-header">
-        <h2 class="related-title">You May Also Like</h2>
-        <p class="related-subtitle">Similar pieces from the same collection</p>
-      </div>
-      <div class="related-grid" id="related-grid"></div>
-    </section>
+      <section class="product-section" aria-label="Complete the look">
+        <h2 class="section-title">Complete the Look</h2>
+        <div class="related-grid" id="relatedGrid">
+          <div class="skeleton" style="aspect-ratio:4/3"></div>
+          <div class="skeleton" style="aspect-ratio:4/3"></div>
+          <div class="skeleton" style="aspect-ratio:4/3"></div>
+        </div>
+      </section>
+
+      <section class="product-section" aria-label="Customer reviews">
+        <h2 class="section-title">Customer Reviews</h2>
+        <div class="reviews-summary">
+          <div class="reviews-summary__score">
+            <span class="reviews-summary__number" id="avgRating">0.0</span>
+            <span class="reviews-summary__stars" id="avgStars"></span>
+            <span class="reviews-summary__count" id="reviewCount">0 reviews</span>
+          </div>
+        </div>
+        <div class="reviews-list" id="reviewsList">
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text"></div>
+        </div>
+      </section>
+
+    </div>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p class="footer__brand">Woodbuyy</p>
-      <p class="footer__tagline">Luxury furniture for the modern UAE home.</p>
-      <p class="footer__copyright">© 2026 Woodbuyy. All rights reserved.</p>
-    </div>
-  </footer>
+  <footer id="footer"></footer>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/wishlist.js"></script>
+  <div id="toast-container"></div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    let qty = 1;
-    let currentProduct = null;
-    let selectedRating = 0;
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      const div = document.createElement('div');
-      div.textContent = String(str);
-      return div.innerHTML;
-    }
-
-    function saveRecentlyViewed(product) {
-      let recent = JSON.parse(localStorage.getItem('wb_recently_viewed') || '[]');
-      recent = recent.filter(item => item.productId !== product.id);
-      recent.unshift({
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        image: (product.images && product.images[0]) ? product.images[0] : ''
-      });
-      recent = recent.slice(0, 8);
-      localStorage.setItem('wb_recently_viewed', JSON.stringify(recent));
-    }
-
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('#star-rating i')) {
-        const rating = parseInt(e.target.dataset.rating);
-        selectedRating = rating;
-        updateStars();
-      }
-    });
-
-    function updateStars() {
-      document.querySelectorAll('#star-rating i').forEach(star => {
-        const rating = parseInt(star.dataset.rating);
-        if (rating <= selectedRating) {
-          star.className = 'ri-star-fill active';
-        } else {
-          star.className = 'ri-star-line';
-        }
-      });
-    }
-
-    window.submitReview = async function() {
-      const name = document.getElementById('review-name').value.trim();
-      const text = document.getElementById('review-text').value.trim();
-
-      if (!name) { showToast('Please enter your name', 'warning'); return; }
-      if (!text) { showToast('Please write a review', 'warning'); return; }
-      if (selectedRating === 0) { showToast('Please select a rating', 'warning'); return; }
-
-      const btn = document.getElementById('btn-submit-review');
-      btn.disabled = true;
-      btn.textContent = 'Submitting...';
-
-      try {
-        await db.collection('reviews').add({
-          productId: id,
-          userName: name,
-          rating: selectedRating,
-          text: text,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        document.getElementById('review-name').value = '';
-        document.getElementById('review-text').value = '';
-        selectedRating = 0;
-        updateStars();
-
-        showToast('Review submitted!', 'success');
-        loadReviews();
-      } catch (err) {
-        console.error('[product.html] Review error:', err);
-        showToast('Failed to submit review', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Submit Review';
-      }
-    };
-
-    async function loadReviews() {
-      const list = document.getElementById('reviews-list');
-      try {
-        const snap = await db.collection('reviews')
-          .where('productId', '==', id)
-          .get();
-
-        if (snap.empty) {
-          list.innerHTML = '<p style="text-align:center;color:#6E6860;">No reviews yet. Be the first to review!</p>';
-          return;
-        }
-
-        list.innerHTML = snap.docs.map(doc => {
-          const r = doc.data();
-          const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-          const date = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleDateString('en-AE', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-          return `
-            <div class="review-card">
-              <div class="review-card__header">
-                <span class="review-card__name">${escapeHTML(r.userName || 'Anonymous')}</span>
-                <span class="review-card__stars">${stars}</span>
-              </div>
-              <p class="review-card__text">${escapeHTML(r.text || '')}</p>
-              ${date ? `<p class="review-card__date">${date}</p>` : ''}
-            </div>
-          `;
-        }).join('');
-      } catch (err) {
-        console.error('[product.html] Reviews error:', err);
-        list.innerHTML = '<p style="text-align:center;color:#6E6860;">Could not load reviews.</p>';
-      }
-    }
-
-    async function load() {
-      if (!id) { window.location.href = 'products.html'; return; }
-      
-      try {
-        const doc = await db.collection('Products').doc(id).get();
-        if (!doc.exists) {
-          document.getElementById('detail').innerHTML = '<p style="text-align:center;">Product not found.</p>';
-          return;
-        }
-
-        currentProduct = { id: doc.id, ...doc.data() };
-        const p = currentProduct;
-        const price = p.price || 0;
-        const salePrice = p.salePrice || null;
-        const displayPrice = salePrice || price;
-        const hasSale = salePrice && salePrice < price;
-        const image = (p.images && p.images[0]) ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800';
-
-        document.getElementById('detail').innerHTML = `
-          <div class="product-image">
-            <img src="${image}" alt="${escapeHTML(p.name || '')}">
-          </div>
-          <div class="product-info">
-            <h1>${escapeHTML(p.name || '-')}</h1>
-            <p class="product-price">
-              ${formatCurrency(displayPrice)}
-              ${hasSale ? `<span style="text-decoration:line-through;color:#6E6860;font-size:18px;">${formatCurrency(price)}</span>` : ''}
-            </p>
-            <p class="product-desc">${escapeHTML(p.description || 'Premium quality furniture.')}</p>
-            <div class="qty-selector">
-              <button onclick="changeQty(-1)" aria-label="Decrease quantity">−</button>
-              <span id="qty">1</span>
-              <button onclick="changeQty(1)" aria-label="Increase quantity">+</button>
-            </div>
-            <button class="btn btn--primary btn--full" onclick="addToCartFromProduct()">Add to Cart</button>
-            <button class="btn btn--secondary btn--full" style="margin-top:10px;" onclick="addToWishlistClick()">
-              <i class="ri-heart-line"></i> Add to Wishlist
-            </button>
-          </div>`;
-
-        saveRecentlyViewed(currentProduct);
-        loadReviews();
-        loadRelatedProducts(p.categorySlug || '');
-        
-      } catch (err) {
-        console.error('[product.html] Load error:', err);
-        document.getElementById('detail').innerHTML = '<p style="text-align:center;color:#E05555;">Error loading product</p>';
-      }
-    }
-
-    async function loadRelatedProducts(categorySlug) {
-      const section = document.getElementById('related-section');
-      const gridEl = document.getElementById('related-grid');
-
-      section.style.display = 'block';
-      gridEl.innerHTML = Array(4).fill('<div class="skeleton" style="height:220px;"></div>').join('');
-
-      try {
-        let related = [];
-        
-        if (categorySlug) {
-          const catSnap = await db.collection('Products')
-            .where('categorySlug', '==', categorySlug)
-            .limit(5)
-            .get();
-          related = catSnap.docs.filter(doc => doc.id !== id).slice(0, 4);
-        }
-
-        if (related.length < 4) {
-          const otherSnap = await db.collection('Products')
-            .limit(10)
-            .get();
-
-          const others = otherSnap.docs.filter(doc => 
-            doc.id !== id && !related.find(r => r.id === doc.id)
-          );
-
-          const needed = 4 - related.length;
-          related = [...related, ...others.slice(0, needed)];
-        }
-
-        if (related.length === 0) {
-          section.style.display = 'none';
-          return;
-        }
-
-        gridEl.innerHTML = related.map(doc => {
-          const p = doc.data();
-          const price = p.price || 0;
-          const image = (p.images && p.images[0]) ? p.images[0] : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
-          return `
-            <a href="product.html?id=${doc.id}" class="related-card">
-              <img src="${image}" alt="${escapeHTML(p.name || '')}" loading="lazy">
-              <div class="related-card__body">
-                <p class="related-card__name">${escapeHTML(p.name || '-')}</p>
-                <p class="related-card__price">${formatCurrency(price)}</p>
-              </div>
-            </a>
-          `;
-        }).join('');
-      } catch (err) {
-        console.error('[product.html] Related error:', err);
-        section.style.display = 'none';
-      }
-    }
-
-    window.changeQty = (delta) => {
-      qty = Math.max(1, qty + delta);
-      document.getElementById('qty').textContent = qty;
-    };
-
-    // Add to cart — calls cart.js function directly
-    window.addToCartFromProduct = () => {
-      if (!currentProduct) return;
-      
-      // cart.js function ka naam check karo
-      if (typeof window.addToCartFromCart === 'function') {
-        window.addToCartFromCart({
-          productId: currentProduct.id,
-          name: currentProduct.name,
-          slug: currentProduct.slug || '',
-          price: currentProduct.price,
-          salePrice: currentProduct.salePrice || null,
-          quantity: qty,
-          image: (currentProduct.images && currentProduct.images[0]) ? currentProduct.images[0] : ''
-        });
-      } else {
-        console.error('cart.js addToCartFromCart function not found');
-        showToast('Cart system not available', 'error');
-      }
-    };
-
-    window.addToWishlistClick = () => {
-      if (!currentProduct) return;
-      
-      if (typeof addToWishlist === 'function') {
-        addToWishlist(currentProduct.id, {
-          name: currentProduct.name,
-          slug: currentProduct.slug || '',
-          price: currentProduct.price,
-          salePrice: currentProduct.salePrice || null,
-          image: (currentProduct.images && currentProduct.images[0]) ? currentProduct.images[0] : '',
-          category: currentProduct.categorySlug || ''
-        });
-      } else {
-        showToast('Wishlist not available', 'error');
-      }
-    };
-
-    load();
-  </script>
+  <script type="module" src="/js/firebase-config.js"></script>
+  <script type="module" src="/js/auth.js"></script>
+  <script type="module" src="/js/ui.js"></script>
+  <script type="module" src="/js/cart.js"></script>
+  <script type="module" src="/js/product.js"></script>
 
 </body>
 </html>
-
