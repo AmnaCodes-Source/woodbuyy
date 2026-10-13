@@ -1,7 +1,6 @@
 /* ============================================================
    PRODUCT PAGE - css/product.css
-   Woodbuyy brand tokens only - no hardcoded colours.
-   Oak-style layout: 2-column, gallery left, info right.
+   Oak layout, Woodbuyy dark theme tokens only.
    ============================================================ */
 
 /* ---------- Breadcrumb ---------- */
@@ -467,7 +466,7 @@
   margin: 0;
 }
 
-/* ---------- Related / complete the look ---------- */
+/* ---------- Related ---------- */
 .related-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -503,9 +502,7 @@
   display: block;
 }
 
-.related-card__body {
-  padding: var(--space-4);
-}
+.related-card__body { padding: var(--space-4); }
 
 .related-card__name {
   font-family: var(--font-display);

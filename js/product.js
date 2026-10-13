@@ -9,7 +9,6 @@ import { doc, getDoc, collection, query, where, limit, getDocs } from 'https://w
 import { showToast } from './ui.js';
 import { addToCart } from './cart.js';
 
-// ---------- Helpers ----------
 function getParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
@@ -45,7 +44,6 @@ function setText(id, val) {
   if (el) el.textContent = val == null ? '' : val;
 }
 
-// ---------- State ----------
 var currentProduct = null;
 var selectedColor = null;
 var selectedMaterial = null;
@@ -53,7 +51,6 @@ var selectedQty = 1;
 var galleryIndex = 0;
 var galleryImages = [];
 
-// ---------- Load product ----------
 async function loadProduct() {
   var id = getParam('id');
   if (!id) {
@@ -76,7 +73,6 @@ async function loadProduct() {
   }
 }
 
-// ---------- Render ----------
 function renderProduct(p) {
   document.title = p.name + ' - Woodbuyy';
   setText('breadcrumbName', p.name);
@@ -126,7 +122,6 @@ function renderProduct(p) {
   }
 }
 
-// ---------- Gallery ----------
 function renderGallery() {
   var main = document.getElementById('mainImage');
   var strip = document.getElementById('thumbStrip');
@@ -169,7 +164,6 @@ function initGalleryNav() {
   if (next) next.addEventListener('click', function () { goToImage(galleryIndex + 1); });
 }
 
-// ---------- Swatches / materials ----------
 function renderColors(colors) {
   var row = document.getElementById('colorSwatches');
   var group = document.getElementById('colorGroup');
@@ -213,7 +207,6 @@ function renderMaterials(materials) {
   sel.addEventListener('change', function () { selectedMaterial = sel.value || null; });
 }
 
-// ---------- Features / dimensions ----------
 function renderFeatures(features) {
   var list = document.getElementById('featureList');
   if (!list) return;
@@ -233,7 +226,6 @@ function renderDimensions(dims, weight) {
   setText('dimWeight', weight ? weight + ' kg' : '-');
 }
 
-// ---------- Related ----------
 async function loadRelated(p) {
   var grid = document.getElementById('relatedGrid');
   if (!grid || !p.categoryId) return;
@@ -267,7 +259,6 @@ async function loadRelated(p) {
   }
 }
 
-// ---------- Reviews ----------
 async function loadReviews(productId) {
   var list = document.getElementById('reviewsList');
   if (!list) return;
@@ -306,7 +297,6 @@ async function loadReviews(productId) {
   }
 }
 
-// ---------- Init ----------
 document.addEventListener('DOMContentLoaded', function () {
   initGalleryNav();
   loadProduct();
@@ -364,7 +354,7 @@ function handleAddToCart(redirectToCheckout) {
   }
 }
 
-// ---------- Product enquiry (customQuotes) ----------
+// ---------- Product enquiry ----------
 function initEnquiry() {
   var btn = document.getElementById('enquiryBtn');
   if (!btn) return;
@@ -377,29 +367,28 @@ function initEnquiry() {
 function openEnquiryModal() {
   var overlay = document.createElement('div');
   overlay.className = 'overlay is-active';
-  overlay.id = 'enquiryOverlay';
 
   var modal = document.createElement('div');
   modal.style.cssText = 'position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--space-4);pointer-events:none;';
   modal.innerHTML = ''
     + '<div style=\"pointer-events:all;width:100%;max-width:480px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);\">'
     + '<h2 style=\"font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);margin:0 0 var(--space-4);\">Product Enquiry</h2>'
-    + '<p style=\"font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);\">Send us a question about this product. We will get back within 24 hours.</p>'
+    + '<p style=\"font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);\">Send us a question. We reply within 24 hours.</p>'
     + '<div class=\"input-group\" style=\"margin-bottom:var(--space-4);\">'
     + '<label class=\"input-label\" for=\"enqName\">Your Name</label>'
-    + '<input class=\"input\" id=\"enqName\" type=\"text\" required>'
+    + '<input class=\"input\" id=\"enqName\" type=\"text\">'
     + '</div>'
     + '<div class=\"input-group\" style=\"margin-bottom:var(--space-4);\">'
     + '<label class=\"input-label\" for=\"enqEmail\">Email</label>'
-    + '<input class=\"input\" id=\"enqEmail\" type=\"email\" required>'
+    + '<input class=\"input\" id=\"enqEmail\" type=\"email\">'
     + '</div>'
     + '<div class=\"input-group\" style=\"margin-bottom:var(--space-4);\">'
     + '<label class=\"input-label\" for=\"enqPhone\">Phone</label>'
-    + '<input class=\"input\" id=\"enqPhone\" type=\"tel\" required>'
+    + '<input class=\"input\" id=\"enqPhone\" type=\"tel\">'
     + '</div>'
     + '<div class=\"input-group\" style=\"margin-bottom:var(--space-5);\">'
     + '<label class=\"input-label\" for=\"enqMessage\">Message</label>'
-    + '<textarea class=\"input\" id=\"enqMessage\" rows=\"3\" required></textarea>'
+    + '<textarea class=\"input\" id=\"enqMessage\" rows=\"3\"></textarea>'
     + '</div>'
     + '<div style=\"display:flex;gap:var(--space-3);\">'
     + '<button type=\"button\" class=\"btn btn--ghost\" id=\"enqCancel\" style=\"flex:1;\">Cancel</button>'
@@ -410,10 +399,7 @@ function openEnquiryModal() {
   document.body.appendChild(overlay);
   document.body.appendChild(modal);
 
-  function close() {
-    overlay.remove();
-    modal.remove();
-  }
+  function close() { overlay.remove(); modal.remove(); }
 
   document.getElementById('enqCancel').addEventListener('click', close);
   overlay.addEventListener('click', close);
@@ -430,8 +416,8 @@ function openEnquiryModal() {
     }
 
     try {
-      var { addDoc, collection, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-      await addDoc(collection(db, 'customQuotes'), {
+      var mod = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+      await mod.addDoc(mod.collection(db, 'customQuotes'), {
         productId: currentProduct.id,
         productName: currentProduct.name,
         name: name,
@@ -440,7 +426,7 @@ function openEnquiryModal() {
         message: msg,
         type: 'product_enquiry',
         status: 'new',
-        createdAt: serverTimestamp()
+        createdAt: mod.serverTimestamp()
       });
       showToast('Enquiry sent. We will be in touch.', 'success');
       close();
