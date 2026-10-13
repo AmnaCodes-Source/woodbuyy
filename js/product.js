@@ -1,13 +1,8 @@
 // ============================================================
-// PRODUCT PAGE - js/product.js
+// PRODUCT PAGE - js/product.js (v8 compat style)
 // Reads ?id= from URL, fetches product, renders all sections.
 // Money in fils; divide by 100 at display only.
 // ============================================================
-
-import { db } from './firebase-config.js';
-import { doc, getDoc, collection, query, where, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { showToast } from './ui.js';
-import { addToCart } from './cart.js';
 
 function getParam(name) {
   return new URLSearchParams(window.location.search).get(name);
@@ -26,22 +21,30 @@ function renderStars(rating) {
   var half = rating - full >= 0.5;
   var empty = 5 - full - (half ? 1 : 0);
   var html = '';
-  for (var i = 0; i < full; i++) html += '<i class="ri-star-fill"></i>';
-  if (half) html += '<i class="ri-star-half-fill"></i>';
-  for (var j = 0; j < empty; j++) html += '<i class="ri-star-line"></i>';
+  for (var i = 0; i < full; i++) html += '<i class=""ri-star-fill""></i>';
+  if (half) html += '<i class=""ri-star-half-fill""></i>';
+  for (var j = 0; j < empty; j++) html += '<i class=""ri-star-line""></i>';
   return html;
 }
 
 function escapeHtml(s) {
   if (s == null) return '';
-  return String(s).replace(/[&<>\"']/g, function (c) {
-    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' })[c];
+  return String(s).replace(/[&<>""']/g, function (c) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '""': '&quot;', ""'"": '&#39;' })[c];
   });
 }
 
 function setText(id, val) {
   var el = document.getElementById(id);
   if (el) el.textContent = val == null ? '' : val;
+}
+
+function showToast(msg, type) {
+  if (typeof window.showToast === 'function') {
+    window.showToast(msg, type);
+  } else {
+    console.log('[' + type + '] ' + msg);
+  }
 }
 
 var currentProduct = null;
@@ -51,24 +54,25 @@ var selectedQty = 1;
 var galleryIndex = 0;
 var galleryImages = [];
 
-async function loadProduct() {
+function loadProduct() {
   var id = getParam('id');
   if (!id) {
     showToast('No product specified', 'error');
     return;
   }
-  try {
-    var snap = await getDoc(doc(db, 'products', id));
-    if (!snap.exists()) {
-      showToast('Product not found', 'error');
-      return;
-    }
-    currentProduct = Object.assign({ id: snap.id }, snap.data());
-    renderProduct(currentProduct);
-  } catch (err) {
-    console.error('loadProduct failed', err);
-    showToast('Could not load product', 'error');
-  }
+  db.collection('products').doc(id).get()
+    .then(function (snap) {
+      if (!snap.exists) {
+        showToast('Product not found', 'error');
+        return;
+      }
+      currentProduct = Object.assign({ id: snap.id }, snap.data());
+      renderProduct(currentProduct);
+    })
+    .catch(function (err) {
+      console.error('loadProduct failed', err);
+      showToast('Could not load product', 'error');
+    });
 }
 
 function renderProduct(p) {
@@ -180,7 +184,7 @@ function renderColors(colors) {
     });
     row.appendChild(btn);
   });
-  row.firstChild.classList.add('is-active');
+  if (row.firstChild) row.firstChild.classList.add('is-active');
 }
 
 function renderMaterials(materials) {
@@ -200,66 +204,6 @@ function renderMaterials(materials) {
   sel.addEventListener('change', function () { selectedMaterial = sel.value || null; });
 }
 
-function (f) {
-    return '<li>' + escapeHtml(f) + '</li>';
-  }).join('');
-}
-
-async function (d) { return Object.assign({ id: d.id }, d.data()); });
-    items = items.filter(function (i) { return i.id !== p.id; }).slice(0, 3);
-    if (!items.length) {
-      grid.innerHTML = '<p class=\"text-muted\">No related products yet.</p>';
-      return;
-    }
-    grid.innerHTML = items.map(function (i) {
-      var img = (i.images && i.images[0]) || '/assets/images/placeholder.jpg';
-      var pr = i.salePrice != null ? i.salePrice : i.price;
-      return '<a class=\"related-card\" href=\"/product.html?id=' + i.id + '\">'
-        + '<div class=\"related-card__img\"><img src=\"' + img + '\" alt=\"\" loading=\"lazy\"></div>'
-        + '<div class=\"related-card__body\">'
-        + '<p class=\"related-card__name\">' + escapeHtml(i.name) + '</p>'
-        + '<p class=\"related-card__price\">' + formatAED(pr) + '</p>'
-        + '</div></a>';
-    }).join('');
-  } catch (err) {
-    console.error('loadRelated failed', err);
-    grid.innerHTML = '';
-  }
-}
-
-async function (d) { return d.data(); });
-    if (!items.length) {
-      list.innerHTML = '<p class=\"text-muted\">No reviews yet. Be the first.</p>';
-      return;
-    }
-    var sum = items.reduce(function (a, r) { return a + (r.rating || 0); }, 0);
-    var avg = sum / items.length;
-    setText('avgRating', avg.toFixed(1));
-    var avgStars = document.getElementById('avgStars');
-    if (avgStars) avgStars.innerHTML = renderStars(avg);
-    setText('reviewCount', items.length + ' reviews');
-
-    list.innerHTML = items.map(function (r) {
-      return '<div class=\"review-card\">'
-        + '<div class=\"review-card__head\">'
-        + '<span class=\"review-card__name\">' + escapeHtml(r.userName || 'Customer') + '</span>'
-        + '<span class=\"review-card__date\">' + (r.createdAt ? new Date(r.createdAt.seconds * 1000).toLocaleDateString() : '') + '</span>'
-        + '</div>'
-        + '<div class=\"star-row\" style=\"margin-bottom:var(--space-2);\">' + renderStars(r.rating || 0) + '</div>'
-        + '<p class=\"review-card__text\">' + escapeHtml(r.text || '') + '</p>'
-        + '</div>';
-    }).join('');
-  } catch (err) {
-    console.error('loadReviews failed', err);
-    list.innerHTML = '<p class=\"text-muted\">Reviews unavailable.</p>';
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  initGalleryNav();
-  loadProduct();
-});
-// ---------- Qty stepper ----------
 function initQtyStepper() {
   var input = document.getElementById('qtyInput');
   var minus = document.getElementById('qtyMinus');
@@ -280,7 +224,6 @@ function initQtyStepper() {
   input.addEventListener('blur', sync);
 }
 
-// ---------- Add to cart ----------
 function handleAddToCart(redirectToCheckout) {
   if (!currentProduct) return;
   if (currentProduct.inStock === false) {
@@ -301,18 +244,23 @@ function handleAddToCart(redirectToCheckout) {
     }
   };
   try {
-    addToCart(item);
-    showToast('Added to cart', 'success');
-    if (redirectToCheckout) {
-      window.location.href = '/checkout.html';
+    if (typeof window.addToCart === 'function') {
+      window.addToCart(item);
+    } else {
+      var cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+      var existing = cart.find(function (i) { return i.productId === item.productId; });
+      if (existing) existing.quantity += item.quantity;
+      else cart.push(item);
+      localStorage.setItem('wb_cart', JSON.stringify(cart));
     }
+    showToast('Added to cart', 'success');
+    if (redirectToCheckout) window.location.href = '/checkout.html';
   } catch (err) {
     console.error('addToCart failed', err);
     showToast('Could not add to cart', 'error');
   }
 }
 
-// ---------- Product enquiry ----------
 function initEnquiry() {
   var btn = document.getElementById('enquiryBtn');
   if (!btn) return;
@@ -329,28 +277,28 @@ function openEnquiryModal() {
   var modal = document.createElement('div');
   modal.style.cssText = 'position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--space-4);pointer-events:none;';
   modal.innerHTML = ''
-    + '<div style=\"pointer-events:all;width:100%;max-width:480px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);\">'
-    + '<h2 style=\"font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);margin:0 0 var(--space-4);\">Product Enquiry</h2>'
-    + '<p style=\"font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);\">Send us a question. We reply within 24 hours.</p>'
-    + '<div class=\"input-group\" style=\"margin-bottom:var(--space-4);\">'
-    + '<label class=\"input-label\" for=\"enqName\">Your Name</label>'
-    + '<input class=\"input\" id=\"enqName\" type=\"text\">'
+    + '<div style=""pointer-events:all;width:100%;max-width:480px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);"">'
+    + '<h2 style=""font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);margin:0 0 var(--space-4);"">Product Enquiry</h2>'
+    + '<p style=""font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);"">Send us a question. We reply within 24 hours.</p>'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
+    + '<label class=""input-label"" for=""enqName"">Your Name</label>'
+    + '<input class=""input"" id=""enqName"" type=""text"">'
     + '</div>'
-    + '<div class=\"input-group\" style=\"margin-bottom:var(--space-4);\">'
-    + '<label class=\"input-label\" for=\"enqEmail\">Email</label>'
-    + '<input class=\"input\" id=\"enqEmail\" type=\"email\">'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
+    + '<label class=""input-label"" for=""enqEmail"">Email</label>'
+    + '<input class=""input"" id=""enqEmail"" type=""email"">'
     + '</div>'
-    + '<div class=\"input-group\" style=\"margin-bottom:var(--space-4);\">'
-    + '<label class=\"input-label\" for=\"enqPhone\">Phone</label>'
-    + '<input class=\"input\" id=\"enqPhone\" type=\"tel\">'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
+    + '<label class=""input-label"" for=""enqPhone"">Phone</label>'
+    + '<input class=""input"" id=""enqPhone"" type=""tel"">'
     + '</div>'
-    + '<div class=\"input-group\" style=\"margin-bottom:var(--space-5);\">'
-    + '<label class=\"input-label\" for=\"enqMessage\">Message</label>'
-    + '<textarea class=\"input\" id=\"enqMessage\" rows=\"3\"></textarea>'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-5);"">'
+    + '<label class=""input-label"" for=""enqMessage"">Message</label>'
+    + '<textarea class=""input"" id=""enqMessage"" rows=""3""></textarea>'
     + '</div>'
-    + '<div style=\"display:flex;gap:var(--space-3);\">'
-    + '<button type=\"button\" class=\"btn btn--ghost\" id=\"enqCancel\" style=\"flex:1;\">Cancel</button>'
-    + '<button type=\"button\" class=\"btn btn--primary\" id=\"enqSend\" style=\"flex:1;\">Send Enquiry</button>'
+    + '<div style=""display:flex;gap:var(--space-3);"">'
+    + '<button type=""button"" class=""btn btn--ghost"" id=""enqCancel"" style=""flex:1;"">Cancel</button>'
+    + '<button type=""button"" class=""btn btn--primary"" id=""enqSend"" style=""flex:1;"">Send Enquiry</button>'
     + '</div>'
     + '</div>';
 
@@ -362,7 +310,7 @@ function openEnquiryModal() {
   document.getElementById('enqCancel').addEventListener('click', close);
   overlay.addEventListener('click', close);
 
-  document.getElementById('enqSend').addEventListener('click', async function () {
+  document.getElementById('enqSend').addEventListener('click', function () {
     var name = document.getElementById('enqName').value.trim();
     var email = document.getElementById('enqEmail').value.trim();
     var phone = document.getElementById('enqPhone').value.trim();
@@ -373,30 +321,30 @@ function openEnquiryModal() {
       return;
     }
 
-    try {
-      var mod = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-      await mod.addDoc(mod.collection(db, 'customQuotes'), {
-        productId: currentProduct.id,
-        productName: currentProduct.name,
-        name: name,
-        email: email,
-        phone: phone,
-        message: msg,
-        type: 'product_enquiry',
-        status: 'new',
-        createdAt: mod.serverTimestamp()
-      });
+    db.collection('customQuotes').add({
+      productId: currentProduct.id,
+      productName: currentProduct.name,
+      name: name,
+      email: email,
+      phone: phone,
+      message: msg,
+      type: 'product_enquiry',
+      status: 'new',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(function () {
       showToast('Enquiry sent. We will be in touch.', 'success');
       close();
-    } catch (err) {
+    })
+    .catch(function (err) {
       console.error('enquiry failed', err);
       showToast('Could not send enquiry. Try again.', 'error');
-    }
+    });
   });
 }
 
-// ---------- Wire everything on load ----------
 document.addEventListener('DOMContentLoaded', function () {
+  initGalleryNav();
   initQtyStepper();
   initEnquiry();
 
@@ -404,4 +352,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var buyBtn = document.getElementById('buyNowBtn');
   if (addBtn) addBtn.addEventListener('click', function () { handleAddToCart(false); });
   if (buyBtn) buyBtn.addEventListener('click', function () { handleAddToCart(true); });
+
+  loadProduct();
 });
