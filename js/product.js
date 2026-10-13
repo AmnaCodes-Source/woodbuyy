@@ -65,8 +65,6 @@ async function loadProduct() {
     }
     currentProduct = Object.assign({ id: snap.id }, snap.data());
     renderProduct(currentProduct);
-    loadRelated(currentProduct);
-    loadReviews(currentProduct.id);
   } catch (err) {
     console.error('loadProduct failed', err);
     showToast('Could not load product', 'error');
@@ -109,11 +107,6 @@ function renderProduct(p) {
   renderGallery();
   renderColors(p.attributes && p.attributes.color);
   renderMaterials(p.attributes && p.attributes.materials);
-  renderFeatures(p.features);
-  renderDimensions(dims, p.attributes && p.attributes.weight);
-  setText('assemblyNote', p.attributes && p.attributes.assembly ? 'Assembly: ' + p.attributes.assembly : '');
-  setText('materialText', (p.attributes && p.attributes.material) || '-');
-  setText('careText', (p.attributes && p.attributes.care) || '-');
 
   var badge = document.getElementById('galleryBadge');
   if (badge && p.isFeatured) {
@@ -207,37 +200,12 @@ function renderMaterials(materials) {
   sel.addEventListener('change', function () { selectedMaterial = sel.value || null; });
 }
 
-function renderFeatures(features) {
-  var list = document.getElementById('featureList');
-  if (!list) return;
-  if (!features || !features.length) {
-    list.innerHTML = '<li>No features listed.</li>';
-    return;
-  }
-  list.innerHTML = features.map(function (f) {
+function (f) {
     return '<li>' + escapeHtml(f) + '</li>';
   }).join('');
 }
 
-function renderDimensions(dims, weight) {
-  setText('dimWidth', dims && dims.W ? dims.W + ' cm' : '-');
-  setText('dimDepth', dims && dims.D ? dims.D + ' cm' : '-');
-  setText('dimHeight', dims && dims.H ? dims.H + ' cm' : '-');
-  setText('dimWeight', weight ? weight + ' kg' : '-');
-}
-
-async function loadRelated(p) {
-  var grid = document.getElementById('relatedGrid');
-  if (!grid || !p.categoryId) return;
-  try {
-    var q = query(
-      collection(db, 'products'),
-      where('categoryId', '==', p.categoryId),
-      where('isActive', '==', true),
-      limit(4)
-    );
-    var snaps = await getDocs(q);
-    var items = snaps.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+async function (d) { return Object.assign({ id: d.id }, d.data()); });
     items = items.filter(function (i) { return i.id !== p.id; }).slice(0, 3);
     if (!items.length) {
       grid.innerHTML = '<p class=\"text-muted\">No related products yet.</p>';
@@ -259,17 +227,7 @@ async function loadRelated(p) {
   }
 }
 
-async function loadReviews(productId) {
-  var list = document.getElementById('reviewsList');
-  if (!list) return;
-  try {
-    var q = query(
-      collection(db, 'reviews'),
-      where('productId', '==', productId),
-      limit(10)
-    );
-    var snaps = await getDocs(q);
-    var items = snaps.docs.map(function (d) { return d.data(); });
+async function (d) { return d.data(); });
     if (!items.length) {
       list.innerHTML = '<p class=\"text-muted\">No reviews yet. Be the first.</p>';
       return;
