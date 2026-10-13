@@ -21,16 +21,16 @@ function renderStars(rating) {
   var half = rating - full >= 0.5;
   var empty = 5 - full - (half ? 1 : 0);
   var html = '';
-  for (var i = 0; i < full; i++) html += '<i class=""ri-star-fill""></i>';
-  if (half) html += '<i class=""ri-star-half-fill""></i>';
-  for (var j = 0; j < empty; j++) html += '<i class=""ri-star-line""></i>';
+  for (var i = 0; i < full; i++) html += '<i class="ri-star-fill"></i>';
+  if (half) html += '<i class="ri-star-half-fill"></i>';
+  for (var j = 0; j < empty; j++) html += '<i class="ri-star-line"></i>';
   return html;
 }
 
 function escapeHtml(s) {
   if (s == null) return '';
-  return String(s).replace(/[&<>""']/g, function (c) {
-    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '""': '&quot;', ""'"": '&#39;' })[c];
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
   });
 }
 
@@ -277,28 +277,28 @@ function openEnquiryModal() {
   var modal = document.createElement('div');
   modal.style.cssText = 'position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--space-4);pointer-events:none;';
   modal.innerHTML = ''
-    + '<div style=""pointer-events:all;width:100%;max-width:480px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);"">'
-    + '<h2 style=""font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);margin:0 0 var(--space-4);"">Product Enquiry</h2>'
-    + '<p style=""font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);"">Send us a question. We reply within 24 hours.</p>'
-    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
-    + '<label class=""input-label"" for=""enqName"">Your Name</label>'
-    + '<input class=""input"" id=""enqName"" type=""text"">'
+    + '<div style="pointer-events:all;width:100%;max-width:480px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);">'
+    + '<h2 style="font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);margin:0 0 var(--space-4);">Product Enquiry</h2>'
+    + '<p style="font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);">Send us a question. We reply within 24 hours.</p>'
+    + '<div class="input-group" style="margin-bottom:var(--space-4);">'
+    + '<label class="input-label" for="enqName">Your Name</label>'
+    + '<input class="input" id="enqName" type="text">'
     + '</div>'
-    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
-    + '<label class=""input-label"" for=""enqEmail"">Email</label>'
-    + '<input class=""input"" id=""enqEmail"" type=""email"">'
+    + '<div class="input-group" style="margin-bottom:var(--space-4);">'
+    + '<label class="input-label" for="enqEmail">Email</label>'
+    + '<input class="input" id="enqEmail" type="email">'
     + '</div>'
-    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
-    + '<label class=""input-label"" for=""enqPhone"">Phone</label>'
-    + '<input class=""input"" id=""enqPhone"" type=""tel"">'
+    + '<div class="input-group" style="margin-bottom:var(--space-4);">'
+    + '<label class="input-label" for="enqPhone">Phone</label>'
+    + '<input class="input" id="enqPhone" type="tel">'
     + '</div>'
-    + '<div class=""input-group"" style=""margin-bottom:var(--space-5);"">'
-    + '<label class=""input-label"" for=""enqMessage"">Message</label>'
-    + '<textarea class=""input"" id=""enqMessage"" rows=""3""></textarea>'
+    + '<div class="input-group" style="margin-bottom:var(--space-5);">'
+    + '<label class="input-label" for="enqMessage">Message</label>'
+    + '<textarea class="input" id="enqMessage" rows="3"></textarea>'
     + '</div>'
-    + '<div style=""display:flex;gap:var(--space-3);"">'
-    + '<button type=""button"" class=""btn btn--ghost"" id=""enqCancel"" style=""flex:1;"">Cancel</button>'
-    + '<button type=""button"" class=""btn btn--primary"" id=""enqSend"" style=""flex:1;"">Send Enquiry</button>'
+    + '<div style="display:flex;gap:var(--space-3);">'
+    + '<button type="button" class="btn btn--ghost" id="enqCancel" style="flex:1;">Cancel</button>'
+    + '<button type="button" class="btn btn--primary" id="enqSend" style="flex:1;">Send Enquiry</button>'
     + '</div>'
     + '</div>';
 
