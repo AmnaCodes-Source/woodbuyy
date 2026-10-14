@@ -424,3 +424,15 @@ input:focus, textarea:focus, select:focus {
     padding: 8px;
   }
 }
+/* ---------- MAIN CONTENT ---------- */
+.admin-main {
+  flex: 1;
+  padding: 40px;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .admin-main {
+    padding: 24px 16px;
+  }
+}

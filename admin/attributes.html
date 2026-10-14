@@ -40,21 +40,15 @@
 
       <div id="attributes-container">
 
-        <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
-          <button class="btn btn--primary btn--sm" onclick="openAttributeModal('color')">
-            <i class="ri-add-line"></i> Add Colour
-          </button>
-          <button class="btn btn--primary btn--sm" onclick="openAttributeModal('material')">
-            <i class="ri-add-line"></i> Add Material
-          </button>
-          <button class="btn btn--primary btn--sm" onclick="openAttributeModal('size')">
-            <i class="ri-add-line"></i> Add Size
-          </button>
-        </div>
 
         <div class="card" style="margin-bottom:24px;">
           <div class="card__header">
-            <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Colours</h2>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+              <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Colours</h2>
+              <button class="btn btn--primary btn--sm" onclick="openAttributeModal('color')">
+                <i class="ri-add-line"></i> Add Colour
+              </button>
+            </div>
           </div>
           <div class="card__body" style="padding:0;">
             <table class="table">
@@ -75,7 +69,12 @@
 
         <div class="card" style="margin-bottom:24px;">
           <div class="card__header">
-            <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Materials</h2>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+              <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Materials</h2>
+              <button class="btn btn--primary btn--sm" onclick="openAttributeModal('material')">
+                <i class="ri-add-line"></i> Add Material
+              </button>
+            </div>
           </div>
           <div class="card__body" style="padding:0;">
             <table class="table">
@@ -94,7 +93,12 @@
 
         <div class="card">
           <div class="card__header">
-            <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Sizes</h2>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+              <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Sizes</h2>
+              <button class="btn btn--primary btn--sm" onclick="openAttributeModal('size')">
+                <i class="ri-add-line"></i> Add Size
+              </button>
+            </div>
           </div>
           <div class="card__body" style="padding:0;">
             <table class="table">
