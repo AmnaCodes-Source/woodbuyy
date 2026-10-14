@@ -174,7 +174,7 @@ function showToast(msg, type) {
 }
 
 // ---------- Init ----------
-document.addEventListener('DOMContentLoaded', function () {
+function initAttributesPage() {
   var saveBtn = document.getElementById('attr-save-btn');
   if (saveBtn) saveBtn.addEventListener('click', saveAttribute);
 
@@ -186,4 +186,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   loadAttributes();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAttributesPage);
+} else {
+  initAttributesPage();
+}
