@@ -8,7 +8,7 @@ var currentEditId = null;
 
 // ---------- Load all attributes ----------
 function loadAttributes() {
-  db.collection('attributes').orderBy('type').orderBy('name').get()
+  db.collection('attributes').get()
     .then(function (snap) {
       var items = snap.docs.map(function (d) {
         return Object.assign({ id: d.id }, d.data());
