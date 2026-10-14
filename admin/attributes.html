@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attributes - Woodbuyy Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+    <i class="ri-menu-line"></i>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="admin-layout">
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <i class="ri-close-line"></i>
+      </button>
+      <div class="logo">Woodbuyy</div>
+      <div class="tag">Admin Panel</div>
+      <a href="index.html"><i class="ri-dashboard-line"></i> Dashboard</a>
+      <a href="products.html"><i class="ri-file-list-3-line"></i> Products</a>
+      <a href="orders.html"><i class="ri-shopping-bag-line"></i> Orders</a>
+      <a href="customers.html"><i class="ri-user-line"></i> Customers</a>
+      <a href="categories.html"><i class="ri-folder-line"></i> Categories</a>
+      <a href="attributes.html" class="active"><i class="ri-price-tag-3-line"></i> Attributes</a>
+      <a href="settings.html"><i class="ri-settings-line"></i> Settings</a>
+      <a href="#" onclick="logout()" style="color:#e05555;margin-top:auto;"><i class="ri-logout-box-line"></i> Logout</a>
+    </aside>
+
+    <main class="admin-main">
+      <h1>Attributes</h1>
+      <p style="color:var(--color-text-mid);margin-bottom:24px;">Manage global colour, material, and size options used across all products.</p>
+
+      <div id="attributes-container">
+
+        <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+          <button class="btn btn--primary btn--sm" onclick="openAttributeModal('color')">
+            <i class="ri-add-line"></i> Add Colour
+          </button>
+          <button class="btn btn--primary btn--sm" onclick="openAttributeModal('material')">
+            <i class="ri-add-line"></i> Add Material
+          </button>
+          <button class="btn btn--primary btn--sm" onclick="openAttributeModal('size')">
+            <i class="ri-add-line"></i> Add Size
+          </button>
+        </div>
+
+        <div class="card" style="margin-bottom:24px;">
+          <div class="card__header">
+            <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Colours</h2>
+          </div>
+          <div class="card__body" style="padding:0;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:60px;">Preview</th>
+                  <th>Name</th>
+                  <th>Hex</th>
+                  <th style="width:120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="colors-tbody">
+                <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--color-text-muted);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:24px;">
+          <div class="card__header">
+            <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Materials</h2>
+          </div>
+          <div class="card__body" style="padding:0;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th style="width:120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="materials-tbody">
+                <tr><td colspan="2" style="text-align:center;padding:24px;color:var(--color-text-muted);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <h2 style="font-family:var(--font-display);font-size:20px;margin:0;">Sizes</h2>
+          </div>
+          <div class="card__body" style="padding:0;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th style="width:120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="sizes-tbody">
+                <tr><td colspan="2" style="text-align:center;padding:24px;color:var(--color-text-muted);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="attribute-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;align-items:center;justify-content:center;padding:16px;">
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;max-width:480px;width:100%;padding:32px;">
+          <h2 id="modal-title" style="font-family:var(--font-display);font-size:24px;margin:0 0 24px;">Add Attribute</h2>
+
+          <div class="input-group" style="margin-bottom:16px;">
+            <label class="input-label" for="attr-name">Name</label>
+            <input class="input" id="attr-name" type="text" placeholder="e.g. Walnut">
+          </div>
+
+          <div class="input-group" id="attr-hex-group" style="margin-bottom:24px;">
+            <label class="input-label" for="attr-hex">Hex Colour</label>
+            <input class="input" id="attr-hex" type="text" placeholder="#8B5A2B">
+          </div>
+
+          <div style="display:flex;gap:12px;">
+            <button class="btn btn--ghost" onclick="closeAttributeModal()" style="flex:1;">Cancel</button>
+            <button class="btn btn--primary" id="attr-save-btn" style="flex:1;">Save</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/admin/admin-attributes.js"></script>
+</body>
+</html>
