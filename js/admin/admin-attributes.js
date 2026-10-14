@@ -105,11 +105,11 @@ function saveAttribute() {
   var hex = document.getElementById('attr-hex').value.trim();
 
   if (!name) {
-    showToast('Please enter a name', 'warning');
+    adminToast('Please enter a name', 'warning');
     return;
   }
   if (currentType === 'color' && !hex) {
-    showToast('Please enter a hex colour', 'warning');
+    adminToast('Please enter a hex colour', 'warning');
     return;
   }
 
@@ -133,12 +133,12 @@ function saveAttribute() {
   }
 
   promise.then(function () {
-    showToast(currentEditId ? 'Updated' : 'Added', 'success');
+    adminToast(currentEditId ? 'Updated' : 'Added', 'success');
     closeAttributeModal();
     loadAttributes();
   }).catch(function (err) {
     console.error('saveAttribute failed:', err);
-    showToast('Failed to save. Check Firestore rules.', 'error');
+    adminToast('Failed to save. Check Firestore rules.', 'error');
   });
 }
 
@@ -148,12 +148,12 @@ function deleteAttribute(id) {
 
   db.collection('attributes').doc(id).delete()
     .then(function () {
-      showToast('Deleted', 'success');
+      adminToast('Deleted', 'success');
       loadAttributes();
     })
     .catch(function (err) {
       console.error('deleteAttribute failed:', err);
-      showToast('Failed to delete. Check Firestore rules.', 'error');
+      adminToast('Failed to delete. Check Firestore rules.', 'error');
     });
 }
 
@@ -165,8 +165,8 @@ function escapeHtml(s) {
   });
 }
 
-function showToast(msg, type) {
-  if (typeof window.showToast === 'function') {
+function adminToast(msg, type) {
+  if (typeof window.showToast === 'function' && window.showToast !== adminToast) {
     window.showToast(msg, type);
   } else {
     console.log('[' + type + '] ' + msg);
