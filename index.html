@@ -17,16 +17,21 @@
 </head>
 <body>
 
-  <header class="navbar" style="display: flex; flex-direction: column; align-items: center; padding-top: 20px;">
-    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 40px;">
-      <div style="width: 100px;"></div> <!-- Spacer -->
-      <a href="/" class="navbar__logo" style="font-size: 48px; font-family: var(--font-display); font-style: normal; font-weight: 700; color: var(--color-text); text-decoration: none;">Woodbuyy</a>
-      <div style="width: 100px; display: flex; justify-content: flex-end; gap: 16px;">
-        <a href="/cart.html" class="navbar__icon" aria-label="Cart" style="color: var(--color-text); font-size: 20px;"><i class="ri-shopping-bag-line"></i></a>
-        <a href="/account.html" class="navbar__icon" aria-label="Account" style="color: var(--color-text); font-size: 20px;"><i class="ri-user-line"></i></a>
+  <header class="navbar" style="display: flex; flex-direction: column; align-items: center; padding-top: 24px; background: var(--color-bg);">
+    
+    <!-- Logo Area -->
+    <div style="width: 100%; display: flex; justify-content: center; position: relative; margin-bottom: 20px;">
+      <a href="/" style="font-size: 42px; font-family: var(--font-display); font-weight: 700; color: var(--color-text); text-decoration: none; letter-spacing: -1px;">Woodbuyy</a>
+      
+      <!-- Icons on right -->
+      <div style="position: absolute; right: 40px; top: 10px; display: flex; gap: 20px;">
+        <a href="/cart.html" style="color: var(--color-text); font-size: 22px;"><i class="ri-shopping-bag-line"></i></a>
+        <a href="/account.html" style="color: var(--color-text); font-size: 22px;"><i class="ri-user-line"></i></a>
       </div>
     </div>
-    <nav style="display: flex; justify-content: center; gap: 32px; padding: 24px 0; width: 100%; border-bottom: 1px solid var(--color-border-light); margin-top: 16px; font-family: var(--font-body); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+
+    <!-- Nav Links -->
+    <nav style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; padding: 15px 0; width: 100%; border-top: 1px solid var(--color-border-light); border-bottom: 1px solid var(--color-border-light); font-family: var(--font-body); font-size: 13px; text-transform: uppercase; letter-spacing: 2px;">
       <a href="/" style="color: var(--color-text-mid); text-decoration: none;">Home</a>
       <a href="/products.html" style="color: var(--color-text-mid); text-decoration: none;">Shop Online</a>
       <a href="/category.html?slug=indoor" style="color: var(--color-text-mid); text-decoration: none;">Indoor</a>
@@ -39,11 +44,14 @@
 
   <main>
     <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="container">
-        <h1 class="hero-title" style="font-size: 100px; font-family: var(--font-display); font-weight: 700;">Woodbuyy</h1>
+    <section class="hero-section" style="text-align: center; padding: 80px 20px; background-color: var(--color-bg); border-bottom: 1px solid var(--color-border-light);">
+      <div class="container" style="max-width: 800px; margin: 0 auto;">
+        <h1 style="font-family: var(--font-display); font-size: 56px; font-weight: 600; color: var(--color-text); margin-bottom: 24px; line-height: 1.1;">Custom Made Furniture in Dubai</h1>
+        <p style="font-family: var(--font-body); font-size: 16px; color: var(--color-text-mid); line-height: 1.6;">Sofas, beds, dining tables, wardrobes, media walls, and outdoor furniture. Made to your size in our own workshop.</p>
       </div>
     </section>
+    <!-- Hero Section -->
+    
 
     <!-- Category Grid -->
     <section class="category-section">
