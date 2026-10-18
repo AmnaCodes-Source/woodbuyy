@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Woodbuyy - Custom Made Furniture in Dubai</title>
-  <meta name="description" content="Custom made furniture in Dubai. Sofas, beds, dining tables, wardrobes, and outdoor furniture. Made to your size. Delivered across the UAE.">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,26 +11,25 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
   
   <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
-  <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
 
-  <header class="navbar" style="display: flex; flex-direction: column; align-items: center; padding-top: 24px; background: var(--color-bg);">
+  <!-- Custom Navbar (No components.css to conflict) -->
+  <header style="background: var(--color-bg); border-bottom: 1px solid var(--color-border-light);">
     
-    <!-- Logo Area -->
-    <div style="width: 100%; display: flex; justify-content: center; position: relative; margin-bottom: 20px;">
-      <a href="/" style="font-size: 42px; font-family: var(--font-display); font-weight: 700; color: var(--color-text); text-decoration: none; letter-spacing: -1px;">Woodbuyy</a>
+    <!-- Logo Row -->
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; padding: 24px 40px;">
+      <a href="/" style="font-size: 48px; font-family: var(--font-display); font-weight: 700; color: var(--color-text); text-decoration: none; letter-spacing: -1px; line-height: 1;">Woodbuyy</a>
       
-      <!-- Icons on right -->
-      <div style="position: absolute; right: 40px; top: 10px; display: flex; gap: 20px;">
-        <a href="/cart.html" style="color: var(--color-text); font-size: 22px;"><i class="ri-shopping-bag-line"></i></a>
-        <a href="/account.html" style="color: var(--color-text); font-size: 22px;"><i class="ri-user-line"></i></a>
+      <div style="position: absolute; right: 40px; display: flex; gap: 20px;">
+        <a href="/cart.html" style="color: var(--color-text); font-size: 22px; text-decoration: none;"><i class="ri-shopping-bag-line"></i></a>
+        <a href="/account.html" style="color: var(--color-text); font-size: 22px; text-decoration: none;"><i class="ri-user-line"></i></a>
       </div>
     </div>
 
-    <!-- Nav Links -->
-    <nav style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; padding: 15px 0; width: 100%; border-top: 1px solid var(--color-border-light); border-bottom: 1px solid var(--color-border-light); font-family: var(--font-body); font-size: 13px; text-transform: uppercase; letter-spacing: 2px;">
+    <!-- Links Row -->
+    <nav style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; padding: 16px 40px; font-family: var(--font-body); font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; border-top: 1px solid var(--color-border-light);">
       <a href="/" style="color: var(--color-text-mid); text-decoration: none;">Home</a>
       <a href="/products.html" style="color: var(--color-text-mid); text-decoration: none;">Shop Online</a>
       <a href="/category.html?slug=indoor" style="color: var(--color-text-mid); text-decoration: none;">Indoor</a>
@@ -40,28 +38,29 @@
       <a href="/contact.html" style="color: var(--color-text-mid); text-decoration: none;">Contact</a>
       <a href="/about.html" style="color: var(--color-text-mid); text-decoration: none;">About</a>
     </nav>
+
   </header>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="hero-section" style="text-align: center; padding: 80px 20px; background-color: var(--color-bg); border-bottom: 1px solid var(--color-border-light);">
-      <div class="container" style="max-width: 800px; margin: 0 auto;">
-        <h1 style="font-family: var(--font-display); font-size: 56px; font-weight: 600; color: var(--color-text); margin-bottom: 24px; line-height: 1.1;">Custom Made Furniture in Dubai</h1>
-        <p style="font-family: var(--font-body); font-size: 16px; color: var(--color-text-mid); line-height: 1.6;">Sofas, beds, dining tables, wardrobes, media walls, and outdoor furniture. Made to your size in our own workshop.</p>
-      </div>
-    </section>
-    <!-- Hero Section -->
-    
+  <!-- Hero Section -->
+  <section style="text-align: center; padding: 80px 20px; background-color: var(--color-bg);">
+    <div style="max-width: 900px; margin: 0 auto;">
+      <h1 style="font-family: var(--font-display); font-size: 56px; font-weight: 600; color: var(--color-text); margin-bottom: 24px; line-height: 1.1;">
+        Custom Made Furniture in Dubai
+      </h1>
+      <p style="font-family: var(--font-body); font-size: 16px; color: var(--color-text-mid); line-height: 1.8;">
+        Sofas, beds, dining tables, wardrobes, media walls, and outdoor furniture. Made to your size in our own workshop. Delivered across the UAE.
+      </p>
+    </div>
+  </section>
 
-    <!-- Category Grid -->
-    <section class="category-section">
-      <div class="container">
-        <div class="category-grid" id="categoryGrid">
-          <!-- Categories will be loaded from Firestore -->
-        </div>
+  <!-- Category Grid -->
+  <section style="padding-bottom: 80px; background-color: var(--color-bg);">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 0 40px;">
+      <div class="category-grid" id="categoryGrid">
+        <!-- Loaded via JS -->
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <footer id="footer"></footer>
   <div id="toast-container"></div>
