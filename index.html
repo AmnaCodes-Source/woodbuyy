@@ -17,24 +17,24 @@
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="container navbar__inner">
-      <button class="navbar__toggle" id="navbar-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
-      <a href="/" class="navbar__logo">Woodbuyy</a>
-      <nav class="navbar__nav">
-        <a href="/" class="navbar__link">Home</a>
-        <a href="/products.html" class="navbar__link">Shop Online</a>
-        <a href="/category.html?slug=indoor" class="navbar__link">Indoor</a>
-        <a href="/category.html?slug=outdoor" class="navbar__link">Outdoor</a>
-        <a href="/products.html?sale=true" class="navbar__link">Sale</a>
-        <a href="/contact.html" class="navbar__link">Contact</a>
-        <a href="/about.html" class="navbar__link">About</a>
-      </nav>
-      <div class="navbar__actions">
-        <a href="/cart.html" class="navbar__icon" aria-label="Cart"><i class="ri-shopping-bag-line"></i></a>
-        <a href="/account.html" class="navbar__icon" aria-label="Account"><i class="ri-user-line"></i></a>
+  <header class="navbar" style="display: flex; flex-direction: column; align-items: center; padding-top: 20px;">
+    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 40px;">
+      <div style="width: 100px;"></div> <!-- Spacer -->
+      <a href="/" class="navbar__logo" style="font-size: 48px; font-family: var(--font-display); font-style: normal; font-weight: 700; color: var(--color-text); text-decoration: none;">Woodbuyy</a>
+      <div style="width: 100px; display: flex; justify-content: flex-end; gap: 16px;">
+        <a href="/cart.html" class="navbar__icon" aria-label="Cart" style="color: var(--color-text); font-size: 20px;"><i class="ri-shopping-bag-line"></i></a>
+        <a href="/account.html" class="navbar__icon" aria-label="Account" style="color: var(--color-text); font-size: 20px;"><i class="ri-user-line"></i></a>
       </div>
     </div>
+    <nav style="display: flex; justify-content: center; gap: 32px; padding: 24px 0; width: 100%; border-bottom: 1px solid var(--color-border-light); margin-top: 16px; font-family: var(--font-body); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+      <a href="/" style="color: var(--color-text-mid); text-decoration: none;">Home</a>
+      <a href="/products.html" style="color: var(--color-text-mid); text-decoration: none;">Shop Online</a>
+      <a href="/category.html?slug=indoor" style="color: var(--color-text-mid); text-decoration: none;">Indoor</a>
+      <a href="/category.html?slug=outdoor" style="color: var(--color-text-mid); text-decoration: none;">Outdoor</a>
+      <a href="/products.html?sale=true" style="color: var(--color-text-mid); text-decoration: none;">Sale</a>
+      <a href="/contact.html" style="color: var(--color-text-mid); text-decoration: none;">Contact</a>
+      <a href="/about.html" style="color: var(--color-text-mid); text-decoration: none;">About</a>
+    </nav>
   </header>
 
   <main>
