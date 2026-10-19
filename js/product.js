@@ -40,7 +40,7 @@ function setText(id, val) {
 }
 
 function showToast(msg, type) {
-  if (typeof window.showToast === 'function') {
+  if (typeof window.showToast === 'function' && window.showToast !== showToast) {
     window.showToast(msg, type);
   } else {
     console.log('[' + type + '] ' + msg);
