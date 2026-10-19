@@ -1,7 +1,5 @@
 // ============================================================
-// PRODUCT PAGE - js/product.js (v8 compat style)
-// Reads ?id= from URL, fetches product, renders all sections.
-// Money in fils; divide by 100 at display only.
+// PRODUCT PAGE - js/product.js (Final Clean Version)
 // ============================================================
 
 function getParam(name) {
@@ -29,8 +27,8 @@ function renderStars(rating) {
 
 function escapeHtml(s) {
   if (s == null) return '';
-  return String(s).replace(/[&<>"']/g, function (c) {
-    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+  return String(s).replace(/[&<>\"']/g, function (c) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' })[c];
   });
 }
 
@@ -53,6 +51,7 @@ var selectedMaterial = null;
 var selectedQty = 1;
 var galleryIndex = 0;
 var galleryImages = [];
+var isAddingToCart = false;
 
 function loadProduct() {
   var id = getParam('id');
@@ -78,19 +77,6 @@ function loadProduct() {
 function renderProduct(p) {
   document.title = p.name + ' - Woodbuyy';
   setText('breadcrumbName', p.name);
-  
-  // Check if product is already in cart and get its quantity
-  try {
-    var cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
-    for (var i = 0; i < cart.length; i++) {
-      if (cart[i].productId === p.id) {
-        selectedQty = cart[i].quantity;
-        var qtyInput = document.getElementById('qtyInput');
-        if (qtyInput) qtyInput.value = selectedQty;
-        break;
-      }
-    }
-  } catch(e) {}
   setText('productCategory', (p.categorySlug || 'furniture').replace(/-/g, ' '));
   setText('productName', p.name);
   setText('productSku', p.sku ? 'SKU: ' + p.sku : '');
@@ -130,6 +116,18 @@ function renderProduct(p) {
     badge.textContent = 'Featured';
     badge.classList.add('is-visible');
   }
+  
+  try {
+    var cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].productId === p.id) {
+        selectedQty = cart[i].quantity;
+        var qtyInput = document.getElementById('qtyInput');
+        if (qtyInput) qtyInput.value = selectedQty;
+        break;
+      }
+    }
+  } catch(e) {}
 }
 
 function renderGallery() {
@@ -237,16 +235,11 @@ function initQtyStepper() {
   input.addEventListener('blur', sync);
 }
 
-var isAddingToCart = false; // Guard against double clicks
-
 function handleAddToCart(redirectToCheckout) {
-  if (isAddingToCart) return; // Agar pehle se click ho raha hai to ruk jao
+  if (isAddingToCart) return;
   if (!currentProduct) return;
   isAddingToCart = true;
-  if (currentProduct.inStock === false) {
-    showToast('This product is out of stock', 'warning');
-    return;
-  }
+
   var item = {
     productId: currentProduct.id,
     name: currentProduct.name,
@@ -260,38 +253,45 @@ function handleAddToCart(redirectToCheckout) {
       material: selectedMaterial || null
     }
   };
+  
   try {
-    if (typeof window.addToCart === 'function') {
-      window.addToCart(item);
-    } else {
-      var cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
-      var existing = cart.find(function (i) { return i.productId === item.productId; });
-      if (existing) existing.quantity += item.quantity;
-      else cart.push(item);
-      localStorage.setItem('wb_cart', JSON.stringify(cart));
+    var cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+    var existing = null;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].productId === item.productId) {
+        existing = cart[i];
+        break;
+      }
     }
     
-    // YEH NAYA LOGIC HAI: Add to cart ke baad quantity box ko update karo
-    try {
-      var updatedCart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
-      for (var i = 0; i < updatedCart.length; i++) {
-        if (updatedCart[i].productId === currentProduct.id) {
-          selectedQty = updatedCart[i].quantity;
-          var qtyInput = document.getElementById('qtyInput');
-          if (qtyInput) qtyInput.value = selectedQty;
-          break;
-        }
+    if (existing) {
+      existing.quantity += item.quantity;
+    } else {
+      cart.push(item);
+    }
+    
+    localStorage.setItem('wb_cart', JSON.stringify(cart));
+    
+    var updatedCart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+    for (var j = 0; j < updatedCart.length; j++) {
+      if (updatedCart[j].productId === currentProduct.id) {
+        selectedQty = updatedCart[j].quantity;
+        var qtyInput = document.getElementById('qtyInput');
+        if (qtyInput) qtyInput.value = selectedQty;
+        break;
       }
-    } catch(e) {}
+    }
 
     showToast('Added to cart', 'success');
-    if (redirectToCheckout) window.location.href = '/checkout.html';
+    if (redirectToCheckout) {
+      window.location.href = '/checkout.html';
+      return;
+    }
   } catch (err) {
     console.error('addToCart failed', err);
     showToast('Could not add to cart', 'error');
   }
   
-  // 500ms ke baad wapas click allow karo
   setTimeout(function() { isAddingToCart = false; }, 500);
 }
 
@@ -311,28 +311,28 @@ function openEnquiryModal() {
   var modal = document.createElement('div');
   modal.style.cssText = 'position:fixed;inset:0;z-index:var(--z-modal);display:flex;align-items:center;justify-content:center;padding:var(--space-4);pointer-events:none;';
   modal.innerHTML = ''
-    + '<div style="pointer-events:all;width:100%;max-width:480px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);">'
-    + '<h2 style="font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);margin:0 0 var(--space-4);">Product Enquiry</h2>'
-    + '<p style="font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);">Send us a question. We reply within 24 hours.</p>'
-    + '<div class="input-group" style="margin-bottom:var(--space-4);">'
-    + '<label class="input-label" for="enqName">Your Name</label>'
-    + '<input class="input" id="enqName" type="text">'
+    + '<div style=""pointer-events:all;width:100%;max-width:480px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);"">'
+    + '<h2 style=""font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);margin:0 0 var(--space-4);"">Product Enquiry</h2>'
+    + '<p style=""font-size:var(--text-sm);color:var(--color-text-mid);margin:0 0 var(--space-5);"">Send us a question. We reply within 24 hours.</p>'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
+    + '<label class=""input-label"" for=""enqName"">Your Name</label>'
+    + '<input class=""input"" id=""enqName"" type=""text"">'
     + '</div>'
-    + '<div class="input-group" style="margin-bottom:var(--space-4);">'
-    + '<label class="input-label" for="enqEmail">Email</label>'
-    + '<input class="input" id="enqEmail" type="email">'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
+    + '<label class=""input-label"" for=""enqEmail"">Email</label>'
+    + '<input class=""input"" id=""enqEmail"" type=""email"">'
     + '</div>'
-    + '<div class="input-group" style="margin-bottom:var(--space-4);">'
-    + '<label class="input-label" for="enqPhone">Phone</label>'
-    + '<input class="input" id="enqPhone" type="tel">'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-4);"">'
+    + '<label class=""input-label"" for=""enqPhone"">Phone</label>'
+    + '<input class=""input"" id=""enqPhone"" type=""tel"">'
     + '</div>'
-    + '<div class="input-group" style="margin-bottom:var(--space-5);">'
-    + '<label class="input-label" for="enqMessage">Message</label>'
-    + '<textarea class="input" id="enqMessage" rows="3"></textarea>'
+    + '<div class=""input-group"" style=""margin-bottom:var(--space-5);"">'
+    + '<label class=""input-label"" for=""enqMessage"">Message</label>'
+    + '<textarea class=""input"" id=""enqMessage"" rows=""3""></textarea>'
     + '</div>'
-    + '<div style="display:flex;gap:var(--space-3);">'
-    + '<button type="button" class="btn btn--ghost" id="enqCancel" style="flex:1;">Cancel</button>'
-    + '<button type="button" class="btn btn--primary" id="enqSend" style="flex:1;">Send Enquiry</button>'
+    + '<div style=""display:flex;gap:var(--space-3);"">'
+    + '<button type=""button"" class=""btn btn--ghost"" id=""enqCancel"" style=""flex:1;"">Cancel</button>'
+    + '<button type=""button"" class=""btn btn--primary"" id=""enqSend"" style=""flex:1;"">Send Enquiry</button>'
     + '</div>'
     + '</div>';
 
@@ -385,7 +385,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var addBtn = document.getElementById('addToCartBtn');
   var buyBtn = document.getElementById('buyNowBtn');
   
-  // Purane listeners hatao taake double click na ho
   if (addBtn) {
     var newAddBtn = addBtn.cloneNode(true);
     addBtn.parentNode.replaceChild(newAddBtn, addBtn);
