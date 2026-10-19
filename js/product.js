@@ -78,6 +78,19 @@ function loadProduct() {
 function renderProduct(p) {
   document.title = p.name + ' - Woodbuyy';
   setText('breadcrumbName', p.name);
+  
+  // Check if product is already in cart and get its quantity
+  try {
+    var cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].productId === p.id) {
+        selectedQty = cart[i].quantity;
+        var qtyInput = document.getElementById('qtyInput');
+        if (qtyInput) qtyInput.value = selectedQty;
+        break;
+      }
+    }
+  } catch(e) {}
   setText('productCategory', (p.categorySlug || 'furniture').replace(/-/g, ' '));
   setText('productName', p.name);
   setText('productSku', p.sku ? 'SKU: ' + p.sku : '');
