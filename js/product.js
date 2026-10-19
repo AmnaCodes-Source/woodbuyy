@@ -266,6 +266,20 @@ function handleAddToCart(redirectToCheckout) {
       else cart.push(item);
       localStorage.setItem('wb_cart', JSON.stringify(cart));
     }
+    
+    // YEH NAYA LOGIC HAI: Add to cart ke baad quantity box ko update karo
+    try {
+      var updatedCart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+      for (var i = 0; i < updatedCart.length; i++) {
+        if (updatedCart[i].productId === currentProduct.id) {
+          selectedQty = updatedCart[i].quantity;
+          var qtyInput = document.getElementById('qtyInput');
+          if (qtyInput) qtyInput.value = selectedQty;
+          break;
+        }
+      }
+    } catch(e) {}
+
     showToast('Added to cart', 'success');
     if (redirectToCheckout) window.location.href = '/checkout.html';
   } catch (err) {
