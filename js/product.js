@@ -237,8 +237,12 @@ function initQtyStepper() {
   input.addEventListener('blur', sync);
 }
 
+var isAddingToCart = false; // Guard against double clicks
+
 function handleAddToCart(redirectToCheckout) {
+  if (isAddingToCart) return; // Agar pehle se click ho raha hai to ruk jao
   if (!currentProduct) return;
+  isAddingToCart = true;
   if (currentProduct.inStock === false) {
     showToast('This product is out of stock', 'warning');
     return;
@@ -286,6 +290,9 @@ function handleAddToCart(redirectToCheckout) {
     console.error('addToCart failed', err);
     showToast('Could not add to cart', 'error');
   }
+  
+  // 500ms ke baad wapas click allow karo
+  setTimeout(function() { isAddingToCart = false; }, 500);
 }
 
 function initEnquiry() {
