@@ -377,8 +377,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var addBtn = document.getElementById('addToCartBtn');
   var buyBtn = document.getElementById('buyNowBtn');
-  if (addBtn) addBtn.addEventListener('click', function () { handleAddToCart(false); });
-  if (buyBtn) buyBtn.addEventListener('click', function () { handleAddToCart(true); });
+  
+  // Purane listeners hatao taake double click na ho
+  if (addBtn) {
+    var newAddBtn = addBtn.cloneNode(true);
+    addBtn.parentNode.replaceChild(newAddBtn, addBtn);
+    newAddBtn.addEventListener('click', function () { handleAddToCart(false); });
+  }
+  
+  if (buyBtn) {
+    var newBuyBtn = buyBtn.cloneNode(true);
+    buyBtn.parentNode.replaceChild(newBuyBtn, buyBtn);
+    newBuyBtn.addEventListener('click', function () { handleAddToCart(true); });
+  }
 
   loadProduct();
 });
