@@ -131,3 +131,49 @@ loadCart();
 updateCartUI();
 
 console.log('[cart.js] Cart system loaded');
+
+// ============================================================
+// ADD TO CART (Fixed Quantity Logic)
+// ============================================================
+function addToCart(item) {
+  var cart = [];
+  
+  // Get existing cart from localStorage (guest cart)
+  try {
+    var stored = localStorage.getItem('wb_cart');
+    if (stored) cart = JSON.parse(stored);
+  } catch (e) {
+    cart = [];
+  }
+
+  // Check if item already exists in cart
+  var existingIndex = -1;
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].productId === item.productId) {
+      // Check if attributes match (color/material)
+      var sameColor = JSON.stringify(cart[i].attributes?.color) === JSON.stringify(item.attributes?.color);
+      var sameMaterial = JSON.stringify(cart[i].attributes?.material) === JSON.stringify(item.attributes?.material);
+      
+      if (sameColor && sameMaterial) {
+        existingIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (existingIndex > -1) {
+    // Agar item pehle se hai, toh quantity barhao
+    cart[existingIndex].quantity += (item.quantity || 1);
+  } else {
+    // Naya item add karo
+    cart.push(item);
+  }
+
+  // Save back to localStorage
+  localStorage.setItem('wb_cart', JSON.stringify(cart));
+  
+  return cart;
+}
+
+// Expose globally so product.js can use it
+window.addToCart = addToCart;
