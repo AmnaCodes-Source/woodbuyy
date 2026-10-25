@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Carousel Test - Woodbuyy</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/product-carousel-test.css">
+</head>
+<body>
+
+  <div class="container" style="padding-block: var(--space-16);">
+    <h1 style="font-family: var(--font-display); font-size: var(--text-4xl); color: var(--color-text); margin-bottom: var(--space-4); text-align: center;">Product Carousel Designs</h1>
+    <p style="text-align: center; color: var(--color-text-mid); margin-bottom: var(--space-16); font-size: var(--text-md);">Three different styles. Pick the one you like best.</p>
+
+    <!-- DESIGN 1: Classic -->
+    <section style="margin-bottom: var(--space-24);">
+      <div style="text-align: center; margin-bottom: var(--space-8);">
+        <span class="label" style="color: var(--color-accent);">Design 1</span>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-text); margin-top: var(--space-2);">Classic</h2>
+        <p style="color: var(--color-text-mid); font-size: var(--text-sm); margin-top: var(--space-2);">Simple horizontal scroll, 3 products visible at a time</p>
+      </div>
+      
+      <div class="pcarousel pcarousel--classic" id="pcarousel1">
+        <button class="pcarousel__nav pcarousel__nav--prev" aria-label="Previous"><i class="ri-arrow-left-line"></i></button>
+        <div class="pcarousel__viewport">
+          <div class="pcarousel__track"></div>
+        </div>
+        <button class="pcarousel__nav pcarousel__nav--next" aria-label="Next"><i class="ri-arrow-right-line"></i></button>
+      </div>
+    </section>
+
+    <!-- DESIGN 2: Peek -->
+    <section style="margin-bottom: var(--space-24);">
+      <div style="text-align: center; margin-bottom: var(--space-8);">
+        <span class="label" style="color: var(--color-accent);">Design 2</span>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-text); margin-top: var(--space-2);">Peek</h2>
+        <p style="color: var(--color-text-mid); font-size: var(--text-sm); margin-top: var(--space-2);">One card centered and large, side cards peeking in</p>
+      </div>
+      
+      <div class="pcarousel pcarousel--peek" id="pcarousel2">
+        <button class="pcarousel__nav pcarousel__nav--prev" aria-label="Previous"><i class="ri-arrow-left-line"></i></button>
+        <div class="pcarousel__viewport">
+          <div class="pcarousel__track"></div>
+        </div>
+        <button class="pcarousel__nav pcarousel__nav--next" aria-label="Next"><i class="ri-arrow-right-line"></i></button>
+      </div>
+    </section>
+
+    <!-- DESIGN 3: Gallery -->
+    <section style="margin-bottom: var(--space-24);">
+      <div style="text-align: center; margin-bottom: var(--space-8);">
+        <span class="label" style="color: var(--color-accent);">Design 3</span>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-text); margin-top: var(--space-2);">Gallery</h2>
+        <p style="color: var(--color-text-mid); font-size: var(--text-sm); margin-top: var(--space-2);">4 columns grid, all products visible, no slider</p>
+      </div>
+      
+      <div class="pcarousel pcarousel--gallery" id="pcarousel3">
+        <div class="pcarousel__grid"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="/js/product-carousel-test.js"></script>
+
+</body>
+</html>
