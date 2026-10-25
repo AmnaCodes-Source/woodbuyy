@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel Test - Woodbuyy</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/carousel-test.css">
+</head>
+<body>
+
+  <div class="container" style="padding-block: var(--space-16);">
+    <h1 style="font-family: var(--font-display); font-size: var(--text-4xl); color: var(--color-text); margin-bottom: var(--space-4); text-align: center;">Choose Your Carousel</h1>
+    <p style="text-align: center; color: var(--color-text-mid); margin-bottom: var(--space-16); font-size: var(--text-md);">Three different designs. Pick the one you like best.</p>
+
+    <!-- DESIGN 1: Classic Fade -->
+    <section style="margin-bottom: var(--space-24);">
+      <div style="text-align: center; margin-bottom: var(--space-8);">
+        <span class="label" style="color: var(--color-accent);">Design 1</span>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-text); margin-top: var(--space-2);">Classic Fade</h2>
+      </div>
+      
+      <div class="carousel carousel--fade" id="carousel1">
+        <div class="carousel__slides">
+          <div class="carousel__slide carousel__slide--active">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=80" alt="">
+            <div class="carousel__overlay">
+              <h2 class="carousel__title">The Cloud Collection</h2>
+              <p class="carousel__subtitle">Sink into comfort. Delivered across UAE.</p>
+              <a href="/products.html" class="btn btn--primary">Shop Now</a>
+            </div>
+          </div>
+          <div class="carousel__slide">
+            <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1600&q=80" alt="">
+            <div class="carousel__overlay">
+              <h2 class="carousel__title">Dining in Style</h2>
+              <p class="carousel__subtitle">Crafted to bring families together.</p>
+              <a href="/products.html" class="btn btn--primary">Shop Now</a>
+            </div>
+          </div>
+          <div class="carousel__slide">
+            <img src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=1600&q=80" alt="">
+            <div class="carousel__overlay">
+              <h2 class="carousel__title">Living, Elevated</h2>
+              <p class="carousel__subtitle">Timeless pieces for every room.</p>
+              <a href="/products.html" class="btn btn--primary">Shop Now</a>
+            </div>
+          </div>
+        </div>
+        <button class="carousel__nav carousel__nav--prev" aria-label="Previous"><i class="ri-arrow-left-line"></i></button>
+        <button class="carousel__nav carousel__nav--next" aria-label="Next"><i class="ri-arrow-right-line"></i></button>
+        <div class="carousel__dots"></div>
+      </div>
+    </section>
+
+    <!-- DESIGN 2: Slide -->
+    <section style="margin-bottom: var(--space-24);">
+      <div style="text-align: center; margin-bottom: var(--space-8);">
+        <span class="label" style="color: var(--color-accent);">Design 2</span>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-text); margin-top: var(--space-2);">Smooth Slide</h2>
+      </div>
+      
+      <div class="carousel carousel--slide" id="carousel2">
+        <div class="carousel__track">
+          <div class="carousel__slide">
+            <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=1600&q=80" alt="">
+            <div class="carousel__overlay carousel__overlay--left">
+              <h2 class="carousel__title">Accent Chairs</h2>
+              <p class="carousel__subtitle">The perfect finishing touch.</p>
+              <a href="/products.html" class="btn btn--secondary">Explore</a>
+            </div>
+          </div>
+          <div class="carousel__slide">
+            <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1600&q=80" alt="">
+            <div class="carousel__overlay carousel__overlay--left">
+              <h2 class="carousel__title">Sofas for Life</h2>
+              <p class="carousel__subtitle">Built to last, made for comfort.</p>
+              <a href="/products.html" class="btn btn--secondary">Explore</a>
+            </div>
+          </div>
+          <div class="carousel__slide">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80" alt="">
+            <div class="carousel__overlay carousel__overlay--left">
+              <h2 class="carousel__title">Outdoor Living</h2>
+              <p class="carousel__subtitle">Extend your home to the garden.</p>
+              <a href="/products.html" class="btn btn--secondary">Explore</a>
+            </div>
+          </div>
+        </div>
+        <button class="carousel__nav carousel__nav--prev" aria-label="Previous"><i class="ri-arrow-left-line"></i></button>
+        <button class="carousel__nav carousel__nav--next" aria-label="Next"><i class="ri-arrow-right-line"></i></button>
+        <div class="carousel__dots"></div>
+        <div class="carousel__progress"><div class="carousel__progress-bar"></div></div>
+      </div>
+    </section>
+
+    <!-- DESIGN 3: Zoom Reveal -->
+    <section style="margin-bottom: var(--space-24);">
+      <div style="text-align: center; margin-bottom: var(--space-8);">
+        <span class="label" style="color: var(--color-accent);">Design 3</span>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-text); margin-top: var(--space-2);">Zoom Reveal</h2>
+      </div>
+      
+      <div class="carousel carousel--zoom" id="carousel3">
+        <div class="carousel__slides">
+          <div class="carousel__slide carousel__slide--active">
+            <img src="https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?w=1600&q=80" alt="">
+            <div class="carousel__overlay carousel__overlay--center">
+              <span class="label" style="color: var(--color-accent);">New Arrival</span>
+              <h2 class="carousel__title carousel__title--large">Made for Slow Living</h2>
+              <p class="carousel__subtitle">Handcrafted furniture for the modern UAE home.</p>
+              <a href="/products.html" class="btn btn--primary btn--lg">Discover the Collection</a>
+            </div>
+          </div>
+          <div class="carousel__slide">
+            <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1600&q=80" alt="">
+            <div class="carousel__overlay carousel__overlay--center">
+              <span class="label" style="color: var(--color-accent);">Limited Edition</span>
+              <h2 class="carousel__title carousel__title--large">The Oak Series</h2>
+              <p class="carousel__subtitle">Solid wood. Timeless design.</p>
+              <a href="/products.html" class="btn btn--primary btn--lg">Shop the Series</a>
+            </div>
+          </div>
+          <div class="carousel__slide">
+            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&q=80" alt="">
+            <div class="carousel__overlay carousel__overlay--center">
+              <span class="label" style="color: var(--color-accent);">Custom Orders</span>
+              <h2 class="carousel__title carousel__title--large">Designed by You</h2>
+              <p class="carousel__subtitle">Choose your size, fabric, finish.</p>
+              <a href="/products.html" class="btn btn--primary btn--lg">Start Designing</a>
+            </div>
+          </div>
+        </div>
+        <button class="carousel__nav carousel__nav--prev" aria-label="Previous"><i class="ri-arrow-left-line"></i></button>
+        <button class="carousel__nav carousel__nav--next" aria-label="Next"><i class="ri-arrow-right-line"></i></button>
+        <div class="carousel__dots"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="/js/carousel-test.js"></script>
+
+</body>
+</html>
