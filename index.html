@@ -4,137 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Woodbuyy - Custom Made Furniture in Dubai</title>
-  
+  <meta name="description" content="Premium furniture, delivered across the UAE. Cash on delivery.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/global-layout.css">
   <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
 
-  <!-- Custom Navbar (No components.css to conflict) -->
-  <header style="background: var(--color-bg); border-bottom: 1px solid var(--color-border-light);">
-    
-    <!-- Logo Row -->
-    <div style="display: flex; align-items: center; justify-content: center; position: relative; padding: 24px 40px;">
-      <a href="/" style="font-size: 48px; font-family: var(--font-display); font-weight: 700; color: var(--color-text); text-decoration: none; letter-spacing: -1px; line-height: 1;">Woodbuyy</a>
-      
-      <div style="position: absolute; right: 40px; display: flex; gap: 20px;">
-        <a href="/cart.html" style="color: var(--color-text); font-size: 22px; text-decoration: none;"><i class="ri-shopping-bag-line"></i></a>
-        <a href="/account.html" style="color: var(--color-text); font-size: 22px; text-decoration: none;"><i class="ri-user-line"></i></a>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section" style="text-align: center; padding: 100px 20px 80px; background-color: var(--color-bg);">
+      <div class="container" style="max-width: 900px; margin: 0 auto;">
+        <h1 style="font-family: var(--font-display); font-size: 64px; font-weight: 600; color: var(--color-text); margin-bottom: 24px; line-height: 1.1;">Custom Made Furniture in Dubai</h1>
+        <p style="font-family: var(--font-body); font-size: 18px; color: var(--color-text-mid); line-height: 1.8;">
+          Sofas, beds, dining tables, wardrobes, media walls, and outdoor furniture. Made to your size in our own workshop. Delivered across the UAE.
+        </p>
       </div>
-    </div>
+    </section>
 
-    <!-- Links Row -->
-    <nav style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; padding: 16px 40px; font-family: var(--font-body); font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; border-top: 1px solid var(--color-border-light);">
-      <a href="/" style="color: var(--color-text-mid); text-decoration: none;">Home</a>
-      <a href="/products.html" style="color: var(--color-text-mid); text-decoration: none;">Shop Online</a>
-      <a href="/category.html?slug=indoor" style="color: var(--color-text-mid); text-decoration: none;">Indoor</a>
-      <a href="/category.html?slug=outdoor" style="color: var(--color-text-mid); text-decoration: none;">Outdoor</a>
-      <a href="/products.html?sale=true" style="color: var(--color-text-mid); text-decoration: none;">Sale</a>
-      <a href="/contact.html" style="color: var(--color-text-mid); text-decoration: none;">Contact</a>
-      <a href="/about.html" style="color: var(--color-text-mid); text-decoration: none;">About</a>
-    </nav>
-
-  </header>
-
-  <!-- Hero Section -->
-  <section style="text-align: center; padding: 80px 20px; background-color: var(--color-bg);">
-    <div style="max-width: 900px; margin: 0 auto;">
-      <h1 style="font-family: var(--font-display); font-size: 56px; font-weight: 600; color: var(--color-text); margin-bottom: 24px; line-height: 1.1;">
-        Custom Made Furniture in Dubai
-      </h1>
-      <p style="font-family: var(--font-body); font-size: 16px; color: var(--color-text-mid); line-height: 1.8;">
-        Sofas, beds, dining tables, wardrobes, media walls, and outdoor furniture. Made to your size in our own workshop. Delivered across the UAE.
-      </p>
-    </div>
-  </section>
-
-  <!-- Category Grid -->
-  <section style="padding-bottom: 80px; background-color: var(--color-bg);">
-    <div style="max-width: 1320px; margin: 0 auto; padding: 0 40px;">
-      <div class="category-grid" id="categoryGrid">
-        <!-- Loaded via JS -->
+    <!-- Category Grid -->
+    <section class="category-section" style="padding-bottom: 80px;">
+      <div class="container">
+        <div class="category-grid" id="categoryGrid"></div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <footer style="background: var(--color-bg-alt); border-top: 1px solid var(--color-border-light); padding: 80px 0 40px; font-family: var(--font-body);">
-    <div style="max-width: 1320px; margin: 0 auto; padding: 0 40px;">
-      
-      <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 60px; align-items: start;">
-        
-        <!-- 1. Brand & Desc -->
-        <div>
-          <a href="/" style="font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--color-text); text-decoration: none; margin-bottom: 20px; display: block;">Woodbuyy</a>
-          <p style="color: var(--color-text-mid); font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
-            Woodbuyy is a trusted furniture provider in the UAE, offering premium sofas, beds, tables, and custom-made pieces. We deliver quality, durability, and design across the Emirates.
-          </p>
-          <div style="display: flex; gap: 16px;">
-            <a href="#" style="color: var(--color-text); font-size: 20px;"><i class="ri-facebook-fill"></i></a>
-            <a href="#" style="color: var(--color-text); font-size: 20px;"><i class="ri-instagram-line"></i></a>
-            <a href="#" style="color: var(--color-text); font-size: 20px;"><i class="ri-linkedin-fill"></i></a>
-            <a href="#" style="color: var(--color-text); font-size: 20px;"><i class="ri-whatsapp-line"></i></a>
-          </div>
-        </div>
-
-        <!-- 2. Quick Links -->
-        <div>
-          <h4 style="color: var(--color-text); font-size: 16px; font-weight: 500; margin-bottom: 24px; letter-spacing: 1px; text-transform: uppercase;">Quick Links</h4>
-          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
-            <li><a href="/" style="color: var(--color-text-mid); text-decoration: none; font-size: 14px;">Home</a></li>
-            <li><a href="/about.html" style="color: var(--color-text-mid); text-decoration: none; font-size: 14px;">About Us</a></li>
-            <li><a href="/products.html" style="color: var(--color-text-mid); text-decoration: none; font-size: 14px;">Shop Online</a></li>
-            <li><a href="/contact.html" style="color: var(--color-text-mid); text-decoration: none; font-size: 14px;">Contact</a></li>
-          </ul>
-        </div>
-
-        <!-- 3. Address & Contact -->
-        <div>
-          <h4 style="color: var(--color-text); font-size: 16px; font-weight: 500; margin-bottom: 24px; letter-spacing: 1px; text-transform: uppercase;">Contact Us</h4>
-          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px;">
-            <li style="display: flex; gap: 12px; color: var(--color-text-mid); font-size: 14px;">
-              <i class="ri-map-pin-line" style="color: var(--color-text); font-size: 18px;"></i>
-              <span>Warehouse No - 13<br>Industrial Area 4, King Faisal Street<br>Sharjah, UAE</span>
-            </li>
-            <li style="display: flex; gap: 12px; color: var(--color-text-mid); font-size: 14px; align-items: center;">
-              <i class="ri-phone-line" style="color: var(--color-text); font-size: 18px;"></i>
-              <a href="tel:+971501234567" style="color: var(--color-text-mid); text-decoration: none;">+971 50 123 4567</a>
-            </li>
-            <li style="display: flex; gap: 12px; color: var(--color-text-mid); font-size: 14px; align-items: center;">
-              <i class="ri-mail-line" style="color: var(--color-text); font-size: 18px;"></i>
-              <a href="mailto:info@woodbuyy.com" style="color: var(--color-text-mid); text-decoration: none;">info@woodbuyy.com</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- 4. Google Map -->
-        <div>
-          <h4 style="color: var(--color-text); font-size: 16px; font-weight: 500; margin-bottom: 24px; letter-spacing: 1px; text-transform: uppercase;">Location</h4>
-          <div style="width: 100%; height: 180px; border-radius: 8px; overflow: hidden; border: 1px solid var(--color-border);">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.636735677552!2d55.38523831501569!3d25.29995898384795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5d1c3f3c3c3d%3A0x3c3c3c3c3c3c3c3c!2sAl%20Quoz%20Industrial%20Area%203%20-%20Dubai!5e0!3m2!1sen!2sae!4v1620000000000!5m2!1sen!2sae" 
-              width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Bottom Bar -->
-      <div style="border-top: 1px solid var(--color-border-light); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--color-text-muted); font-size: 12px;">
-        <p style="margin: 0;">&copy; 2026 Woodbuyy Furniture Trading LLC. All rights reserved.</p>
-        <div style="display: flex; gap: 20px;">
-          <a href="/terms.html" style="color: var(--color-text-muted); text-decoration: none;">Terms & Conditions</a>
-          <a href="/privacy.html" style="color: var(--color-text-muted); text-decoration: none;">Privacy Policy</a>
-        </div>
-      </div>
-
-    </div>
-  </footer>
   <div id="toast-container"></div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -143,6 +44,7 @@
   <script src="/js/firebase-config.js"></script>
   <script src="/js/ui.js"></script>
   <script src="/js/cart.js"></script>
+  <script src="/js/global-layout.js"></script>
   <script src="/js/home.js"></script>
 
 </body>
