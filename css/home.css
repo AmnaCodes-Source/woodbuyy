@@ -314,15 +314,37 @@
   .pcarousel__nav--next { right: var(--space-2); }
 }
 
-/* ---------- Classic Layout ---------- */
+/* ---------- Classic Layout (Fully Responsive) ---------- */
 .pcarousel--classic .pcard {
-  width: calc((100% - var(--space-6) * 2) / 3);
+  /* Desktop: 3 cards */
+  width: calc((100% - (var(--space-6) * 2)) / 3);
 }
 
 @media (max-width: 1024px) {
-  .pcarousel--classic .pcard { width: calc((100% - var(--space-6)) / 2); }
+  /* Tablet: 2 cards */
+  .pcarousel--classic .pcard { 
+    width: calc((100% - var(--space-6)) / 2); 
+  }
 }
 
 @media (max-width: 640px) {
-  .pcarousel--classic .pcard { width: 100%; }
+  /* Mobile: 1 card with small gap */
+  .pcarousel--classic .pcard { 
+    width: 100%; 
+    min-width: 280px; /* Taake card bohot chhota na ho */
+  }
+  .pcarousel__track {
+    gap: var(--space-4);
+  }
+}
+
+/* Overlay fix for mobile arrows */
+@media (max-width: 768px) {
+  .pcarousel__nav {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  .pcarousel__nav--prev { left: 8px; }
+  .pcarousel__nav--next { right: 8px; }
 }
