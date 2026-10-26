@@ -72,3 +72,121 @@ if (document.readyState === 'loading') {
 } else {
   loadCategories();
 }
+// ============================================================
+// FEATURED PRODUCTS CAROUSEL (Design 1 - Classic)
+// ============================================================
+
+function formatAED(fils) {
+  if (fils == null) return 'AED 0.00';
+  var n = (fils / 100).toFixed(2);
+  var parts = n.split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return 'AED ' + parts.join('.');
+}
+
+function renderProductCard(p) {
+  var price = p.salePrice != null ? p.salePrice : p.price;
+  var original = p.salePrice != null ? '<span class="pcard__price-original">' + formatAED(p.price) + '</span>' : '';
+  var badge = p.salePrice != null ? '<span class="pcard__badge">Sale</span>' : (p.isFeatured ? '<span class="pcard__badge">Featured</span>' : '');
+  var img = (p.images && p.images[0]) || 'https://via.placeholder.com/600x450/1C1C1C/C9A96E?text=No+Image';
+  
+  return '<a href="/product.html?id=' + p.id + '" class="pcard">'
+    + '<div class="pcard__img-wrap">'
+    + '<img class="pcard__img" src="' + img + '" alt="' + escapeHtml(p.name) + '" loading="lazy">'
+    + badge
+    + '</div>'
+    + '<div class="pcard__body">'
+    + '<div class="pcard__category">' + escapeHtml(p.categorySlug || 'Furniture') + '</div>'
+    + '<h3 class="pcard__name">' + escapeHtml(p.name) + '</h3>'
+    + '<div class="pcard__price">'
+    + '<span class="pcard__price-current">' + formatAED(price) + '</span>'
+    + original
+    + '</div>'
+    + '</div>'
+    + '</a>';
+}
+
+function initCarousel(root) {
+  if (!root) return;
+  var track = root.querySelector('.pcarousel__track');
+  var prevBtn = root.querySelector('.pcarousel__nav--prev');
+  var nextBtn = root.querySelector('.pcarousel__nav--next');
+  if (!track) return;
+
+  var cards = track.querySelectorAll('.pcard');
+  if (!cards.length) return;
+  
+  var current = 0;
+
+  function update() {
+    var perView = 3;
+    if (window.innerWidth < 1024) perView = 2;
+    if (window.innerWidth < 640) perView = 1;
+
+    var cardWidth = cards[0].offsetWidth;
+    var gap = parseInt(getComputedStyle(track).gap) || 0;
+    var offset = -(current * (cardWidth + gap));
+
+    track.style.transform = 'translateX(' + offset + 'px)';
+    if (prevBtn) prevBtn.disabled = current === 0;
+    if (nextBtn) nextBtn.disabled = current >= cards.length - perView;
+  }
+
+  function next() {
+    var perView = window.innerWidth < 640 ? 1 : (window.innerWidth < 1024 ? 2 : 3);
+    if (current < cards.length - perView) current++;
+    update();
+  }
+
+  function prev() {
+    if (current > 0) current--;
+    update();
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', prev);
+  if (nextBtn) nextBtn.addEventListener('click', next);
+  window.addEventListener('resize', update);
+  update();
+}
+
+function loadFeaturedProducts() {
+  var track = document.getElementById('homeCarouselTrack');
+  var root = document.getElementById('homeCarousel');
+  if (!track || !root) return;
+
+  // Skeleton loading
+  track.innerHTML = '<div class="pcard" style="height:400px;"><div class="skeleton" style="width:100%;height:100%;"></div></div>'.repeat(3);
+
+  if (typeof db === 'undefined') {
+    track.innerHTML = '<p style="color:var(--color-text-mid);">Could not load products.</p>';
+    return;
+  }
+
+  db.collection('Products').where('isActive', '==', true).limit(10).get()
+    .then(function(snap) {
+      if (snap.empty) {
+        track.innerHTML = '<p style="color:var(--color-text-mid);padding:var(--space-8);">No products yet.</p>';
+        return;
+      }
+      
+      var items = snap.docs.map(function(d) { return Object.assign({ id: d.id }, d.data()); });
+      
+      // Filter featured, agar featured nahi hain toh sab dikha do
+      var featured = items.filter(function(p) { return p.isFeatured === true; });
+      var finalItems = featured.length > 0 ? featured : items;
+
+      track.innerHTML = finalItems.map(renderProductCard).join('');
+      initCarousel(root);
+    })
+    .catch(function(err) {
+      console.error('Featured products failed:', err);
+      track.innerHTML = '<p style="color:var(--color-text-mid);padding:var(--space-8);">Could not load featured products.</p>';
+    });
+}
+
+// Chalao jab page load ho
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadFeaturedProducts);
+} else {
+  loadFeaturedProducts();
+}
