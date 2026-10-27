@@ -109,4 +109,30 @@
     injectLayout();
   }
 
+
+// ============================================================
+// GLOBAL CART COUNT UPDATER
+// ============================================================
+window.updateGlobalCartCount = function() {
+  try {
+    var cart = JSON.parse(localStorage.getItem('wb_cart') || '[]');
+    var count = 0;
+    for (var i = 0; i < cart.length; i++) count += cart[i].quantity || 0;
+    var badge = document.getElementById('globalCartCount');
+    if (badge) {
+      if (count > 0) {
+        badge.textContent = count;
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+  } catch(e) {}
+};
+
+// Call on load
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(window.updateGlobalCartCount, 100);
+});
+
 })();

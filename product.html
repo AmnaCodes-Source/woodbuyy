@@ -5,19 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product - Woodbuyy</title>
   <meta name="description" content="Premium furniture, delivered across the UAE. Cash on delivery.">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">`n  <link rel="stylesheet" href="/css/global-layout.css">
-  <link rel="stylesheet" href="/css/components.css">
+  
+  <link rel="stylesheet" href="/css/WOODBUYY_BRAND.css">
+  <link rel="stylesheet" href="/css/global-layout.css">
   <link rel="stylesheet" href="/css/product.css">
 </head>
 <body>
-
-  <header id="navbar"></header>
 
   <main class="product-page">
     <div class="container">
@@ -32,51 +29,33 @@
 
       <div class="product-layout">
 
+        <!-- Left: Image Slider -->
         <section class="product-gallery" aria-label="Product images">
-
-          <div class="product-gallery__stage">
-            <button class="product-gallery__nav product-gallery__nav--prev" id="galleryPrev" aria-label="Previous image" type="button">
-              <i class="ri-arrow-left-line"></i>
-            </button>
-
-            <div class="product-gallery__frame">
-              <div class="skeleton product-gallery__skeleton" id="gallerySkeleton"></div>
-              <img id="mainImage" class="product-gallery__image" alt="" loading="eager" decoding="async">
-              <span class="product-gallery__badge" id="galleryBadge"></span>
-            </div>
-
-            <button class="product-gallery__nav product-gallery__nav--next" id="galleryNext" aria-label="Next image" type="button">
-              <i class="ri-arrow-right-line"></i>
-            </button>
+          <div class="product-gallery__main">
+            <div class="skeleton product-gallery__skeleton" id="gallerySkeleton"></div>
+            <img id="mainImage" class="product-gallery__image" alt="" loading="eager" decoding="async">
+            <button class="product-gallery__arrow product-gallery__arrow--prev" id="galleryPrev" aria-label="Previous image"><i class="ri-arrow-left-s-line"></i></button>
+            <button class="product-gallery__arrow product-gallery__arrow--next" id="galleryNext" aria-label="Next image"><i class="ri-arrow-right-s-line"></i></button>
+            <div class="product-gallery__dots" id="galleryDots"></div>
           </div>
-
           <div class="product-gallery__thumbs" id="thumbStrip"></div>
-
         </section>
 
+        <!-- Right: Info -->
         <section class="product-info" aria-label="Product details">
-
-          <p class="product-info__eyebrow label" id="productCategory">Category</p>
-
+          <p class="product-info__category label" id="productCategory">Category</p>
           <h1 class="product-info__title" id="productName">Product Name</h1>
-
-          <p class="product-info__sku" id="productSku"></p>
-
-          <p class="product-info__subtitle" id="productSubtitle"></p>
-
-          <div class="product-info__rating">
-            <span class="product-info__stars" id="productStars" aria-label="Rating"></span>
-            <span class="product-info__reviews" id="productReviews">0 reviews</span>
-          </div>
-
+          
           <div class="product-info__price">
             <span class="product-info__price-current" id="productPrice">AED 0.00</span>
             <span class="product-info__price-original" id="productPriceOriginal"></span>
             <span class="product-info__price-save" id="productSave"></span>
           </div>
 
-          <p class="product-info__dimline" id="productDimLine"></p>
+          <!-- Short Description -->
+          <p class="product-info__excerpt" id="productExcerpt"></p>
 
+          <!-- Attributes -->
           <div class="product-info__attr" id="colorGroup">
             <span class="label">Colour</span>
             <div class="swatch-row" id="colorSwatches"></div>
@@ -89,27 +68,32 @@
             </select>
           </div>
 
+          <div class="product-info__attr" id="sizeGroup">
+            <span class="label">Size</span>
+            <select class="input" id="sizeSelect">
+              <option value="">Select size</option>
+            </select>
+          </div>
+
+          <!-- Quantity & CTAs -->
           <div class="product-info__qty">
             <span class="label">Quantity</span>
             <div class="qty-stepper">
-              <button type="button" id="qtyMinus" aria-label="Decrease quantity">-</button>
+              <button type="button" id="qtyMinus" aria-label="Decrease">-</button>
               <input type="number" id="qtyInput" value="1" min="1" max="99" inputmode="numeric">
-              <button type="button" id="qtyPlus" aria-label="Increase quantity">+</button>
+              <button type="button" id="qtyPlus" aria-label="Increase">+</button>
             </div>
           </div>
 
           <div class="product-info__ctas">
             <button type="button" class="btn btn--primary btn--full" id="addToCartBtn">
-              <i class="ri-shopping-bag-3-line"></i>
-              <span>Add to Cart</span>
+              <i class="ri-shopping-bag-3-line"></i> Add to Cart
             </button>
             <button type="button" class="btn btn--secondary btn--full" id="buyNowBtn">
-              <i class="ri-flashlight-line"></i>
-              <span>Buy Now - COD</span>
+              <i class="ri-flashlight-line"></i> Buy Now - COD
             </button>
             <button type="button" class="btn btn--ghost btn--full" id="enquiryBtn">
-              <i class="ri-mail-send-line"></i>
-              <span>Product Enquiry</span>
+              <i class="ri-mail-send-line"></i> Product Enquiry
             </button>
           </div>
 
@@ -119,15 +103,44 @@
             <li><i class="ri-arrow-go-back-line"></i><span>7-day returns</span></li>
             <li><i class="ri-money-dollar-circle-line"></i><span>Cash on Delivery</span></li>
           </ul>
-
         </section>
-
       </div>
+
+      <!-- Tabs Section -->
+      <section class="product-tabs">
+        <div class="product-tabs__nav">
+          <button class="product-tabs__btn active" data-tab="desc">Description</button>
+          <button class="product-tabs__btn" data-tab="info">Additional Information</button>
+        </div>
+        <div class="product-tabs__content">
+          <div class="product-tabs__panel active" id="tab-desc">
+            <div id="longDescription" class="prose"></div>
+          </div>
+          <div class="product-tabs__panel" id="tab-info">
+            <table class="product-tabs__table" id="additionalInfo">
+              <tr><td>Material</td><td>-</td></tr>
+              <tr><td>Dimensions</td><td>-</td></tr>
+              <tr><td>Weight</td><td>-</td></tr>
+              <tr><td>Assembly</td><td>-</td></tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Similar Items -->
+      <section class="similar-items">
+        <h2 class="section-title">Similar Items</h2>
+        <div class="pcarousel pcarousel--classic" id="similarCarousel">
+          <button class="pcarousel__nav pcarousel__nav--prev" aria-label="Previous"><i class="ri-arrow-left-line"></i></button>
+          <div class="pcarousel__viewport">
+            <div class="pcarousel__track" id="similarTrack"></div>
+          </div>
+          <button class="pcarousel__nav pcarousel__nav--next" aria-label="Next"><i class="ri-arrow-right-line"></i></button>
+        </div>
+      </section>
 
     </div>
   </main>
-
-  <footer id="footer"></footer>
 
   <div id="toast-container"></div>
 
@@ -137,7 +150,8 @@
   <script src="/js/firebase-config.js"></script>
   <script src="/js/ui.js"></script>
   <script src="/js/cart.js"></script>
+  <script src="/js/global-layout.js"></script>
   <script src="/js/product.js"></script>
 
-  <script src="/js/global-layout.js"></script>`n  <script src="js/global-layout.js"></script>`n</body>
+</body>
 </html>
